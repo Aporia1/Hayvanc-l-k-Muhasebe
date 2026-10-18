@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="tr" data-theme="light">
 <head>
@@ -132,7 +133,7 @@ html, body { margin: 0; padding: 0; min-height: 100vh; background: var(--bg); co
 /* MAIN CONTENT */
 .main-content {
   flex: 1; max-width: 1020px; width: 100%; margin: 0 auto;
-  padding: 16px 14px 90px;
+  padding: 16px 14px 165px;
 }
 
 /* BUTTONS */
@@ -308,6 +309,197 @@ tr:hover td { background: var(--card-sub); }
 .text-right { text-align: right; }
 .text-center { text-align: center; }
 
+
+/* HIDE TOP PILLS BAR ON ALL SCREENS AS REQUESTED (USE BOTTOM-RIGHT FAB MENU) */
+.nav-pills-bar { display: none !important; }
+
+/* TUMBLR / WHATSAPP STYLE FLOATING ACTION BUTTON (FAB) & MENU */
+.fab-btn {
+  position: fixed;
+  right: 16px;
+  bottom: 74px;
+  z-index: 95;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #16a34a);
+  color: #ffffff;
+  border: 2px solid rgba(255,255,255,0.25);
+  box-shadow: 0 8px 24px rgba(21, 128, 61, 0.45), 0 2px 6px rgba(0,0,0,0.2);
+  font-size: 32px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, box-shadow 0.2s;
+  user-select: none;
+}
+.fab-btn:hover { transform: scale(1.06); }
+.fab-btn:active { transform: scale(0.95); }
+.fab-btn.open {
+  background: var(--r);
+  transform: rotate(135deg);
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.5);
+}
+
+.fab-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 13, 22, 0.76);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  z-index: 90;
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 16px 16px 148px;
+  overflow-y: auto;
+}
+.fab-overlay.open {
+  display: flex;
+  animation: fabFadeIn 0.18s ease-out;
+}
+@keyframes fabFadeIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.fab-menu-container {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.fab-section-label {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #cbd5e1;
+  text-align: right;
+  padding-right: 6px;
+}
+
+/* Tumblr / WhatsApp Speed Dial Bubbles */
+.fab-quick-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+.fab-quick-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card);
+  color: var(--tx);
+  border: 1px solid var(--ln);
+  padding: 8px 14px 8px 16px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 13.5px;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s;
+}
+.fab-quick-item:hover, .fab-quick-item:active {
+  transform: translateX(-4px) scale(1.02);
+  border-color: var(--primary);
+}
+.fab-quick-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  color: #fff;
+}
+
+/* Thumb-Friendly Grid for All Modules inside FAB Menu */
+.fab-modules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--ln);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow-lg);
+}
+.fab-mod-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+  padding: 10px 6px;
+  border-radius: 12px;
+  background: var(--card-sub);
+  border: 1px solid var(--ln);
+  color: var(--tx);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+}
+.fab-mod-btn.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+.fab-mod-btn .mod-icon { font-size: 20px; }
+.fab-mod-btn .mod-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 8px;
+  background: var(--primary-light);
+  color: var(--primary-tx);
+  font-weight: 800;
+}
+
+/* Adjust Bottom Nav to leave room for the right-side FAB button */
+.bottom-nav {
+  position: fixed;
+  bottom: 72px;
+  left: 12px;
+  right: 84px;
+  z-index: 30;
+  background: var(--card);
+  border: 1px solid var(--ln);
+  border-radius: 30px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: var(--shadow-lg);
+  padding: 0 6px;
+}
+@media (min-width: 900px) {
+  .bottom-nav {
+    max-width: 500px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: 100%;
+  }
+}
+
+.bulk-bar {
+  bottom: 138px !important;
+}
+
 /* PRINT */
 @media print {
   .app-header, .bottom-nav, .bulk-bar, .no-print, button, .btn { display: none !important; }
@@ -315,21 +507,162 @@ tr:hover td { background: var(--card-sub); }
   .card { box-shadow: none !important; border: 1px solid #ccc !important; page-break-inside: avoid; }
   .main-content { max-width: 100% !important; padding: 0 !important; }
 }
+
+/* CAMERA HUD & FACTORY AUTOMATION STYLES */
+.camera-hud-container {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  background: #000000;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+}
+.camera-video-wrap {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#hudVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#hudCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.hud-reticle-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.hud-reticle-box {
+  width: 220px;
+  height: 140px;
+  border: 2px dashed #22c55e;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.4);
+  animation: hudPulse 2s infinite ease-in-out;
+}
+@keyframes hudPulse {
+  0%, 100% { border-color: #22c55e; box-shadow: 0 0 12px rgba(34, 197, 94, 0.4); }
+  50% { border-color: #4ade80; box-shadow: 0 0 24px rgba(74, 222, 128, 0.7); }
+}
+.hud-reticle-box::before, .hud-reticle-box::after {
+  content: ''; position: absolute; width: 14px; height: 14px; border: 3px solid #22c55e;
+}
+.hud-reticle-box::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+.hud-reticle-box::after { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+
+.hud-top-bar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+.hud-pill {
+  background: rgba(15, 23, 42, 0.85);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(4px);
+}
+.hud-animal-card {
+  position: absolute;
+  bottom: 12px;
+  left: 10px;
+  right: 10px;
+  background: rgba(19, 27, 46, 0.92);
+  border: 1px solid rgba(34, 197, 94, 0.5);
+  border-radius: 14px;
+  padding: 10px 12px;
+  color: #fff;
+  backdrop-filter: blur(6px);
+  z-index: 10;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+}
+.hud-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 8px;
+}
+.hud-action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 7px 4px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.hud-action-btn:hover, .hud-action-btn:active {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+.hud-action-btn .btn-icon { font-size: 16px; background: transparent; border: 0; width: auto; height: auto; }
+
 </style>
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIkRlbml6ICYgSGFzYW4gQmVzaSAtIEtveXVuIE11aGFzZWJlIiwgInNob3J0X25hbWUiOiAiS295dW4gTXVoYXNlYmUiLCAic3RhcnRfdXJsIjogIi4vaW5kZXguaHRtbCIsICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDkwZDE2IiwgInRoZW1lX2NvbG9yIjogIiMxNTgwM2QiLCAiZGVzY3JpcHRpb24iOiAiS1x1MDBmY1x1MDBlN1x1MDBmY2tiYVx1MDE1ZiBoYXl2YW5jXHUwMTMxbFx1MDEzMWsgc1x1MDBmY3JcdTAwZmMgdGFraXAsIHJhc3lvbiBiZXNpbiBhbmFsaXppIHZlIG11aGFzZWJlIHNpc3RlbWkiLCAiaWNvbnMiOiBbeyJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9JTIyaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmclMjIgdmlld0JveD0lMjIwIDAgMTAwIDEwMCUyMj48dGV4dCB5PSUyMi45ZW0lMjIgZm9udC1zaXplPSUyMjkwJTIyPlx1ZDgzZFx1ZGMxMTwvdGV4dD48L3N2Zz4iLCAic2l6ZXMiOiAiMTkyeDE5MiIsICJ0eXBlIjogImltYWdlL3N2Zyt4bWwifSwgeyJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9JTIyaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmclMjIgdmlld0JveD0lMjIwIDAgMTAwIDEwMCUyMj48dGV4dCB5PSUyMi45ZW0lMjIgZm9udC1zaXplPSUyMjkwJTIyPlx1ZDgzZFx1ZGMxMTwvdGV4dD48L3N2Zz4iLCAic2l6ZXMiOiAiNTEyeDUxMiIsICJ0eXBlIjogImltYWdlL3N2Zyt4bWwifV19">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#15803d">
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').then(() => console.log('SW registered')).catch(() => {});
+  });
+}
+</script>
 </head>
 <body>
 <div id="app">
   <!-- TOP APP BAR -->
   <header class="app-header">
     <div class="header-top">
-      <div class="brand-pill" onclick="switchTab(0)" title="Ana Ekrana Dön">
-        <span>🐑</span>
-        <span id="farmNameDisplay">Deniz & Hasan Besi</span>
-        <span class="status-dot" title="Sistem Aktif"></span>
+      <div style="display:flex; align-items:center; gap:6px; overflow:hidden">
+        <div class="brand-pill" onclick="switchTab(0)" title="Ana Ekrana Dön">
+          <span>🐑</span>
+          <span id="farmNameDisplay" style="max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">Deniz & Hasan Besi</span>
+          <span class="status-dot" title="Sistem Aktif"></span>
+        </div>
+        <span class="badge badge-g" id="activeScreenBadge" onclick="toggleFabMenu()" style="cursor:pointer; font-size:11.5px; padding:4px 9px">📊 Genel Bakış</span>
       </div>
       <div class="header-actions">
-        <button class="btn btn-secondary btn-sm no-print" onclick="switchTab(13)" title="Bulut & Senkron">☁️ Eşitle</button>
-        <button class="btn btn-primary btn-sm no-print" onclick="quickAddEntry()">+ Kayıt</button>
+        <button class="btn btn-primary btn-sm no-print" onclick="openCameraHUDModal()" title="Canlı Kamera & Küpe Tanıma HUD">📷 Kamera HUD</button>
+        <button class="btn btn-secondary btn-sm no-print" onclick="switchTab(12)" title="Cari & Veresiye Defteri">📒 Cari</button>
         <button class="btn-icon no-print" id="btnTheme" title="Tema Değiştir">🌓</button>
         <button class="btn-icon no-print" id="btnUndo" title="Son İşlemi Geri Al">↶</button>
       </div>
@@ -352,6 +685,7 @@ tr:hover td { background: var(--card-sub); }
   <div class="bulk-bar" id="bulkBar">
     <span style="font-weight:700; font-size:12.5px" id="bulkCountLabel">0 Seçildi</span>
     <button class="btn btn-primary btn-sm" onclick="openBulkSaleModal()">💰 Toplu Sat</button>
+    <button class="btn btn-secondary btn-sm" onclick="openBulkAgeModal()">🎂 Toplu Yaş/Doğum</button>
     <button class="btn btn-secondary btn-sm" onclick="openBulkAssignGroupModal()">🏷️ Gruba Ata</button>
     <button class="btn btn-secondary btn-sm" onclick="openBulkHealthModal()">🩺 Toplu Aşı</button>
     <button class="btn btn-secondary btn-sm" onclick="openBulkWeightModal()">⚖️ Toplu Tart</button>
@@ -361,14 +695,22 @@ tr:hover td { background: var(--card-sub); }
     <button class="close-modal" style="font-size:16px" onclick="clearSelectedAnimals()">✕</button>
   </div>
 
-  <!-- MOBILE BOTTOM NAV -->
+  <!-- THUMB-FRIENDLY BOTTOM DOCK -->
   <nav class="bottom-nav" id="bottomNav">
     <button class="bnav-item active" data-t="0"><span class="icon">📊</span>Özet</button>
-    <button class="bnav-item" data-t="1"><span class="icon">⚖️</span>Karne</button>
     <button class="bnav-item" data-t="3"><span class="icon">🐑</span>Sürü</button>
-    <button class="bnav-item" data-t="2"><span class="icon">🌾</span>Rasyon</button>
-    <button class="bnav-item" onclick="openAllTabsSheet()"><span class="icon">📂</span>Tümü</button>
+    <button class="bnav-item" data-t="12"><span class="icon">📒</span>Cari/Nakit</button>
+    <button class="bnav-item" data-t="4"><span class="icon">💰</span>Kasa</button>
+    <button class="bnav-item" data-t="7"><span class="icon">📦</span>Yem</button>
   </nav>
+
+  <!-- TUMBLR / WHATSAPP STYLE FLOATING ACTION BUTTON (+) AT BOTTOM RIGHT -->
+  <button class="fab-btn no-print" id="fabMainBtn" onclick="toggleFabMenu()" title="Hızlı İşlemler ve Menü">＋</button>
+
+  <!-- FLOATING SPEED-DIAL & MODULE MENU OVERLAY -->
+  <div class="fab-overlay no-print" id="fabOverlay" onclick="onFabOverlayClick(event)">
+    <div class="fab-menu-container" id="fabMenuContent"></div>
+  </div>
 
   <!-- MODAL CONTAINER -->
   <div class="modal-backdrop" id="modalBackdrop">
@@ -471,6 +813,11 @@ let S = {
   feedLogs: [],
   loans: [],
   qurbans: [],
+  cariler: [
+    { id: 1, name: "Ahmet Kasap", type: "Kasap / Alıcı", phone: "", note: "Canlı hayvan ve karkas et alıcısı" },
+    { id: 2, name: "Öztürk Yem", type: "Yemci / Tedarikçi", phone: "", note: "Fabrika ve arpa yemi tedarikçisi" },
+    { id: 3, name: "Veteriner Klinik", type: "Veteriner / İlaç", phone: "", note: "Aşı ve ilaç tedariki" }
+  ],
   milkLogs: [],
   woolLogs: [],
   c: DEF_CATS.map(x => ({ n: x[0], k: x[1] })),
@@ -500,15 +847,15 @@ const NAV_TABS = [
   { id: 1, title: "Çiftlik Karnesi", icon: "⚖️" },
   { id: 2, title: "Rasyon & Besi", icon: "🌾" },
   { id: 3, title: "Sürü & Hayvanlar", icon: "🐑" },
-  { id: 4, title: "Kasa & Kredi", icon: "💰" },
+  { id: 4, title: "Kasa & Veresiye", icon: "💰" },
   { id: 5, title: "Hayvan Al/Sat", icon: "🛒" },
   { id: 6, title: "Küpe Grupları", icon: "🏷️" },
   { id: 7, title: "Yem Deposu", icon: "📦" },
   { id: 8, title: "Aşı & Sağlık", icon: "🩺" },
   { id: 9, title: "Doğum & Gebelik", icon: "🍼" },
   { id: 10, title: "Kurbanlık & Hisse", icon: "🥩" },
-  { id: 11, title: "Tartı & Karkas", icon: "⚖️" },
-  { id: 12, title: "Nakit & Raporlar", icon: "📈" },
+  { id: 11, title: "Tartı & Kesim", icon: "⚖️" },
+  { id: 12, title: "Nakit & Cari", icon: "📒" },
   { id: 13, title: "Bulut & Senkron", icon: "☁️" },
   { id: 14, title: "Ayarlar & Destek", icon: "⚙️" }
 ];
@@ -849,7 +1196,11 @@ function computeCosts() {
       acqCost = tiedBuy;
     }
 
-    const overheadShare = daysInHerd * n * dailyOverheadRate;
+    
+    const isPastureMera = (a.location || 'Mera') === 'Mera';
+    // Mera hayvanları yayladayken fabrika yemi tüketmez; sadece genel ortak giderleri (çoban, mera kirası, tuz) alır.
+    const overheadShare = daysInHerd * n * (isPastureMera ? (dailyOverheadRate * 0.45) : dailyOverheadRate);
+
     const totalCost = acqCost + directExpenses + overheadShare;
     const costPerHead = n > 0 ? (totalCost / n) : totalCost;
     const buyPricePerHead = n > 0 ? (acqCost / n) : 0;
@@ -965,53 +1316,187 @@ function getFilteredEntries() {
   }).sort((a, b) => b.d.localeCompare(a.d) || b.id - a.id);
 }
 
+function getEntryRemaining(x) {
+  if (x.payMode !== "vadeli" || x.isSettled) return 0;
+  return Math.max(0, (+x.a || 0) - (+x.paidAmount || 0));
+}
+
+function getEntryPaid(x) {
+  if (x.payMode !== "vadeli" || x.isSettled) return (+x.a || 0);
+  return Math.max(0, +x.paidAmount || 0);
+}
+
 function getFinancialStats(entries) {
-  const g = sum(entries.filter(x => kind(x.c) === "gelir"));
-  const r = sum(entries.filter(x => kind(x.c) === "gider"));
-  return { g, r, net: g - r };
+  const gEntries = entries.filter(x => kind(x.c) === "gelir");
+  const rEntries = entries.filter(x => kind(x.c) === "gider");
+  const g = sum(gEntries);
+  const r = sum(rEntries);
+  const cashIn = gEntries.reduce((s, x) => s + getEntryPaid(x), 0);
+  const cashOut = rEntries.reduce((s, x) => s + getEntryPaid(x), 0);
+  const receivables = S.e.filter(x => kind(x.c) === "gelir" && x.payMode === "vadeli" && !x.isSettled)
+    .reduce((s, x) => s + getEntryRemaining(x), 0);
+  const payables = S.e.filter(x => kind(x.c) === "gider" && x.payMode === "vadeli" && !x.isSettled)
+    .reduce((s, x) => s + getEntryRemaining(x), 0);
+  return { g, r, net: g - r, cashIn, cashOut, cashNet: cashIn - cashOut, receivables, payables };
 }
 
 const getLoanBalance = () => 
   sum(S.e.filter(x => kind(x.c) === "kredi+")) - sum(S.e.filter(x => kind(x.c) === "kredi-"));
 
+function ensureCariExists(name, defaultType = "Diğer") {
+  const clean = String(name || "").trim();
+  if (!clean) return null;
+  if (!S.cariler) S.cariler = [];
+  let found = S.cariler.find(c => c.name.toLowerCase() === clean.toLowerCase());
+  if (!found) {
+    found = { id: Date.now() + Math.floor(Math.random() * 1000), name: clean, type: defaultType, phone: "", note: "" };
+    S.cariler.push(found);
+  }
+  return found;
+}
+
+function getCariDatalistHtml() {
+  const list = S.cariler || [];
+  return `<datalist id="cariDatalist">${list.map(c => `<option value="${E(c.name)}">${E(c.type || '')}</option>`).join("")}</datalist>`;
+}
+
+function ageMonthsToBirthDate(months) {
+  const m = parseFloat(months);
+  if (isNaN(m) || m < 0) return "";
+  const d = new Date();
+  d.setDate(d.getDate() - Math.round(m * 30.4375));
+  return iso(d);
+}
+
+function birthDateToAgeMonths(bStr) {
+  if (!bStr) return "";
+  const days = daysBetween(bStr, today());
+  if (days < 0) return 0;
+  return Math.round((days / 30.4375) * 10) / 10;
+}
+
+function formatAgeReadable(bStr) {
+  if (!bStr) return "Yaş girilmedi";
+  const days = daysBetween(bStr, today());
+  if (days < 0) return "0 gün";
+  if (days < 60) return `${days} günlük`;
+  const months = Math.round(days / 30.4375);
+  if (months < 24) return `${months} aylık`;
+  const yrs = Math.floor(months / 12);
+  const remM = months % 12;
+  return remM > 0 ? `${yrs} yaş ${remM} ay` : `${yrs} yaşında`;
+}
+
 /* ==========================================================================
-   İNTERAKTİF ADALAR (ISLAND WIDGETS) & NAVİGASYON
+   TUMBLR / WHATSAPP TARZI SAĞ ALT (+) YÜZEN MENÜ & NAVİGASYON
    ========================================================================== */
 
+let FAB_OPEN = false;
+
 function buildNavPills() {
-  const container = $("navPillsBar");
+  const activeTab = NAV_TABS.find(t => t.id === T) || NAV_TABS[0];
+  const badgeEl = $("activeScreenBadge");
+  if (badgeEl && activeTab) {
+    badgeEl.innerHTML = `${activeTab.icon} ${activeTab.title} ▾`;
+  }
+}
+
+function toggleFabMenu(forceState) {
+  FAB_OPEN = typeof forceState === "boolean" ? forceState : !FAB_OPEN;
+  const btn = $("fabMainBtn");
+  const ov = $("fabOverlay");
+  if (btn) btn.classList.toggle("open", FAB_OPEN);
+  if (ov) {
+    if (FAB_OPEN) {
+      buildFabMenuContent();
+      ov.classList.add("open");
+    } else {
+      ov.classList.remove("open");
+    }
+  }
+}
+
+function onFabOverlayClick(e) {
+  if (e.target.id === "fabOverlay") {
+    toggleFabMenu(false);
+  }
+}
+
+function buildFabMenuContent() {
+  const container = $("fabMenuContent");
   if (!container) return;
   const cData = computeCosts();
-  const scorecard = computeFarmScorecard();
-  const ration = computeRationAnalysis();
+  const fin = getFinancialStats(S.e);
+  const pendingCount = S.e.filter(x => x.payMode === "vadeli" && !x.isSettled).length;
 
-  container.innerHTML = NAV_TABS.map(tab => {
-    let badge = "";
-    if (tab.id === 1) {
-      badge = `<span class="badge ${scorecard.overallScore >= 80 ? 'badge-g' : 'badge-amber'}">${scorecard.overallScore}/100</span>`;
-    } else if (tab.id === 2) {
-      badge = `<span class="badge badge-g">+${ration.predictedADG}g</span>`;
-    } else if (tab.id === 3) {
-      badge = `<span class="badge badge-mut">${cData.totalActiveHeadCount}</span>`;
-    } else if (tab.id === 7) {
-      const crit = (S.feeds || []).filter(f => f.dailyTotalKg > 0 && (f.stockKg / f.dailyTotalKg) <= 10).length;
-      if (crit) badge = `<span class="badge badge-r">${crit} Kritik</span>`;
-    } else if (tab.id === 9) {
-      const preg = S.a.filter(a => a.ins && a.st === "sürüde").length;
-      if (preg) badge = `<span class="badge badge-purple">${preg} Gebe</span>`;
-    }
-    return `
-      <div class="nav-pill ${tab.id === T ? 'active' : ''}" onclick="switchTab(${tab.id})">
-        <span>${tab.icon}</span>
-        <span>${tab.title}</span>
-        ${badge}
+  container.innerHTML = `
+    <div class="fab-section-label">⚡ Hızlı İşlemler (Tek Dokunuş)</div>
+    <div class="fab-quick-list">
+      <div class="fab-quick-item" onclick="toggleFabMenu(false); openCameraHUDModal();">
+        <span>📷 Canlı Kamera & Küpe Tanıma HUD</span>
+        <span class="fab-quick-icon" style="background:#16a34a">🎯</span>
       </div>
-    `;
-  }).join("");
+      <div class="fab-quick-item" onclick="toggleFabMenu(false); openSecureButcherPortalModal();">
+        <span>🥩 Güvenli Kasap QR Portalı (Alış/Kâr Gizli)</span>
+        <span class="fab-quick-icon" style="background:#dc2626">📱</span>
+      </div>
+
+      <div class="fab-quick-item" onclick="toggleFabMenu(false); openCameraHUDModal();">
+        <span>📷 Canlı Kamera & Küpe Tanıma HUD</span>
+        <span class="fab-quick-icon" style="background:#16a34a">🎯</span>
+      </div>
+      <div class="fab-quick-item" onclick="toggleFabMenu(false); openSecureButcherPortalModal();">
+        <span>🥩 Güvenli Kasap QR Portalı (Alış/Kâr Gizli)</span>
+        <span class="fab-quick-icon" style="background:#dc2626">📱</span>
+      </div>
+
+      <div class="fab-quick-item" onclick="toggleFabMenu(false); switchTab(12); setTimeout(()=>document.getElementById('mcName')?.focus(),120);">
+        <span>🤝 Cari Kişi / Veresiye Alacak-Borç Yaz</span>
+        <span class="fab-quick-icon" style="background:#7c3aed">📒</span>
+      </div>
+      <div class="fab-quick-item" onclick="toggleFabMenu(false); switchTab(4); setTimeout(()=>document.getElementById('entryAmount')?.focus(),120);">
+        <span>🧾 Kasaya Gelir / Gider / Veresiye Gir</span>
+        <span class="fab-quick-icon" style="background:#16a34a">💰</span>
+      </div>
+      <div class="fab-quick-item" onclick="toggleFabMenu(false); openBulkAgeModal();">
+        <span>🎂 Hayvanlara Toplu Yaş / Doğum Tarihi Gir</span>
+        <span class="fab-quick-icon" style="background:#2563eb">📅</span>
+      </div>
+      <div class="fab-quick-item" onclick="toggleFabMenu(false); switchTab(5);">
+        <span>🛒 Hayvan Alım & Toplu Satış Sihirbazı</span>
+        <span class="fab-quick-icon" style="background:#d97706">🐑</span>
+      </div>
+      <div class="fab-quick-item" onclick="toggleFabMenu(false); switchTab(11); setTimeout(()=>document.getElementById('simLiveKg')?.scrollIntoView({behavior:'smooth'}),120);">
+        <span>🥩 Canlı / Karkas Kesim & Kasap Cari</span>
+        <span class="fab-quick-icon" style="background:#dc2626">🔪</span>
+      </div>
+      <div class="fab-quick-item" onclick="toggleFabMenu(false); switchTab(7);">
+        <span>📦 Yem Deposu & Besin İçeriği Düzenle</span>
+        <span class="fab-quick-icon" style="background:#0d9488">🌾</span>
+      </div>
+    </div>
+
+    <div class="fab-section-label" style="margin-top:6px">📂 Tüm Ekranlar (Başparmak Menüsü)</div>
+    <div class="fab-modules-grid">
+      ${NAV_TABS.map(tab => {
+        let b = "";
+        if (tab.id === 3) b = `<span class="mod-badge">${cData.totalActiveHeadCount}</span>`;
+        else if (tab.id === 12 && pendingCount > 0) b = `<span class="mod-badge" style="background:var(--r-light); color:var(--r)">${pendingCount} Vadeli</span>`;
+        return `
+          <div class="fab-mod-btn ${tab.id === T ? 'active' : ''}" onclick="toggleFabMenu(false); switchTab(${tab.id});">
+            ${b}
+            <span class="mod-icon">${tab.icon}</span>
+            <span>${tab.title}</span>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
 }
 
 function switchTab(index) {
   T = +index;
+  if (FAB_OPEN) toggleFabMenu(false);
   buildNavPills();
   updateBottomNav();
   renderApp();
@@ -1025,22 +1510,7 @@ function updateBottomNav() {
 }
 
 function openAllTabsSheet() {
-  const modal = $("modalContent");
-  modal.innerHTML = `
-    <div class="modal-header">
-      <div class="modal-title">📂 Tüm Modüller & Çiftlik Menüsü</div>
-      <button class="close-modal" onclick="closeModal()">✕</button>
-    </div>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px">
-      ${NAV_TABS.map(t => `
-        <div onclick="switchTab(${t.id}); closeModal();" style="background:var(--card-sub); border:1px solid var(--ln); border-radius:12px; padding:12px; cursor:pointer; display:flex; align-items:center; gap:10px; font-weight:700">
-          <span style="font-size:22px">${t.icon}</span>
-          <span style="font-size:13px">${t.title}</span>
-        </div>
-      `).join("")}
-    </div>
-  `;
-  openModal();
+  toggleFabMenu(true);
 }
 
 // İNTERAKTİF ADALAR TIKLAMA VE DETAY MODALLARI
@@ -1238,6 +1708,19 @@ function viewDashboard() {
     .filter(x => x.rem <= 15)
     .sort((a, b) => a.rem - b.rem);
 
+  
+  // Creep Feeder Büyüme Geriliği Alarmı (<220 g/gün)
+  const creepAlertLambs = [];
+  S.a.filter(a => a.st === "sürüde" && a.cat === "Kuzu" && a.b).forEach(lamb => {
+    const ageDays = daysBetween(lamb.b, td);
+    if (ageDays >= 30 && ageDays <= 80) {
+      const c = cData.costMap[lamb.id];
+      if (c && c.dailyWeightGain > 0 && c.dailyWeightGain < 220) {
+        creepAlertLambs.push({ ...lamb, gain: Math.round(c.dailyWeightGain), ageDays });
+      }
+    }
+  });
+
   const criticalFeeds = (S.feeds || []).map(f => {
     const daysLeft = (f.dailyTotalKg > 0) ? Math.round(f.stockKg / f.dailyTotalKg) : 999;
     return { ...f, daysLeft };
@@ -1353,6 +1836,16 @@ function viewDashboard() {
     ${(upcomingBirths.length || upcomingTasks.length || criticalFeeds.length) ? `
       <div class="card">
         <div class="card-title">⏰ Kritik Takip & Acil Hatırlatmalar</div>
+        ${creepAlertLambs.map(cl => `
+          <div class="alert alert-warning" style="margin-bottom:6px">
+            <span style="font-size:18px">⚠️</span>
+            <div style="flex:1">
+              <b>Creep Feeder Gelişme Geriliği: ${E(cl.k)}</b> (${cl.ageDays} günlük kuzu, günlük canlı artış sadece <b>${cl.gain} g/gün</b>!)
+              <div style="font-size:11.5px">Hedef: en az 250-320 g/gün. Anne sütü yetersiz veya yemlik aralığı dar olabilir.</div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="openWeightModal(${cl.id})">Tart & İncele</button>
+          </div>
+        `).join("")}
         ${upcomingBirths.map(b => `
           <div class="alert alert-warning" style="margin-bottom:6px">
             <span style="font-size:18px">🍼</span>
@@ -1622,6 +2115,7 @@ function viewRation() {
               <th class="text-right">Kalsiyum (%)</th>
               <th class="text-right">Fosfor (%)</th>
               <th>Tür</th>
+              <th class="text-right">İçerik</th>
             </tr>
           </thead>
           <tbody>
@@ -1634,6 +2128,7 @@ function viewRation() {
                 <td class="text-right">%${f.calcium || 0}</td>
                 <td class="text-right">%${f.phosphorus || 0}</td>
                 <td><span class="badge ${f.isRoughage ? 'badge-amber' : 'badge-g'}">${f.isRoughage ? 'Kaba Yem' : 'Kesif Yem'}</span></td>
+                <td class="text-right"><button class="btn btn-secondary btn-sm" onclick="editFeedItem(${f.id})">✏️ İçeriği Düzenle</button></td>
               </tr>
             `).join("")}
           </tbody>
@@ -1697,7 +2192,8 @@ function viewFlock() {
       </div>
 
       <div class="form-row">
-        ${inp("animalBirthDate", "Doğum Tarihi", "date", "")}
+        ${inp("animalAgeMonths", "Yaşı (Ay Olarak)", "number", "", 'inputmode="decimal" placeholder="Örn: 14 (Doğum tarihini otomatik bulur)" oninput="onSingleAnimalAgeInput(this.value)"')}
+        ${inp("animalBirthDate", "Doğum Tarihi", "date", "", 'onchange="onSingleAnimalBirthChange(this.value)"')}
         ${inp("animalMotherTag", "Anne Küpe No", "text", "", 'placeholder="Opsiyonel"')}
         ${inp("animalFatherTag", "Baba (Koç) Küpe No", "text", "", 'placeholder="Opsiyonel"')}
       </div>
@@ -1755,9 +2251,12 @@ function viewFlock() {
       </div>
 
       <div style="margin-top:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px">
-        <div style="display:flex; align-items:center; gap:8px">
+        <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap">
           <button class="btn btn-secondary btn-sm" onclick="toggleSelectAll(true)">
             ${allSelected ? 'Seçimi Temizle' : '☑️ Tümünü Seç (' + list.length + ')'}
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="openBulkAgeModal()">
+            🎂 Toplu Yaş / Doğum Tarihi Gir
           </button>
           <span style="font-size:12px; color:var(--mut)">Listelenen: <b>${list.length} baş</b></span>
         </div>
@@ -1777,8 +2276,7 @@ function viewFlock() {
       ${list.map(a => {
         const c = cData.costMap[a.id] || {};
         const isSelected = SELECTED_ANIMALS.has(a.id);
-        const ageDays = a.b ? daysBetween(a.b, a.sd || td) : (a.bd ? daysBetween(a.bd, a.sd || td) : 0);
-        const ageStr = ageDays < 60 ? `${ageDays} gün` : `${Math.round(ageDays / 30.4)} aylık`;
+        const ageStr = a.b ? formatAgeReadable(a.b) : "Yaş girilmedi";
         const groupObj = (S.groups || []).find(g => a.grp && a.grp.includes(g.id));
 
         return `
@@ -1798,7 +2296,7 @@ function viewFlock() {
               </div>
 
               <div style="font-size:12px; color:var(--tx-sec); margin-top:3px">
-                ${a.b ? `Doğum: ${a.b} (${ageStr}) · ` : ''}
+                🎂 Yaş/Doğum: <b>${a.b ? `${ageStr} (${a.b})` : 'Girilmedi'}</b> · 
                 ${a.m ? `Anne: ${E(a.m)} · ` : ''}
                 ${a.pad ? `Bölme: ${E(a.pad)} · ` : ''}
                 Geliş: <b>${a.origin || 'Bilinmiyor'}</b>
@@ -1846,7 +2344,7 @@ function viewFlock() {
 }
 
 /* ==========================================================================
-   GÖRÜNÜM 4: KASA & KREDİ AMORTİSMANI
+   GÖRÜNÜM 4: KASA, VERESİYE (VADELİ) & KREDİ YÖNETİMİ
    ========================================================================== */
 
 function viewLedger() {
@@ -1856,16 +2354,17 @@ function viewLedger() {
   const categories = S.c.map(c => [c.n, `${c.n} [${c.k}]`]);
 
   return `
-    <div class="card" id="entryFormCard">
+    ${getCariDatalistHtml()}
+    <div class="card" id="entryFormCard" style="border-top:4px solid var(--primary)">
       <div class="card-title">
-        <span id="formTitle">🧾 Yeni Gelir / Gider / Kredi Kaydı</span>
+        <span id="formTitle">🧾 Yeni Gelir / Gider / Veresiye Kaydı</span>
         <button class="btn btn-secondary btn-sm" id="btnCancelEditEntry" style="display:none" onclick="cancelEditEntry()">Vazgeç</button>
       </div>
 
       <input type="hidden" id="editEntryId" value="0">
 
       <div class="form-row">
-        ${inp("entryDate", "Tarih", "date", today())}
+        ${inp("entryDate", "İşlem Tarihi", "date", today())}
         ${sel("entryCat", "Kategori", optList(categories, categories[0]?.[0] || ""), 'onchange="onLedgerCategoryChange(this.value)"')}
       </div>
 
@@ -1887,23 +2386,43 @@ function viewLedger() {
       </div>
 
       <div class="form-row">
-        ${sel("entryAnimal", "İlgili Hayvan (İsteğe Bağlı)", optList([[0, "— Sürü Geneli (Ortak Masraf) —"], ...animalList], 0))}
-        ${inp("entryDesc", "Açıklama", "text", "", 'placeholder="Örn: 20 çuval kuzu yemi, Ahmet Kasap"')}
+        ${inp("entryCariName", "Cari Kişi / Firma (Kasap, Yemci, Müşteri)", "text", "", 'list="cariDatalist" placeholder="Örn: Ahmet Kasap, Öztürk Yem (İsteğe bağlı)"')}
+        ${sel("entryAnimal", "İlgili Hayvan (İsteğe Bağlı)", optList([[0, "— Sürü Geneli (Ortak) —"], ...animalList], 0))}
+      </div>
+
+      <div class="form-row">
+        ${inp("entryDesc", "Açıklama", "text", "", 'placeholder="Örn: 20 çuval yem, İlaç alımı, Kuzu satışı"')}
       </div>
 
       <div class="form-row">
         ${inp("entryQty", "Adet", "number", "", 'inputmode="decimal" placeholder="1"')}
         ${inp("entryKg", "Toplam Canlı Kg", "number", "", 'inputmode="decimal" placeholder="kg"')}
-        ${inp("entryUnitPrice", "Birim Fiyat (TL/Adet veya TL/Kg)", "number", "", 'inputmode="decimal" placeholder="₺"')}
+        ${inp("entryUnitPrice", "Birim Fiyat (TL)", "number", "", 'inputmode="decimal" placeholder="₺"')}
         ${inp("entryAmount", "Toplam Tutar (TL) *", "number", "", 'inputmode="decimal" placeholder="0 ₺" oninput="onEntryAmountChange()"')}
       </div>
 
-      <div style="margin-top:10px; display:flex; gap:8px">
-        <button class="btn btn-primary" style="flex:1" onclick="saveLedgerEntry()">Kaydet</button>
+      <!-- PEŞİN Mİ VADELİ (VERESİYE) Mİ SEÇİM KUTUSU -->
+      <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:var(--radius-sm); padding:10px 12px; margin-top:8px">
+        <div class="form-row" style="margin-bottom:0">
+          ${sel("entryPayMode", "💳 Ödeme / Tahsilat Şekli *", optList([
+            ["pesin", "🟢 Peşin (Nakit / Banka — Hemen Ödendi / Tahsil Edildi)"],
+            ["vadeli", "⏳ Vadeli / Veresiye (Sonra Ödenecek Borç / Gelecek Para)"]
+          ], "pesin"), 'onchange="toggleEntryPayMode(this.value)"')}
+        </div>
+
+        <div id="entryVadeliBox" style="display:none; margin-top:8px; padding-top:8px; border-top:1px dashed var(--ln)">
+          <div class="form-row" style="margin-bottom:0">
+            ${inp("entryDueDate", "📅 Ödeme / Tahsilat Vade Tarihi *", "date", addDays(today(), 30))}
+            ${inp("entryPaidAmount", "💵 Peşin Verilen/Alınan Kapora (Varsa TL)", "number", "0", 'inputmode="decimal" placeholder="0 ₺ (Tamamı veresiye ise 0 bırakın)"')}
+          </div>
+          <div style="font-size:11.5px; color:var(--amber); margin-top:6px">
+            📌 <b>Veresiye Bilgilendirmesi:</b> Gider ise <b>Nakit & Cari</b> ekranında ödeme günüyle <b>"Ödenecek Borç"</b> olarak; Gelir ise <b>"Gelecek Para (Alacak)"</b> olarak gözükür.
+          </div>
+        </div>
       </div>
 
-      <div id="buyHintBox" style="display:none; margin-top:10px; background:var(--amber-light); border:1px solid var(--amber); padding:8px 10px; border-radius:6px; font-size:12px; color:var(--amber)">
-        💡 <b>Hayvan Satın Alımı İpucu:</b> Hayvanlarınızı küpe numaraları ve bireysel maliyetleriyle sürüye otomatik eklemek için <a href="javascript:void(0)" onclick="switchTab(5)" style="font-weight:700; color:inherit; text-decoration:underline">Hayvan Alım Sihirbazı</a>'nı kullanabilirsiniz.
+      <div style="margin-top:12px; display:flex; gap:8px">
+        <button class="btn btn-primary" style="flex:1; padding:10px" onclick="saveLedgerEntry()">💾 Kaydı İşle</button>
       </div>
     </div>
 
@@ -1912,7 +2431,7 @@ function viewLedger() {
       <div class="form-row" style="margin-bottom:0">
         <div>
           <label>Kayıtlarda Ara</label>
-          <input type="text" id="ledgerSearch" placeholder="Açıklama, kategori veya küpe ara..." value="${E(ESEARCH)}">
+          <input type="text" id="ledgerSearch" placeholder="Açıklama, cari kişi, kategori veya küpe ara..." value="${E(ESEARCH)}">
         </div>
         <div>
           <label>Kategoriye Göre Filtrele</label>
@@ -1922,19 +2441,25 @@ function viewLedger() {
           </select>
         </div>
       </div>
-      <div style="margin-top:8px; display:flex; justify-content:space-between; align-items:center; font-size:12px">
-        <div>Filtrelenen: <b>${entries.length} kayıt</b></div>
-        <div>Gelir: <b class="tx-green">${F(fin.g)}</b> | Gider: <b class="tx-red">${F(fin.r)}</b> | Net: <b class="${fin.net >= 0 ? 'tx-green' : 'tx-red'}">${F(fin.net)}</b></div>
+      <div style="margin-top:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; font-size:12px">
+        <div>Eldeki Nakit: <b class="${fin.cashNet >= 0 ? 'tx-green' : 'tx-red'}">${F(fin.cashNet)}</b></div>
+        <div>Gelecek Para: <b class="tx-green">${F(fin.receivables)}</b> | Ödenecek Borç: <b class="tx-red">${F(fin.payables)}</b></div>
       </div>
     </div>
 
     <!-- Kayıtlar Listesi -->
     <div class="card">
-      <div class="card-title">Kayıt Geçmişi</div>
+      <div class="card-title">
+        <span>Kasa & Veresiye Hareket Geçmişi</span>
+        <button class="btn btn-secondary btn-sm" onclick="switchTab(12)">📒 Cari & Vadeli Defterine Git →</button>
+      </div>
       ${entries.map(x => {
         const k = kind(x.c);
         const animal = S.a.find(a => a.id == x.an);
+        const rem = getEntryRemaining(x);
+        const isVadeliOpen = x.payMode === "vadeli" && !x.isSettled && rem > 0;
         const details = [
+          x.cariName ? `👤 Cari: ${x.cariName}` : null,
           animal ? `🐑 ${animal.k}` : null,
           x.q ? `${x.q} adet` : null,
           x.kg ? `${x.kg} kg` : null,
@@ -1942,22 +2467,26 @@ function viewLedger() {
         ].filter(Boolean).join(" · ");
 
         return `
-          <div class="list-item">
+          <div class="list-item" style="padding:10px 0; border-bottom:1px solid var(--ln)">
             <div class="list-content">
               <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap">
                 <b>${E(x.c)}</b>
                 <span class="badge ${k === 'gelir' ? 'badge-g' : (k === 'gider' ? 'badge-r' : 'badge-b')}">${k.toUpperCase()}</span>
+                ${isVadeliOpen ? `
+                  <span class="badge badge-amber">⏳ VADELİ (${k === 'gelir' ? 'Gelecek Tarih' : 'Ödeme Günü'}: ${x.dueDate || 'Belirtilmedi'} · Kalan: ${F(rem)})</span>
+                ` : (x.payMode === 'vadeli' && x.isSettled ? `<span class="badge badge-g">✅ VADESİ KAPANDI</span>` : `<span class="badge badge-mut">🟢 Peşin</span>`)}
               </div>
               <div style="font-size:12px; color:var(--tx-sec); margin-top:2px">
                 ${x.d} ${x.ds ? '— ' + E(x.ds) : ''}
               </div>
               ${details ? `<div style="font-size:11.5px; color:var(--mut); margin-top:2px">${E(details)}</div>` : ''}
             </div>
-            <div class="list-actions">
+            <div class="list-actions" style="text-align:right">
               <b style="font-size:15px" class="${kc(k)}">
                 ${k === 'gelir' || k === 'kredi+' ? '+' : '−'}${F(x.a)}
               </b>
-              <div style="display:flex; gap:4px">
+              <div style="display:flex; gap:4px; justify-content:flex-end; margin-top:4px; flex-wrap:wrap">
+                ${isVadeliOpen ? `<button class="btn btn-primary btn-sm" onclick="settleVadeliEntry(${x.id})">✅ ${k === 'gelir' ? 'Tahsil Et' : 'Öde'}</button>` : ''}
                 <button class="btn btn-secondary btn-sm" onclick="editLedgerEntry(${x.id})">Düzenle</button>
                 <button class="btn btn-outline-danger btn-sm" onclick="deleteLedgerEntry(${x.id})">Sil</button>
               </div>
@@ -1969,12 +2498,20 @@ function viewLedger() {
   `;
 }
 
+function toggleGenericVadeliRow(rowId, val) {
+  const el = document.getElementById(rowId);
+  if (el) el.style.display = val === "vadeli" ? "grid" : "none";
+}
+
+function toggleEntryPayMode(mode) {
+  const box = $("entryVadeliBox");
+  if (box) box.style.display = mode === "vadeli" ? "block" : "none";
+}
+
 function onLedgerCategoryChange(catName) {
   const isCredit = (catName === "Kredi çekildi" || kind(catName) === "kredi+");
   const creditBox = $("creditLoanBox");
   if (creditBox) creditBox.style.display = isCredit ? "block" : "none";
-  const hint = $("buyHintBox");
-  if (hint) hint.style.display = catName === "Hayvan alımı" ? "block" : "none";
   if (isCredit) calcCreditForm();
 }
 
@@ -2003,7 +2540,7 @@ function calcCreditForm() {
 }
 
 /* ==========================================================================
-   GÖRÜNÜM 5: HAYVAN ALIM & 65+ ÇOKLU SEÇİMLİ TOPLU SATIŞ SİHİRBAZI
+   GÖRÜNÜM 5: HAYVAN ALIM & 65+ ÇOKLU SEÇİMLİ TOPLU SATIŞ SİHİRBAZI (CARİ & VADELİ DESTEKLİ)
    ========================================================================== */
 
 function viewBuySell() {
@@ -2012,14 +2549,15 @@ function viewBuySell() {
   const costs = computeCosts();
 
   return `
+    ${getCariDatalistHtml()}
     <!-- 1. BÖLÜM: TOPLU / TEKİL ALIM SİHİRBAZI -->
     <div class="card" style="border-top:4px solid var(--primary)">
       <div class="card-title">
         <span>🛒 Hayvan Satın Alım Sihirbazı</span>
-        <span class="badge badge-g">Otomatik Küpeleme & Maliyet</span>
+        <span class="badge badge-g">Toplu Küpe, Yaş & Veresiye Alım</span>
       </div>
       <div style="font-size:12px; color:var(--mut); margin-bottom:12px">
-        Aldığınız hayvanları küpe numaraları ve tane alış fiyatlarıyla sisteme girin. Sürüye eklenir, ortalama maliyet tablosuna yansır ve kasaya otomatik işlenir.
+        Aldığınız hayvanların küpe numaralarını, yaşlarını ve peşin/vadeli (veresiye) ödeme bilgisini tek seferde girin.
       </div>
 
       <div class="form-row">
@@ -2034,8 +2572,14 @@ function viewBuySell() {
           ["Merinos", "Merinos"], ["Morkaraman", "Morkaraman"], ["Kıvırcık", "Kıvırcık"], 
           ["Bafra", "Bafra"], ["Diğer", "Diğer"]
         ], "Akkaraman"))}
-        ${inp("wizBuyVendor", "Satıcı / Pazar Yeri", "text", "", 'placeholder="Örn: Ahmet Ağa, Konya Pazarı"')}
+        ${inp("wizBuyVendor", "Satıcı Kişi / Firma (Cari)", "text", "", 'list="cariDatalist" placeholder="Örn: Mehmet Ağa, Besi Çiftliği"')}
         ${sel("wizBuyGroup", "Dahil Edilecek Grup", optList([[0, "— Grup Yok —"], ...(S.groups || []).map(g => [g.id, g.name])], 0))}
+      </div>
+
+      <!-- TOPLU YAŞ VE DOĞUM TARİHİ ALANI -->
+      <div class="form-row">
+        ${inp("wizBuyAgeMonths", "🎂 Alınan Hayvanların Ortalama Yaşı (Ay)", "number", "", 'inputmode="decimal" placeholder="Örn: 6 (Doğum tarihini otomatik bulur)" oninput="onWizBuyAgeInput(this.value)"')}
+        ${inp("wizBuyBirthDate", "📅 Veya Ortak Doğum Tarihi", "date", "", 'onchange="onWizBuyBirthChange(this.value)"')}
       </div>
 
       <div class="form-row">
@@ -2044,9 +2588,23 @@ function viewBuySell() {
         ${inp("wizBuyTotal", "Toplam Alış Bedeli (TL)", "number", "85000", 'inputmode="decimal" readonly style="background:var(--card-sub); font-weight:700"')}
       </div>
 
+      <!-- ALIM ÖDEME ŞEKLİ (PEŞİN / VADELİ VERESİYE) -->
+      <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:var(--radius-sm); padding:10px; margin-top:6px; margin-bottom:8px">
+        <div class="form-row" style="margin-bottom:0">
+          ${sel("wizBuyPayMode", "💳 Alım Ödeme Şekli", optList([
+            ["pesin", "🟢 Peşin Ödendi"],
+            ["vadeli", "⏳ Vadeli / Veresiye Alındı (Borç Yaz)"]
+          ], "pesin"), 'onchange="toggleGenericVadeliRow(&quot;wizBuyVadeliRow&quot;, this.value)"')}
+        </div>
+        <div id="wizBuyVadeliRow" class="form-row" style="display:none; margin-top:8px; margin-bottom:0">
+          ${inp("wizBuyDueDate", "📅 Borç Ödeme Günü (Vade Tarihi)", "date", addDays(today(), 30))}
+          ${inp("wizBuyPaidAmt", "💵 Peşin Verilen Kapora (Varsa TL)", "number", "0", 'inputmode="decimal"')}
+        </div>
+      </div>
+
       <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:var(--radius-sm); padding:10px; margin-top:8px">
         <label style="margin-top:0">Küpe Numaraları Nasıl Eklensin?</label>
-        <div style="display:flex; gap:12px; margin-bottom:8px">
+        <div style="display:flex; gap:12px; margin-bottom:8px; flex-wrap:wrap">
           <label style="display:inline-flex; align-items:center; gap:4px; font-weight:normal; margin:0">
             <input type="radio" name="wizTagMode" value="seq" checked onchange="toggleTagMode(this.value)"> Seri Üret (TR-XX-...)
           </label>
@@ -2081,25 +2639,25 @@ function viewBuySell() {
       <div style="margin-top:10px; display:flex; align-items:center; gap:6px">
         <input type="checkbox" id="wizRecordExpense" checked style="width:auto">
         <label for="wizRecordExpense" style="margin:0; font-size:12.5px; cursor:pointer">
-          Kasaya <b>"Hayvan alımı"</b> gideri olarak otomatik kaydet
+          Kasaya / Cari Borçlara <b>"Hayvan alımı"</b> olarak otomatik kaydet
         </label>
       </div>
 
       <div style="margin-top:14px">
         <button class="btn btn-primary" style="width:100%; padding:10px" onclick="executeBuyWizard()">
-          🚀 Hayvanları Sürüye ve Kasaya Kaydet
+          🚀 Hayvanları Sürüye ve Kasaya/Cariye Kaydet
         </button>
       </div>
     </div>
 
-    <!-- 2. BÖLÜM: 65+ BAŞ ÇOKLU SEÇİMLİ TOPLU HAYVAN SATIŞ SİHİRBAZI -->
+    <!-- 2. BÖLÜM: 65+ BAŞ ÇOKLU SEÇİMLİ TOPLU HAYVAN SATIŞ & KASAP CARİ SİHİRBAZI -->
     <div class="card" style="border-top:4px solid var(--b)" id="bulkSaleSection">
       <div class="card-title">
-        <span>💰 Toplu Hayvan Satış & Kârlılık Sihirbazı</span>
-        <span class="badge badge-b">Çoklu Küpe Seçimi</span>
+        <span>💰 Toplu Hayvan Satış & Kasap Cari Sihirbazı</span>
+        <span class="badge badge-b">Peşin veya Vadeli (Gelecek Para)</span>
       </div>
       <div style="font-size:12px; color:var(--mut); margin-bottom:12px">
-        Satmak istediğiniz hayvanları aşağıdaki listeden topluca işaretleyin (örneğin 65 baş). Tane fiyatı veya kantar toplam tutarını girin; sistem her hayvanın bugüne kadarki maliyetini düşerek <b>net kârınızı</b> otomatik hesaplar.
+        Satılan veya kesime verilen hayvanları seçin. Sattığınız kişiyi veya kasabı Cari olarak girin; peşin veya vadeli (veresiye) satış yapın. Vadeli satışlar ödeme tarihiyle birlikte <b>Nakit & Cari Raporlar</b> ekranında <b>"Gelecek Para"</b> olarak görünür.
       </div>
 
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px">
@@ -2121,7 +2679,7 @@ function viewBuySell() {
             <tr>
               <th style="width:30px">Seç</th>
               <th>Küpe No</th>
-              <th>Sınıf / Irk</th>
+              <th>Sınıf / Yaş</th>
               <th class="text-right">Son Tartı</th>
               <th class="text-right">Birikmiş Maliyet</th>
             </tr>
@@ -2136,7 +2694,7 @@ function viewBuySell() {
                     <input type="checkbox" id="saleChk_${a.id}" ${isChecked ? 'checked' : ''} onchange="toggleSaleAnimal(${a.id})">
                   </td>
                   <td><b>${E(a.k)}</b></td>
-                  <td>${E(a.cat || 'Koyun')} · ${E(a.breed || '')}</td>
+                  <td>${E(a.cat || 'Koyun')} · ${a.b ? formatAgeReadable(a.b) : E(a.breed || '')}</td>
                   <td class="text-right">${c.latestWeight ? c.latestWeight + ' kg' : '—'}</td>
                   <td class="text-right tx-red"><b>${F(c.totalCost || 0)}</b></td>
                 </tr>
@@ -2147,9 +2705,9 @@ function viewBuySell() {
       </div>
 
       <div class="form-row">
-        ${inp("bsSaleDate", "Satış Tarihi", "date", today())}
-        ${inp("bsSaleBuyer", "Alıcı / Kasap Adı", "text", "", 'placeholder="Örn: Ahmet Kasap"')}
-        ${sel("bsSaleCategory", "Kasa Gelir Kategorisi", optList([
+        ${inp("bsSaleDate", "Satış / Kesim Tarihi", "date", today())}
+        ${inp("bsSaleBuyer", "👤 Alıcı Kişi / Kasap Cari Adı *", "text", "", 'list="cariDatalist" placeholder="Örn: Ahmet Kasap, Mehmet Bey"')}
+        ${sel("bsSaleCategory", "Gelir Kategorisi", optList([
           ["Erkek kuzu satışı (canlı kg)", "Erkek kuzu satışı (canlı kg)"],
           ["Dişi toklu / damızlık satışı", "Dişi toklu / damızlık satışı"],
           ["Kurbanlık satışı", "Kurbanlık satışı"],
@@ -2160,7 +2718,7 @@ function viewBuySell() {
 
       <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:var(--radius-sm); padding:10px; margin-top:8px">
         <label style="margin-top:0">Fiyatlandırma Şekli</label>
-        <div style="display:flex; gap:12px; margin-bottom:8px">
+        <div style="display:flex; gap:12px; margin-bottom:8px; flex-wrap:wrap">
           <label style="display:inline-flex; align-items:center; gap:4px; font-weight:normal; margin:0">
             <input type="radio" name="bsPriceMode" value="perHead" checked onchange="toggleBsPriceMode(this.value)"> Tane Başı Fiyat (TL/Baş)
           </label>
@@ -2168,7 +2726,7 @@ function viewBuySell() {
             <input type="radio" name="bsPriceMode" value="lump" onchange="toggleBsPriceMode(this.value)"> Toplam Götürü Tutar (TL)
           </label>
           <label style="display:inline-flex; align-items:center; gap:4px; font-weight:normal; margin:0">
-            <input type="radio" name="bsPriceMode" value="weight" onchange="toggleBsPriceMode(this.value)"> Kantar Canlı Kg (TL/kg)
+            <input type="radio" name="bsPriceMode" value="weight" onchange="toggleBsPriceMode(this.value)"> Kantar Canlı/Karkas Kg (TL/kg)
           </label>
         </div>
 
@@ -2181,8 +2739,22 @@ function viewBuySell() {
         </div>
 
         <div id="bsModeWeight" class="form-row" style="display:none">
-          ${inp("bsTotalLiveKg", "Kantar Toplam Canlı Kg *", "number", "", 'inputmode="decimal" oninput="updateBulkSaleCalc()"')}
-          ${inp("bsPricePerKg", "Canlı Kg Fiyatı (TL/kg) *", "number", "290", 'inputmode="decimal" oninput="updateBulkSaleCalc()"')}
+          ${inp("bsTotalLiveKg", "Kantar Toplam Kg *", "number", "", 'inputmode="decimal" oninput="updateBulkSaleCalc()"')}
+          ${inp("bsPricePerKg", "Kg Birim Fiyatı (TL/kg) *", "number", "290", 'inputmode="decimal" oninput="updateBulkSaleCalc()"')}
+        </div>
+      </div>
+
+      <!-- TAHSİLAT ŞEKLİ: PEŞİN VEYA VADELİ (GELECEK PARA) -->
+      <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:var(--radius-sm); padding:10px; margin-top:8px">
+        <div class="form-row" style="margin-bottom:0">
+          ${sel("bsSalePayMode", "💳 Tahsilat Şekli (Peşin / Vadeli Veresiye)", optList([
+            ["pesin", "🟢 Peşin Tahsil Edildi (Para Kasaya Girdi)"],
+            ["vadeli", "⏳ Vadeli / Veresiye Satıldı (Gelecek Para Olarak Kaydet)"]
+          ], "pesin"), 'onchange="toggleGenericVadeliRow(&quot;bsSaleVadeliRow&quot;, this.value)"')}
+        </div>
+        <div id="bsSaleVadeliRow" class="form-row" style="display:none; margin-top:8px; margin-bottom:0">
+          ${inp("bsSaleDueDate", "📅 Paranın Geleceği Tarih (Vade Günü) *", "date", addDays(today(), 30))}
+          ${inp("bsSalePaidAmt", "💵 Alınan Peşinat / Kapora (Varsa TL)", "number", "0", 'inputmode="decimal" placeholder="0 ₺"')}
         </div>
       </div>
 
@@ -2203,13 +2775,13 @@ function viewBuySell() {
       <div style="margin-top:10px; display:flex; align-items:center; gap:6px">
         <input type="checkbox" id="bsRecordIncome" checked style="width:auto">
         <label for="bsRecordIncome" style="margin:0; font-size:12.5px; cursor:pointer">
-          Kasaya satış geliri olarak tek kalemde otomatik işlensin
+          Kasaya ve Alıcı/Kasap Cari Hesabına otomatik işlensin
         </label>
       </div>
 
       <div style="margin-top:14px">
         <button class="btn btn-primary" style="width:100%; padding:12px; font-size:14px" onclick="executeBulkSale()">
-          ✅ Seçilen Hayvanları Toplu Sat ve Kasaya Gelir Ekle
+          ✅ Seçilen Hayvanları Sat ve Kasaya / Cariye İşle
         </button>
       </div>
     </div>
@@ -2420,7 +2992,7 @@ function manualDeductTodayFeeds() {
 }
 
 /* ==========================================================================
-   GÖRÜNÜM 8: SAĞLIK & AŞI TAKVİMİ (İLAÇ KALINTI SÜRESİ VE PİYETİN DÖNGÜSÜ)
+   GÖRÜNÜM 8: SAĞLIK & AŞI TAKVİMİ (VERESİYE İLAÇ & CARİ DESTEKLİ)
    ========================================================================== */
 
 function viewHealth() {
@@ -2428,9 +3000,10 @@ function viewHealth() {
   const tasks = S.t.slice().sort((a, b) => (a.x - b.x) || a.d.localeCompare(b.d));
 
   return `
+    ${getCariDatalistHtml()}
     <div class="card">
       <div class="card-title">
-        <span>🩺 Yeni Aşı / Sağlık İşi Planla</span>
+        <span>🩺 Yeni Aşı / İlaç / Sağlık İşi Planla</span>
         <button class="btn btn-secondary btn-sm" onclick="showVaccineProtocolsModal()">📋 Standart Aşı Listesi</button>
       </div>
 
@@ -2441,29 +3014,30 @@ function viewHealth() {
       </div>
 
       <div class="form-row">
-        ${inp("taskTitle", "İş / Aşı Adı *", "text", "", 'placeholder="Örn: Enterotoksemi (Çelerme) Aşısı"')}
-        ${inp("taskCost", "Tahmini Masraf (TL)", "number", "", 'inputmode="decimal" placeholder="0 ₺"')}
-        ${inp("taskWithdrawalDays", "Et/Süt Yasal Arınma Süresi (Gün)", "number", "0", 'placeholder="0 gün (kesim yasağı)"')}
+        ${inp("taskTitle", "İş / Aşı / İlaç Adı *", "text", "", 'placeholder="Örn: Enterotoksemi (Çelerme) Aşısı"')}
+        ${inp("taskCost", "Masraf Tutarı (TL)", "number", "", 'inputmode="decimal" placeholder="0 ₺"')}
+        ${inp("taskCariName", "Veteriner / İlaç Firması (Cari)", "text", "", 'list="cariDatalist" placeholder="Örn: Veteriner Klinik"')}
       </div>
 
       <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:6px; padding:8px 10px; margin-top:6px">
-        <label style="display:inline-flex; align-items:center; gap:6px; font-weight:normal; margin:0; cursor:pointer">
+        <div class="form-row" style="margin-bottom:0">
+          ${sel("taskPayMode", "💳 İlaç / Veteriner Ödeme Şekli", optList([
+            ["pesin", "🟢 Peşin Ödendi"],
+            ["vadeli", "⏳ Vadeli / Veresiye Alındı (Borç Yaz)"]
+          ], "pesin"), 'onchange="toggleGenericVadeliRow(&quot;taskVadeliRow&quot;, this.value)"')}
+        </div>
+        <div id="taskVadeliRow" class="form-row" style="display:none; margin-top:8px; margin-bottom:0">
+          ${inp("taskDueDate", "📅 Ödeme Günü (Vade Tarihi)", "date", addDays(td, 30))}
+          ${inp("taskPaidAmt", "💵 Peşin Verilen Kısım (TL)", "number", "0", 'inputmode="decimal"')}
+        </div>
+        <label style="display:inline-flex; align-items:center; gap:6px; font-weight:normal; margin-top:6px; cursor:pointer">
           <input type="checkbox" id="taskAddExpense" checked>
-          <span>Uygulama yapıldığında masrafı kasaya <b>"Aşı / İlaç / Serum / Parazit"</b> gideri olarak otomatik kaydet</span>
+          <span>Masrafı kasaya / cari borçlara <b>"Aşı / İlaç / Serum / Parazit"</b> gideri olarak kaydet</span>
         </label>
       </div>
 
       <div style="margin-top:10px">
-        <button class="btn btn-primary" style="width:100%" onclick="saveTask()">İşi / Aşıyı Takvime Ekle</button>
-      </div>
-    </div>
-
-    <!-- İLAÇ KALINTI ARINMA VE SAĞLIK UYARILARI -->
-    <div class="card" style="border-left:4px solid var(--r)">
-      <div class="card-title">⚠️ İlaç Kalıntı Arınma Süresi & Piyetin Ayak Takibi</div>
-      <div style="font-size:12px; color:var(--tx-sec); line-height:1.6">
-        • <b>Et ve Süt Arınma Süresi:</b> Antibiyotik veya parazit ilacı uygulanan hayvanlar yasal arınma süresi (örn: 14-28 gün) dolmadan kasaba sevk edilmemelidir.<br>
-        • <b>Piyetin (Tırnak Çürüğü) Ayak Banyosu:</b> Yağışlı dönemlerde 15 günde bir %5-10'luk göztaşı (bakır sülfat) veya çinko sülfat ayak banyosu yaptırılmalıdır.
+        <button class="btn btn-primary" style="width:100%" onclick="saveTask()">İşi / Aşıyı Kaydet</button>
       </div>
     </div>
 
@@ -2473,7 +3047,7 @@ function viewHealth() {
         const isLate = !t.x && t.d < td;
         const isToday = !t.x && t.d === td;
         return `
-          <div class="list-item">
+          <div class="list-item" style="padding:10px 0; border-bottom:1px solid var(--ln)">
             <div class="list-content">
               <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap">
                 <b style="${t.x ? 'text-decoration:line-through; opacity:0.6' : ''}">${E(t.t)}</b>
@@ -2545,6 +3119,7 @@ function viewReproduction() {
       </div>
     </div>
 
+    ${renderUnpaintedMatingCohortHtml()}
     <!-- FLUSHING VE İKİZ FELCİ UYARISI -->
     <div class="card" style="border-left:4px solid var(--amber)">
       <div class="card-title">💡 Küçükbaş Üreme & Besleme Rehberi</div>
@@ -2734,6 +3309,7 @@ function executeSaveQurban() {
 
   mutate(() => {
     if (!S.qurbans) S.qurbans = [];
+      if (!S.cariler) S.cariler = [];
     S.qurbans.push({
       id: Date.now(),
       customerName, phone, animalId, slaughterOrder, totalAmount, deposit,
@@ -2788,15 +3364,15 @@ function deleteQurbanOrder(id) {
 }
 
 /* ==========================================================================
-   GÖRÜNÜM 11: TARTI & KARKAS RANDIMANI SİMÜLATÖRÜ
+   GÖRÜNÜM 11: TARTI, CANLI / KARKAS ET KESİMİ & KASAP CARİ SATIŞ EKRANI
    ========================================================================== */
 
 function viewWeights() {
   const td = today();
   const activeAnimals = S.a.filter(a => a.st === "sürüde");
-  const weighings = (S.w || []).slice().sort((a, b) => b.d.localeCompare(a.d) || b.id - a.id);
 
   return `
+    ${getCariDatalistHtml()}
     <div class="card">
       <div class="card-title">
         <span>⚖️ Yeni Tartı Kaydı</span>
@@ -2809,34 +3385,56 @@ function viewWeights() {
         ${inp("weightKg", "Canlı Ağırlık (kg) *", "number", "", 'inputmode="decimal" placeholder="Örn: 48.5"')}
       </div>
 
-      <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:6px; padding:8px 10px; margin-top:6px">
-        <label style="display:inline-flex; align-items:center; gap:6px; font-weight:normal; margin:0; cursor:pointer">
-          <input type="checkbox" id="weightAddExpense" onchange="toggleWeightExpenseInput(this.checked)">
-          <span>Kantar / tartım / muayene masrafı kasaya işlensin mi?</span>
-        </label>
-        <div id="weightExpenseRow" class="form-row" style="display:none; margin-top:6px; margin-bottom:0">
-          ${inp("weightExpenseAmt", "Tartım Masrafı (TL)", "number", "100", 'inputmode="decimal"')}
-        </div>
-      </div>
-
       <div style="margin-top:10px">
         <button class="btn btn-primary" style="width:100%" onclick="saveWeightEntry()">Tartıyı Kaydet</button>
       </div>
     </div>
 
-    <!-- KARKAS RANDIMANI VE ET VERİMİ SİMÜLATÖRÜ (YENİ ÖZELLİK!) -->
-    <div class="card" style="border-top:4px solid var(--b)">
+    <!-- CANLI / KARKAS ET KESİMİ VE KASAP CARİ SATIŞ SİSTEMİ -->
+    <div class="card" style="border-top:4px solid var(--r)">
       <div class="card-title">
-        <span>🥩 Karkas Randımanı & Net Et Verimi Simülatörü</span>
-        <span class="badge badge-b">Küçükbaş Kesim Analizi</span>
+        <span>🥩 Canlı / Karkas Et Kesimi & Kasap Cari Satış Kaydı</span>
+        <span class="badge badge-r">Kasap Carisi & Nakit Rapor Entegreli</span>
       </div>
+      <div style="font-size:12px; color:var(--tx-sec); margin-bottom:10px">
+        Hayvanlarınızı kasapta kestirdiğinizde veya karkas et olarak verdiğinizde kasabı <b>Cari</b> olarak seçin. Peşin veya vadeli (veresiye) kesim bedeli doğrudan <b>Nakit & Cari Raporlar</b> ekranına yansır.
+      </div>
+
       <div class="form-row">
-        ${inp("simLiveKg", "Canlı Baskül Ağırlığı (kg)", "number", "55", 'inputmode="decimal" oninput="calcCarcassSim()"')}
+        ${inp("simLiveKg", "Toplam Canlı Baskül Ağırlığı (kg)", "number", "55", 'inputmode="decimal" oninput="calcCarcassSim()"')}
         ${inp("simYieldPct", "Karkas Randımanı (%)", "number", "50", 'inputmode="decimal" oninput="calcCarcassSim()"')}
-        ${inp("simCarcassPrice", "Karkas Et Fiyatı (TL/kg)", "number", "540", 'inputmode="decimal" oninput="calcCarcassSim()"')}
+        ${inp("simCarcassPrice", "Karkas Et Kg Fiyatı (TL/kg)", "number", "540", 'inputmode="decimal" oninput="calcCarcassSim()"')}
       </div>
-      <div id="simCarcassResult" style="background:var(--card-sub); border:1px solid var(--ln); border-radius:var(--radius-sm); padding:12px; margin-top:8px">
-        <!-- Dinamik hesaplama -->
+      <div id="simCarcassResult" style="background:var(--card-sub); border:1px solid var(--ln); border-radius:var(--radius-sm); padding:12px; margin-top:6px; margin-bottom:10px"></div>
+
+      <!-- KESİLEN HAYVAN VE KASAP CARİ BİLGİLERİ -->
+      <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:var(--radius-sm); padding:12px">
+        <div style="font-weight:700; margin-bottom:8px; color:var(--primary)">🔪 Kesimi Kasap Carisine ve Kasaya İşle</div>
+        <div class="form-row">
+          ${inp("slaughterDate", "Kesim Tarihi", "date", td)}
+          ${inp("slaughterButcher", "👤 Kestirilen Kasap / Alıcı Cari Adı *", "text", "", 'list="cariDatalist" placeholder="Örn: Ahmet Kasap, Merkez Et"')}
+          ${sel("slaughterAnimalId", "Kesilen Hayvan (Veya Sürüden Seçililer)", optList([[0, SELECTED_ANIMALS.size > 0 ? `☑️ Seçili ${SELECTED_ANIMALS.size} Baş Hayvan` : "— Hayvan Seçin / Genel Kesim —"], ...activeAnimals.map(a => [a.id, `${a.k} (${a.cat || 'Koyun'})`])], 0))}
+        </div>
+
+        <div class="form-row">
+          ${inp("slaughterHeadQty", "Kesilen Adet", "number", SELECTED_ANIMALS.size || 1, 'inputmode="decimal"')}
+          ${inp("slaughterTotalAmt", "Toplam Kesim Satış Tutarı (TL) *", "number", "14850", 'inputmode="decimal"')}
+          ${sel("slaughterPayMode", "💳 Tahsilat Şekli", optList([
+            ["pesin", "🟢 Peşin Tahsil Edildi"],
+            ["vadeli", "⏳ Vadeli / Veresiye (Kasaptan Gelecek Para)"]
+          ], "vadeli"), 'onchange="toggleGenericVadeliRow(&quot;slaughterVadeliRow&quot;, this.value)"')}
+        </div>
+
+        <div id="slaughterVadeliRow" class="form-row" style="display:grid; margin-top:6px">
+          ${inp("slaughterDueDate", "📅 Kasabın Ödeyeceği Tarih (Vade Günü) *", "date", addDays(td, 30))}
+          ${inp("slaughterPaidAmt", "💵 Kasaptan Alınan Peşinat (Varsa TL)", "number", "0", 'inputmode="decimal" placeholder="0 ₺"')}
+        </div>
+
+        <div style="margin-top:10px">
+          <button class="btn btn-primary" style="width:100%; padding:10px" onclick="executeCarcassSlaughterSale()">
+            🥩 Kesimi Kaydet ve Kasap Carisine / Nakit Raporlara Yansıt
+          </button>
+        </div>
       </div>
     </div>
 
@@ -2882,9 +3480,11 @@ function calcCarcassSim() {
   const price = +V("simCarcassPrice") || 0;
 
   const carcassKg = Math.round(liveKg * (yieldPct / 100) * 10) / 10;
-  const bonelessKg = Math.round(carcassKg * 0.77 * 10) / 10; // %77 kemiksiz et payı
+  const bonelessKg = Math.round(carcassKg * 0.77 * 10) / 10;
   const boneKg = Math.round((carcassKg - bonelessKg) * 10) / 10;
   const totalCarcassValue = Math.round(carcassKg * price);
+
+  if ($("slaughterTotalAmt")) $("slaughterTotalAmt").value = totalCarcassValue;
 
   const res = $("simCarcassResult");
   if (res) {
@@ -2893,103 +3493,328 @@ function calcCarcassSim() {
         <div>Kemikli Karkas: <b class="tx-green">${carcassKg} kg</b></div>
         <div>Net Kemiksiz Lop Et: <b class="tx-blue">${bonelessKg} kg</b></div>
         <div>Kemik Payı: <b>${boneKg} kg</b></div>
-        <div>Tahmini Karkas Değeri: <b class="tx-green" style="font-size:14px">${F(totalCarcassValue)}</b></div>
+        <div>Hesaplanan Kesim Tutarı: <b class="tx-green" style="font-size:14px">${F(totalCarcassValue)}</b></div>
       </div>
     `;
   }
 }
 
+function executeCarcassSlaughterSale() {
+  const d = V("slaughterDate") || today();
+  const butcher = V("slaughterButcher").trim();
+  const singleAnId = +V("slaughterAnimalId") || 0;
+  const qty = Math.max(1, +V("slaughterHeadQty") || 1);
+  const totalAmt = +V("slaughterTotalAmt") || 0;
+  const payMode = V("slaughterPayMode") || "pesin";
+  const dueDate = V("slaughterDueDate") || addDays(d, 30);
+  const paidAmt = payMode === "vadeli" ? (+V("slaughterPaidAmt") || 0) : totalAmt;
+  const liveKg = +V("simLiveKg") || 0;
+
+  if (!butcher) return alert("Lütfen kestirdiğiniz kasap veya alıcı cari adını girin.");
+  if (totalAmt <= 0) return alert("Lütfen geçerli bir kesim satış tutarı girin.");
+
+  mutate(() => {
+    ensureCariExists(butcher, "Kasap / Alıcı");
+
+    if (singleAnId > 0) {
+      const a = S.a.find(x => x.id === singleAnId);
+      if (a) { a.st = "kesildi"; a.sd = d; a.sp = totalAmt; }
+    } else if (SELECTED_ANIMALS.size > 0) {
+      const perHead = Math.round(totalAmt / SELECTED_ANIMALS.size);
+      SELECTED_ANIMALS.forEach(id => {
+        const a = S.a.find(x => x.id === id);
+        if (a) { a.st = "kesildi"; a.sd = d; a.sp = perHead; }
+      });
+      SELECTED_ANIMALS.clear();
+    }
+
+    S.e.unshift({
+      id: Date.now(),
+      d,
+      c: "Kasaplık koyun / koç satışı",
+      an: singleAnId,
+      cariName: butcher,
+      ds: `${butcher} - Canlı/Karkas et kesim satışı (${qty} baş${liveKg ? ', ' + liveKg + ' kg' : ''})`,
+      q: qty,
+      kg: liveKg,
+      p: Math.round(totalAmt / qty),
+      a: totalAmt,
+      payMode,
+      dueDate: payMode === "vadeli" ? dueDate : "",
+      paidAmount: paidAmt,
+      isSettled: payMode === "pesin" || paidAmt >= totalAmt
+    });
+  });
+
+  alert(`Kesim kaydı işlendi! ${butcher} carisine ${F(totalAmt)} (${payMode === 'vadeli' ? 'Vadeli: ' + dueDate : 'Peşin'}) olarak yansıtıldı.`);
+  switchTab(12);
+}
+
 /* ==========================================================================
-   GÖRÜNÜM 12: NAKİT AKIŞI & İLERİ DÜZEY RAPORLAR (30-60-90 GÜN)
+   GÖRÜNÜM 12: NAKİT & CARİ RAPORLAR (ALACAKLAR, VERECEKLER, GELECEK PARA)
    ========================================================================== */
 
 function viewReports() {
   const fin = getFinancialStats(S.e);
-  const costs = computeCosts();
-  const loan = getLoanBalance();
   const td = today();
 
-  // Hayvan Başı Kârlılık Sıralaması (En kârlı ve en maliyetliler)
-  const ranked = S.a.filter(a => a.st === "sürüde").map(a => {
-    const c = costs.costMap[a.id] || {};
-    return { ...a, profit: c.profit || 0, totalCost: c.totalCost || 0, weight: c.latestWeight || 0 };
-  }).sort((a, b) => b.profit - a.profit);
+  // Vadeli Alacaklar (Gelecek Paralar) — Tarihe Göre Sıralı
+  const openReceivables = S.e
+    .filter(x => kind(x.c) === "gelir" && x.payMode === "vadeli" && !x.isSettled && getEntryRemaining(x) > 0)
+    .sort((a, b) => String(a.dueDate || "9999").localeCompare(String(b.dueDate || "9999")));
 
-  const topProfitable = ranked.slice(0, 5);
-  const topCostly = ranked.slice().sort((a, b) => b.totalCost - a.totalCost).slice(0, 5);
+  // Vadeli Borçlar (Ödenecek Verecekler) — Tarihe Göre Sıralı
+  const openPayables = S.e
+    .filter(x => kind(x.c) === "gider" && x.payMode === "vadeli" && !x.isSettled && getEntryRemaining(x) > 0)
+    .sort((a, b) => String(a.dueDate || "9999").localeCompare(String(b.dueDate || "9999")));
 
-  // Nakit Akışı Projeksiyonu (Gelecek 30-60-90 Gün)
-  // Beklenen Yem Gideri: Günlük Yem Gideri x 30
-  const feeds = S.feeds || [];
-  let dailyFeedCost = 0;
-  feeds.forEach(f => dailyFeedCost += (f.dailyTotalKg || 0) * (f.costPerKg || 0));
-  const feed30 = dailyFeedCost * 30;
-  const feed60 = dailyFeedCost * 60;
-  const feed90 = dailyFeedCost * 90;
+  // Cari Kişi ve Firmalar Özeti
+  const cariMap = {};
+  (S.cariler || []).forEach(c => {
+    cariMap[c.name.toLowerCase()] = {
+      id: c.id,
+      name: c.name,
+      type: c.type || "Cari",
+      phone: c.phone || "",
+      note: c.note || "",
+      alacak: 0,
+      borc: 0,
+      txCount: 0
+    };
+  });
 
-  // Beklenen Kredi Gideri
-  let monthlyLoan = 0;
-  (S.loans || []).forEach(l => monthlyLoan += (+l.monthlyPayment || 0));
+  S.e.forEach(x => {
+    if (!x.cariName) return;
+    const key = x.cariName.trim().toLowerCase();
+    if (!cariMap[key]) {
+      cariMap[key] = { id: Date.now() + Math.random(), name: x.cariName.trim(), type: "Cari", phone: "", note: "", alacak: 0, borc: 0, txCount: 0 };
+    }
+    cariMap[key].txCount++;
+    const rem = getEntryRemaining(x);
+    if (rem > 0) {
+      if (kind(x.c) === "gelir") cariMap[key].alacak += rem;
+      else if (kind(x.c) === "gider") cariMap[key].borc += rem;
+    }
+  });
+
+  const cariList = Object.values(cariMap).sort((a, b) => (b.alacak + b.borc) - (a.alacak + a.borc));
+  const netCariBalance = fin.receivables - fin.payables;
 
   return `
-    <div class="card">
-      <div class="card-title">
-        <span>📈 Çiftlik Finansal Bilanço & Nakit Akış Projeksiyonu</span>
-        <button class="btn btn-secondary btn-sm" onclick="window.print()">🖨️ Yazdır / PDF</button>
+    ${getCariDatalistHtml()}
+    <!-- ÜST FİNANSAL VE CARİ ÖZET ADALARI -->
+    <div class="island-grid">
+      <div class="island-card ${fin.cashNet >= 0 ? 'island-green' : 'island-red'}">
+        <div class="island-top"><span class="island-label">Eldeki Net Nakit</span><span class="island-icon">💵</span></div>
+        <div class="island-val ${fin.cashNet >= 0 ? 'tx-green' : 'tx-red'}">${F(fin.cashNet)}</div>
+        <div class="island-sub">Peşin Giren: ${F(fin.cashIn)} · Çıkan: ${F(fin.cashOut)}</div>
       </div>
 
-      <!-- NAKİT AKIŞI PROJEKSİYONU -->
-      <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:var(--radius-sm); padding:12px; margin-bottom:14px">
-        <b style="font-size:13.5px">🔮 Gelecek Nakit Çıkışı Projeksiyonu (Yem & Kredi)</b>
-        <div class="table-wrap" style="margin-top:6px">
-          <table>
-            <thead><tr><th>Dönem</th><th class="text-right">Yem Masrafı</th><th class="text-right">Kredi Taksitleri</th><th class="text-right">Toplam Zorunlu Çıkış</th></tr></thead>
-            <tbody>
-              <tr><td><b>Gelecek 30 Gün (1 Ay)</b></td><td class="text-right tx-red">${F(feed30)}</td><td class="text-right tx-blue">${F(monthlyLoan)}</td><td class="text-right"><b>${F(feed30 + monthlyLoan)}</b></td></tr>
-              <tr><td><b>Gelecek 60 Gün (2 Ay)</b></td><td class="text-right tx-red">${F(feed60)}</td><td class="text-right tx-blue">${F(monthlyLoan * 2)}</td><td class="text-right"><b>${F(feed60 + monthlyLoan * 2)}</b></td></tr>
-              <tr><td><b>Gelecek 90 Gün (3 Ay)</b></td><td class="text-right tx-red">${F(feed90)}</td><td class="text-right tx-blue">${F(monthlyLoan * 3)}</td><td class="text-right"><b>${F(feed90 + monthlyLoan * 3)}</b></td></tr>
-            </tbody>
-          </table>
+      <div class="island-card island-green">
+        <div class="island-top"><span class="island-label">Gelecek Para (Alacak)</span><span class="island-icon">🟢</span></div>
+        <div class="island-val tx-green">+${F(fin.receivables)}</div>
+        <div class="island-sub">${openReceivables.length} adet vadeli alacak</div>
+      </div>
+
+      <div class="island-card island-red">
+        <div class="island-top"><span class="island-label">Ödenecek Borç (Verecek)</span><span class="island-icon">🔴</span></div>
+        <div class="island-val tx-red">−${F(fin.payables)}</div>
+        <div class="island-sub">${openPayables.length} adet vadeli veresiye borç</div>
+      </div>
+
+      <div class="island-card ${netCariBalance >= 0 ? 'island-blue' : 'island-amber'}">
+        <div class="island-top"><span class="island-label">Net Cari Dengesi</span><span class="island-icon">⚖️</span></div>
+        <div class="island-val ${netCariBalance >= 0 ? 'tx-blue' : 'tx-amber'}">${netCariBalance >= 0 ? '+' : ''}${F(netCariBalance)}</div>
+        <div class="island-sub">Alacak − Borç Farkı</div>
+      </div>
+    </div>
+
+    <!-- 1. BÖLÜM: MANUEL CARİ KİŞİ / FİRMA & VERESİYE ALACAK / VERECEK EKLEME EKRANI -->
+    <div class="card" style="border-top:4px solid var(--purple)">
+      <div class="card-title">
+        <span>🤝 Manuel Cari Kişi / Firma & Alacak - Verecek (Veresiye) Girişi</span>
+        <span class="badge badge-purple">Kasap · Yemci · Şahıs</span>
+      </div>
+      <div style="font-size:12px; color:var(--mut); margin-bottom:10px">
+        Alacaklı veya verecekli (borçlu) olduğunuz kişi ve firmaları, kasapları veya yemcileri vade tarihleriyle birlikte buradan doğrudan ekleyebilirsiniz.
+      </div>
+
+      <div class="form-row">
+        ${inp("mcName", "👤 Cari Kişi veya Firma Adı *", "text", "", 'list="cariDatalist" placeholder="Örn: Ahmet Kasap, Öztürk Yem, Mehmet Ağa"')}
+        ${sel("mcType", "Cari Türü / Grubu", optList([
+          ["Kasap / Alıcı", "🥩 Kasap / Et & Hayvan Alıcısı"],
+          ["Yemci / Tedarikçi", "🌾 Yemci / Tedarikçi Firma"],
+          ["Veteriner / İlaç", "🩺 Veteriner / İlaç Deposu"],
+          ["Şahıs / Diğer", "👤 Şahıs / Komşu / Diğer"]
+        ], "Kasap / Alıcı"))}
+        ${inp("mcPhone", "Telefon No (Opsiyonel)", "text", "", 'placeholder="05XX XXX XX XX"')}
+      </div>
+
+      <div class="form-row">
+        ${sel("mcActionType", "📌 İşlem Türü *", optList([
+          ["alacak", "🟢 Gelecek Para / Alacak Ekle (Bize Borcu Var / Veresiye Sattık)"],
+          ["borc", "🔴 Ödenecek Borç / Verecek Ekle (Bizim Borcumuz Var / Veresiye Aldık)"],
+          ["onlyCari", "👤 Sadece Cari Kişi/Firma Kartı Tanımla (Bakiye Girilmeyecek)"]
+        ], "alacak"), 'onchange="toggleMcAmountFields(this.value)"')}
+      </div>
+
+      <div id="mcAmountFieldsBox">
+        <div class="form-row">
+          ${inp("mcAmount", "Toplam Tutar (TL) *", "number", "", 'inputmode="decimal" placeholder="Örn: 45000"')}
+          ${inp("mcPaidAmt", "Peşin Alınan/Verilen Kısım (Varsa TL)", "number", "0", 'inputmode="decimal" placeholder="0 ₺"')}
+          ${inp("mcDueDate", "📅 Ödeme / Tahsilat Günü (Vade Tarihi) *", "date", addDays(td, 30))}
+        </div>
+        <div class="form-row">
+          ${inp("mcDesc", "Açıklama / Not", "text", "", 'placeholder="Örn: 25 kuzu kesim bakiyesi, 50 çuval arpa veresiyesi"')}
         </div>
       </div>
 
-      <!-- EN KÂRLI İLK 5 HAYVAN -->
-      <div class="card-title">🌟 En Çok Değer Kazandıran İlk 5 Hayvan</div>
-      <div class="table-wrap" style="margin-bottom:14px">
+      <div style="margin-top:10px">
+        <button class="btn btn-primary" style="width:100%; padding:10px" onclick="saveManualCariTransaction()">
+          💾 Cari Kaydı ve Alacak / Borç Bilgisini Kaydet
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. BÖLÜM: GELECEK PARALAR (VADELİ ALACAKLARIMIZ) TABLOSU -->
+    <div class="card" style="border-left:4px solid var(--g)">
+      <div class="card-title">
+        <span>🟢 Gelecek Paralar (Vadeli Alacaklarımız & Veresiye Satışlar)</span>
+        <span class="badge badge-g">Toplam: ${F(fin.receivables)}</span>
+      </div>
+      <div class="table-wrap">
         <table>
-          <thead><tr><th>Küpe No</th><th>Sınıf / Irk</th><th class="text-right">Canlı Kg</th><th class="text-right">Toplam Maliyet</th><th class="text-right">Piyasa Kârı</th></tr></thead>
+          <thead>
+            <tr>
+              <th>📅 Geleceği Tarih (Vade)</th>
+              <th>👤 Borçlu Cari / Kişi</th>
+              <th>Açıklama</th>
+              <th class="text-right">Toplam</th>
+              <th class="text-right">Alınan Peşinat</th>
+              <th class="text-right">Net Gelecek Para</th>
+              <th class="text-right">İşlem</th>
+            </tr>
+          </thead>
           <tbody>
-            ${topProfitable.map(a => `
-              <tr>
-                <td><b>${E(a.k)}</b></td>
-                <td>${E(a.cat || '')} · ${E(a.breed || '')}</td>
-                <td class="text-right">${a.weight} kg</td>
-                <td class="text-right">${F(a.totalCost)}</td>
-                <td class="text-right tx-green"><b>+${F(a.profit)}</b></td>
-              </tr>
-            `).join("") || '<tr><td colspan="5" class="text-center" style="padding:10px; color:var(--mut)">Kayıt yok.</td></tr>'}
+            ${openReceivables.map(x => {
+              const rem = getEntryRemaining(x);
+              const paid = getEntryPaid(x);
+              const dLeft = x.dueDate ? daysBetween(td, x.dueDate) : null;
+              const badgeCls = dLeft === null ? 'badge-mut' : (dLeft < 0 ? 'badge-r' : (dLeft <= 7 ? 'badge-amber' : 'badge-g'));
+              const dLabel = dLeft === null ? 'Tarihsiz' : (dLeft < 0 ? `${Math.abs(dLeft)} gün gecikti!` : (dLeft === 0 ? 'BUGÜN GELECEK!' : `${dLeft} gün kaldı`));
+              return `
+                <tr>
+                  <td>
+                    <b>${x.dueDate || x.d}</b>
+                    <div><span class="badge ${badgeCls}">${dLabel}</span></div>
+                  </td>
+                  <td><b>${E(x.cariName || 'Genel Müşteri')}</b></td>
+                  <td>${E(x.ds || x.c)} <div style="font-size:11px; color:var(--mut)">İşlem: ${x.d}</div></td>
+                  <td class="text-right">${F(x.a)}</td>
+                  <td class="text-right tx-mut">${F(paid)}</td>
+                  <td class="text-right tx-green"><b style="font-size:14px">+${F(rem)}</b></td>
+                  <td class="text-right">
+                    <button class="btn btn-primary btn-sm" onclick="settleVadeliEntry(${x.id})">✅ Tahsil Edildi</button>
+                    <button class="btn btn-secondary btn-sm" onclick="partialSettleVadeliEntry(${x.id})">💵 Kısmi Al</button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="deleteLedgerEntry(${x.id})">Sil</button>
+                  </td>
+                </tr>
+              `;
+            }).join("") || '<tr><td colspan="7" class="text-center" style="padding:16px; color:var(--mut)">Bekleyen vadeli alacak (gelecek para) bulunmuyor.</td></tr>'}
           </tbody>
         </table>
       </div>
+    </div>
 
-      <!-- EN MALİYETLİ İLK 5 HAYVAN -->
-      <div class="card-title">⚠️ En Yüksek Maliyetli İlk 5 Hayvan (Elden Çıkarma Adayları)</div>
+    <!-- 3. BÖLÜM: ÖDENECEK BORÇLAR (VADELİ VERECEKLERİMİZ) TABLOSU -->
+    <div class="card" style="border-left:4px solid var(--r)">
+      <div class="card-title">
+        <span>🔴 Ödenecek Borçlar (Vadeli Vereceklerimiz & Veresiye Yem/İlaç/Alımlar)</span>
+        <span class="badge badge-r">Toplam: ${F(fin.payables)}</span>
+      </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Küpe No</th><th>Sınıf / Irk</th><th class="text-right">Sürüde Kaldığı Gün</th><th class="text-right">Canlı Kg</th><th class="text-right">Toplam Maliyet</th></tr></thead>
+          <thead>
+            <tr>
+              <th>📅 Ödeme Günü (Vade)</th>
+              <th>🏢 Alacaklı Firma / Kişi</th>
+              <th>Açıklama</th>
+              <th class="text-right">Toplam</th>
+              <th class="text-right">Ödenen Peşinat</th>
+              <th class="text-right">Net Ödenecek Borç</th>
+              <th class="text-right">İşlem</th>
+            </tr>
+          </thead>
           <tbody>
-            ${topCostly.map(a => {
-              const c = costs.costMap[a.id] || {};
+            ${openPayables.map(x => {
+              const rem = getEntryRemaining(x);
+              const paid = getEntryPaid(x);
+              const dLeft = x.dueDate ? daysBetween(td, x.dueDate) : null;
+              const badgeCls = dLeft === null ? 'badge-mut' : (dLeft < 0 ? 'badge-r' : (dLeft <= 7 ? 'badge-amber' : 'badge-b'));
+              const dLabel = dLeft === null ? 'Tarihsiz' : (dLeft < 0 ? `${Math.abs(dLeft)} gün gecikti!` : (dLeft === 0 ? 'BUGÜN ÖDENECEK!' : `${dLeft} gün kaldı`));
               return `
                 <tr>
-                  <td><b>${E(a.k)}</b></td>
-                  <td>${E(a.cat || '')} · ${E(a.breed || '')}</td>
-                  <td class="text-right">${c.days || 0} gün</td>
-                  <td class="text-right">${a.weight} kg</td>
-                  <td class="text-right tx-red"><b>${F(a.totalCost)}</b></td>
+                  <td>
+                    <b>${x.dueDate || x.d}</b>
+                    <div><span class="badge ${badgeCls}">${dLabel}</span></div>
+                  </td>
+                  <td><b>${E(x.cariName || 'Tedarikçi')}</b></td>
+                  <td>${E(x.ds || x.c)} <div style="font-size:11px; color:var(--mut)">İşlem: ${x.d}</div></td>
+                  <td class="text-right">${F(x.a)}</td>
+                  <td class="text-right tx-mut">${F(paid)}</td>
+                  <td class="text-right tx-red"><b style="font-size:14px">−${F(rem)}</b></td>
+                  <td class="text-right">
+                    <button class="btn btn-primary btn-sm" onclick="settleVadeliEntry(${x.id})">💸 Ödendi</button>
+                    <button class="btn btn-secondary btn-sm" onclick="partialSettleVadeliEntry(${x.id})">💵 Kısmi Öde</button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="deleteLedgerEntry(${x.id})">Sil</button>
+                  </td>
                 </tr>
               `;
-            }).join("") || '<tr><td colspan="5" class="text-center" style="padding:10px; color:var(--mut)">Kayıt yok.</td></tr>'}
+            }).join("") || '<tr><td colspan="7" class="text-center" style="padding:16px; color:var(--mut)">Bekleyen vadeli borç (verecek) bulunmuyor.</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4. BÖLÜM: CARİ KİŞİ VE FİRMALAR DEFTERİ (KASAPLAR, YEMCİLER, ŞAHISLAR) -->
+    <div class="card">
+      <div class="card-title">
+        <span>👥 Kayıtlı Cari Kişi ve Firmalar Bakiye Özeti</span>
+        <button class="btn btn-secondary btn-sm" onclick="window.print()">🖨️ Raporu Yazdır</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Cari Kişi / Firma</th>
+              <th>Tür</th>
+              <th>Telefon</th>
+              <th class="text-right">Alacağımız (Gelecek)</th>
+              <th class="text-right">Borcumuz (Verecek)</th>
+              <th class="text-right">Net Cari Durum</th>
+              <th class="text-right">İşlem</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${cariList.map(c => {
+              const net = c.alacak - c.borc;
+              return `
+                <tr>
+                  <td><b>${E(c.name)}</b></td>
+                  <td><span class="badge badge-mut">${E(c.type)}</span></td>
+                  <td>${E(c.phone || '—')}</td>
+                  <td class="text-right tx-green">${c.alacak > 0 ? '+' + F(c.alacak) : '0 ₺'}</td>
+                  <td class="text-right tx-red">${c.borc > 0 ? '−' + F(c.borc) : '0 ₺'}</td>
+                  <td class="text-right ${net > 0 ? 'tx-green' : (net < 0 ? 'tx-red' : '')}">
+                    <b>${net > 0 ? '+' + F(net) + ' (Alacaklıyız)' : (net < 0 ? F(net) + ' (Borçluyuz)' : 'Hesap Kapalı')}</b>
+                  </td>
+                  <td class="text-right">
+                    <button class="btn btn-secondary btn-sm" onclick="openCariStatementModal('${E(c.name)}')">📄 Ekstre</button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="deleteCariPerson('${E(c.name)}')">Sil</button>
+                  </td>
+                </tr>
+              `;
+            }).join("") || '<tr><td colspan="7" class="text-center" style="padding:14px; color:var(--mut)">Henüz cari kişi veya firma kaydı yok.</td></tr>'}
           </tbody>
         </table>
       </div>
@@ -3243,22 +4068,38 @@ function openFeedRestockModal(feedId) {
   if (!f) return;
   const modal = $("modalContent");
   modal.innerHTML = `
+    ${getCariDatalistHtml()}
     <div class="modal-header">
       <div class="modal-title">🌾 Yem Alımı: ${E(f.name)}</div>
       <button class="close-modal" onclick="closeModal()">✕</button>
     </div>
     <div class="form-row">
       ${inp("rfDate", "Alım Tarihi", "date", today())}
-      ${inp("rfKg", "Alınan Miktar (kg) *", "number", "1000", 'inputmode="decimal" oninput="updateRestockCalc()"')}
+      ${inp("rfCariName", "🏢 Yemci / Tedarikçi Firma (Cari)", "text", "", 'list="cariDatalist" placeholder="Örn: Öztürk Yem"')}
     </div>
     <div class="form-row">
+      ${inp("rfKg", "Alınan Miktar (kg) *", "number", "1000", 'inputmode="decimal" oninput="updateRestockCalc()"')}
       ${inp("rfCostPerKg", "Birim Fiyat (TL/kg) *", "number", f.costPerKg || 10, 'inputmode="decimal" oninput="updateRestockCalc()"')}
       ${inp("rfTotal", "Toplam Tutar (TL)", "number", (1000 * (f.costPerKg || 10)), 'inputmode="decimal"')}
     </div>
-    <div style="margin-top:8px">
-      <input type="checkbox" id="rfAddExpense" checked>
-      <label for="rfAddExpense" style="display:inline; margin-left:4px; font-size:12px">Kasaya otomatik "Yem" gideri olarak eklensin</label>
+
+    <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:8px; padding:10px; margin-top:8px">
+      <div class="form-row" style="margin-bottom:0">
+        ${sel("rfPayMode", "💳 Ödeme Şekli (Peşin / Vadeli Veresiye)", optList([
+          ["pesin", "🟢 Peşin Ödendi"],
+          ["vadeli", "⏳ Vadeli / Veresiye Alındı (Borç Yaz)"]
+        ], "pesin"), 'onchange="toggleGenericVadeliRow(&quot;rfVadeliRow&quot;, this.value)"')}
+      </div>
+      <div id="rfVadeliRow" class="form-row" style="display:none; margin-top:8px; margin-bottom:0">
+        ${inp("rfDueDate", "📅 Ödeme Günü (Vade Tarihi) *", "date", addDays(today(), 30))}
+        ${inp("rfPaidAmt", "💵 Peşin Verilen Kısım (TL)", "number", "0", 'inputmode="decimal" placeholder="0 ₺"')}
+      </div>
+      <div style="margin-top:8px">
+        <input type="checkbox" id="rfAddExpense" checked>
+        <label for="rfAddExpense" style="display:inline; margin-left:4px; font-size:12px">Kasaya ve Cari Borçlara otomatik "Yem" gideri olarak işlensin</label>
+      </div>
     </div>
+
     <div style="margin-top:14px">
       <button class="btn btn-primary" style="width:100%" onclick="executeFeedRestock(${f.id})">Stoku Güncelle ve Kaydet</button>
     </div>
@@ -3276,9 +4117,13 @@ function executeFeedRestock(feedId) {
   const f = S.feeds.find(x => x.id === feedId);
   if (!f) return;
   const d = V("rfDate") || today();
+  const cariName = V("rfCariName").trim();
   const kg = +V("rfKg") || 0;
   const p = +V("rfCostPerKg") || 0;
   const total = +V("rfTotal") || (kg * p);
+  const payMode = V("rfPayMode") || "pesin";
+  const dueDate = V("rfDueDate") || addDays(d, 30);
+  const paidAmt = payMode === "vadeli" ? (+V("rfPaidAmt") || 0) : total;
   const addExp = $("rfAddExpense")?.checked;
 
   if (kg <= 0) return alert("Geçerli miktar girin.");
@@ -3286,27 +4131,101 @@ function executeFeedRestock(feedId) {
   mutate(() => {
     f.stockKg += kg;
     f.costPerKg = p;
+    if (cariName) ensureCariExists(cariName, "Yemci / Tedarikçi");
     if (addExp && total > 0) {
       S.e.unshift({
         id: Date.now(), d,
-        c: "Yem - Kesif / Fabrika yemi", an: 0,
-        ds: `${f.name} alımı (${kg} kg)`,
-        q: Math.round(kg / (f.bagKg || 50)), kg, p, a: total
+        c: f.isRoughage ? "Kaba yem - Yonca / Saman / Silaj" : "Yem - Kesif / Fabrika yemi",
+        an: 0,
+        cariName,
+        ds: `${f.name} alımı (${kg} kg)${cariName ? ' - ' + cariName : ''}`,
+        q: Math.round(kg / (f.bagKg || 50)), kg, p, a: total,
+        payMode,
+        dueDate: payMode === "vadeli" ? dueDate : "",
+        paidAmount: paidAmt,
+        isSettled: payMode === "pesin" || paidAmt >= total
       });
     }
   });
 
   closeModal();
-  setStatus(`${f.name} stoğu güncellendi.`);
+  setStatus(`${f.name} stoğu güncellendi (${payMode === 'vadeli' ? 'Vadeli borç kaydedildi' : 'Peşin'}).`);
 }
 
 function editFeedItem(id) {
   const f = S.feeds.find(x => x.id === id);
   if (!f) return;
-  const newDaily = prompt(`${f.name} için günlük sürünün toplam tüketimi (kg/gün):`, f.dailyTotalKg || 0);
-  if (newDaily !== null) {
-    mutate(() => { f.dailyTotalKg = +newDaily || 0; });
-  }
+  const modal = $("modalContent");
+  modal.innerHTML = `
+    <div class="modal-header">
+      <div class="modal-title">✏️ Yem İçeriğini & Besin Değerlerini Düzenle</div>
+      <button class="close-modal" onclick="closeModal()">✕</button>
+    </div>
+    <div style="font-size:12px; color:var(--mut); margin-bottom:8px">
+      Yemi silmeden adını, stok miktarını, günlük tüketimini ve protein/enerji/mermer tozu (kalsiyum) içeriklerini buradan doğrudan güncelleyebilirsiniz.
+    </div>
+    <div class="form-row">
+      ${inp("efName", "Yem Adı *", "text", f.name || "")}
+      ${inp("efStock", "Mevcut Depo Stoğu (kg) *", "number", f.stockKg ?? 0, 'inputmode="decimal"')}
+    </div>
+    <div class="form-row">
+      ${inp("efBagKg", "Çuval Ağırlığı (kg)", "number", f.bagKg || 50, 'inputmode="decimal"')}
+      ${inp("efCostKg", "Birim Fiyat (TL/kg) *", "number", f.costPerKg || 0, 'inputmode="decimal"')}
+      ${inp("efDailyKg", "Günlük Sürü Tüketimi (kg/gün)", "number", f.dailyTotalKg || 0, 'inputmode="decimal"')}
+    </div>
+
+    <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:8px; padding:12px; margin-top:8px">
+      <b style="font-size:12.5px; color:var(--primary)">🧪 Yem Besin İçeriği & Etiket Değerleri:</b>
+      <div class="form-row" style="margin-top:6px">
+        ${inp("efProtein", "Ham Protein (%) *", "number", f.protein ?? 16, 'inputmode="decimal" step="0.1"')}
+        ${inp("efEnergy", "Metabolik Enerji (Mcal/kg)", "number", f.energy ?? 2.7, 'inputmode="decimal" step="0.05"')}
+      </div>
+      <div class="form-row">
+        ${inp("efCalcium", "Mermer Tozu / Kalsiyum (%) *", "number", f.calcium ?? 1.2, 'inputmode="decimal" step="0.05"')}
+        ${inp("efPhosphorus", "Fosfor (%)", "number", f.phosphorus ?? 0.5, 'inputmode="decimal" step="0.05"')}
+      </div>
+      <div class="form-row">
+        ${inp("efFiber", "Ham Selüloz (%)", "number", f.fiber ?? 8.0, 'inputmode="decimal" step="0.5"')}
+        ${inp("efStarch", "Nişasta / Tahıl (%)", "number", f.starch ?? 30.0, 'inputmode="decimal" step="0.5"')}
+      </div>
+      <div style="margin-top:6px">
+        <label style="display:inline-flex; align-items:center; gap:6px; font-weight:normal; margin:0; cursor:pointer">
+          <input type="checkbox" id="efIsRoughage" ${f.isRoughage ? 'checked' : ''}>
+          <span>Bu bir <b>Kaba Yemdir</b> (Kuru Yonca, Saman, Silaj, Çayır Otu)</span>
+        </label>
+      </div>
+    </div>
+
+    <div style="margin-top:14px; display:flex; gap:8px">
+      <button class="btn btn-primary" style="flex:1; padding:10px" onclick="saveEditedFeedItem(${f.id})">💾 Yem İçeriğini Güncelle</button>
+    </div>
+  `;
+  openModal();
+}
+
+function saveEditedFeedItem(id) {
+  const f = S.feeds.find(x => x.id === id);
+  if (!f) return;
+  const name = V("efName").trim();
+  if (!name) return alert("Yem adı boş bırakılamaz.");
+
+  mutate(() => {
+    f.name = name;
+    f.stockKg = +V("efStock") || 0;
+    f.bagKg = +V("efBagKg") || 50;
+    f.costPerKg = +V("efCostKg") || 0;
+    f.dailyTotalKg = +V("efDailyKg") || 0;
+    f.protein = +V("efProtein") || 0;
+    f.energy = +V("efEnergy") || 2.2;
+    f.calcium = +V("efCalcium") || 0;
+    f.phosphorus = +V("efPhosphorus") || 0;
+    f.fiber = +V("efFiber") || 0;
+    f.starch = +V("efStarch") || 0;
+    f.isRoughage = $("efIsRoughage")?.checked || false;
+  });
+
+  closeModal();
+  setStatus(`${name} içeriği ve besin değerleri güncellendi.`);
 }
 
 function deleteFeedItem(id) {
@@ -3477,6 +4396,9 @@ function executeBulkSale() {
   const buyer = V("bsSaleBuyer").trim();
   const cat = V("bsSaleCategory") || "Erkek kuzu satışı (canlı kg)";
   const recordIncome = $("bsRecordIncome")?.checked;
+  const payMode = V("bsSalePayMode") || "pesin";
+  const dueDate = V("bsSaleDueDate") || addDays(d, 30);
+  const paidAmtInput = +V("bsSalePaidAmt") || 0;
 
   const modeEl = document.querySelector('input[name="bsPriceMode"]:checked');
   const mode = modeEl ? modeEl.value : "perHead";
@@ -3496,11 +4418,14 @@ function executeBulkSale() {
   }
 
   if (totalRevenue <= 0) return alert("Lütfen satış tutarını girin.");
+  const paidAmt = payMode === "vadeli" ? paidAmtInput : totalRevenue;
 
   const pricePerAnimal = Math.round(totalRevenue / count);
   const kgPerAnimal = totalLiveKg > 0 ? Math.round((totalLiveKg / count) * 10) / 10 : 0;
 
   mutate(() => {
+    if (buyer) ensureCariExists(buyer, "Kasap / Alıcı");
+
     SELECTED_ANIMALS.forEach(id => {
       const a = S.a.find(x => x.id === id);
       if (a) {
@@ -3514,16 +4439,21 @@ function executeBulkSale() {
     if (recordIncome) {
       S.e.unshift({
         id: Date.now(), d, c: cat, an: 0,
-        ds: `${count} baş hayvan toplu satışı (${buyer ? buyer : 'Kasap'})`,
-        q: count, kg: totalLiveKg, p: pricePerAnimal, a: totalRevenue
+        cariName: buyer || "Genel Alıcı",
+        ds: `${count} baş hayvan satışı (${buyer ? buyer : 'Kasap/Alıcı'})`,
+        q: count, kg: totalLiveKg, p: pricePerAnimal, a: totalRevenue,
+        payMode,
+        dueDate: payMode === "vadeli" ? dueDate : "",
+        paidAmount: paidAmt,
+        isSettled: payMode === "pesin" || paidAmt >= totalRevenue
       });
     }
 
     SELECTED_ANIMALS.clear();
   });
 
-  alert(`Tebrikler! ${count} baş hayvan toplu olarak satıldı ve kasaya ${F(totalRevenue)} gelir işlendi.`);
-  switchTab(3);
+  alert(`Tebrikler! ${count} baş hayvan satıldı. ${payMode === 'vadeli' ? 'Gelecek para (' + dueDate + ') Nakit & Cari Raporlara işlendi.' : 'Kasaya peşin gelir işlendi.'}`);
+  switchTab(payMode === "vadeli" ? 12 : 3);
 }
 
 function openBulkSaleModal() {
@@ -3997,19 +4927,38 @@ function saveLedgerEntry() {
   const editId = idEl ? +idEl.value : 0;
   const d = V("entryDate") || today();
   const c = V("entryCat");
+  const cariName = V("entryCariName").trim();
   const an = +V("entryAnimal") || 0;
   const ds = V("entryDesc").trim();
   const q = +V("entryQty") || 0;
   const kg = +V("entryKg") || 0;
   const p = +V("entryUnitPrice") || 0;
   const a = +V("entryAmount");
+  const payMode = V("entryPayMode") || "pesin";
+  const dueDate = V("entryDueDate") || addDays(d, 30);
+  const paidAmtInput = +V("entryPaidAmount") || 0;
 
   if (!a || a <= 0) return alert("Lütfen geçerli bir tutar girin.");
 
+  const paidAmount = payMode === "vadeli" ? paidAmtInput : a;
+  const isSettled = payMode === "pesin" || paidAmount >= a;
   const isCredit = (c === "Kredi çekildi" || kind(c) === "kredi+");
 
   mutate(() => {
-    const record = { id: editId || Date.now(), d, c, an, ds, q, kg, p, a };
+    if (cariName) {
+      const defType = kind(c) === "gelir" ? "Kasap / Alıcı" : "Yemci / Tedarikçi";
+      ensureCariExists(cariName, defType);
+    }
+
+    const record = {
+      id: editId || Date.now(),
+      d, c, cariName, an, ds, q, kg, p, a,
+      payMode,
+      dueDate: payMode === "vadeli" ? dueDate : "",
+      paidAmount,
+      isSettled
+    };
+
     if (editId) S.e = S.e.map(x => x.id === editId ? record : x);
     else S.e.unshift(record);
 
@@ -4051,7 +5000,7 @@ function saveLedgerEntry() {
     }
   });
 
-  setStatus("Kayıt kaydedildi.");
+  setStatus(payMode === "vadeli" ? `Vadeli kayıt işlendi (Vade: ${dueDate}).` : "Peşin kayıt kasaya işlendi.");
   cancelEditEntry();
 }
 
@@ -4063,30 +5012,353 @@ function editLedgerEntry(id) {
   if ($("btnCancelEditEntry")) $("btnCancelEditEntry").style.display = "inline-flex";
   if ($("entryDate")) $("entryDate").value = item.d;
   if ($("entryCat")) $("entryCat").value = item.c;
+  if ($("entryCariName")) $("entryCariName").value = item.cariName || "";
   if ($("entryAnimal")) $("entryAnimal").value = item.an || 0;
   if ($("entryDesc")) $("entryDesc").value = item.ds || "";
   if ($("entryQty")) $("entryQty").value = item.q || "";
   if ($("entryKg")) $("entryKg").value = item.kg || "";
   if ($("entryUnitPrice")) $("entryUnitPrice").value = item.p || "";
   if ($("entryAmount")) $("entryAmount").value = item.a || "";
+  if ($("entryPayMode")) {
+    $("entryPayMode").value = item.payMode || "pesin";
+    toggleEntryPayMode(item.payMode || "pesin");
+  }
+  if ($("entryDueDate")) $("entryDueDate").value = item.dueDate || addDays(today(), 30);
+  if ($("entryPaidAmount")) $("entryPaidAmount").value = item.paidAmount || 0;
   window.scrollTo({ top: $("entryFormCard")?.offsetTop || 0, behavior: "smooth" });
 }
 
 function cancelEditEntry() {
   if ($("editEntryId")) $("editEntryId").value = "0";
-  if ($("formTitle")) $("formTitle").textContent = "🧾 Yeni Gelir / Gider / Kredi Kaydı";
+  if ($("formTitle")) $("formTitle").textContent = "🧾 Yeni Gelir / Gider / Veresiye Kaydı";
   if ($("btnCancelEditEntry")) $("btnCancelEditEntry").style.display = "none";
+  if ($("entryCariName")) $("entryCariName").value = "";
   if ($("entryDesc")) $("entryDesc").value = "";
   if ($("entryQty")) $("entryQty").value = "";
   if ($("entryKg")) $("entryKg").value = "";
   if ($("entryUnitPrice")) $("entryUnitPrice").value = "";
   if ($("entryAmount")) $("entryAmount").value = "";
+  if ($("entryPayMode")) {
+    $("entryPayMode").value = "pesin";
+    toggleEntryPayMode("pesin");
+  }
+  if ($("entryPaidAmount")) $("entryPaidAmount").value = "0";
 }
 
 function deleteLedgerEntry(id) {
   if (confirm("Bu kaydı silmek istediğinize emin misiniz?")) {
     mutate(() => { S.e = S.e.filter(x => x.id !== id); });
   }
+}
+
+// VADELİ (VERESİYE) BORÇ VE ALACAK TAHSİLAT / ÖDEME FONKSİYONLARI
+function settleVadeliEntry(id) {
+  const x = S.e.find(item => item.id === id);
+  if (!x) return;
+  const k = kind(x.c);
+  const rem = getEntryRemaining(x);
+  const msg = k === "gelir"
+    ? `${x.cariName || 'Müşteri'} carisinden kalan ${F(rem)} alacağın tamamı tahsil edildi mi?`
+    : `${x.cariName || 'Tedarikçi'} carisine kalan ${F(rem)} borcun tamamı ödendi mi?`;
+  if (!confirm(msg)) return;
+
+  mutate(() => {
+    x.paidAmount = x.a;
+    x.isSettled = true;
+    x.settledDate = today();
+  });
+  setStatus(`${F(rem)} tutarındaki vadeli işlem kapatıldı ve nakit kasaya yansıtıldı.`);
+}
+
+function partialSettleVadeliEntry(id) {
+  const x = S.e.find(item => item.id === id);
+  if (!x) return;
+  const rem = getEntryRemaining(x);
+  const k = kind(x.c);
+  const input = prompt(`${x.cariName || ''} için kalan tutar: ${F(rem)}.
+Şimdi ${k === 'gelir' ? 'tahsil edilen' : 'ödenen'} tutarı girin (TL):`, rem);
+  if (input === null) return;
+  const amt = +input || 0;
+  if (amt <= 0) return alert("Geçerli bir tutar girin.");
+
+  mutate(() => {
+    x.paidAmount = Math.min(x.a, (+x.paidAmount || 0) + amt);
+    if (x.paidAmount >= x.a) {
+      x.isSettled = true;
+      x.settledDate = today();
+    }
+  });
+  setStatus(`${F(amt)} kısmi ödeme/tahsilat işlendi.`);
+}
+
+function toggleMcAmountFields(val) {
+  const box = $("mcAmountFieldsBox");
+  if (box) box.style.display = val === "onlyCari" ? "none" : "block";
+}
+
+function saveManualCariTransaction() {
+  const name = V("mcName").trim();
+  const type = V("mcType") || "Kasap / Alıcı";
+  const phone = V("mcPhone").trim();
+  const actionType = V("mcActionType") || "alacak";
+  const amount = +V("mcAmount") || 0;
+  const paidAmt = +V("mcPaidAmt") || 0;
+  const dueDate = V("mcDueDate") || addDays(today(), 30);
+  const desc = V("mcDesc").trim();
+
+  if (!name) return alert("Lütfen cari kişi veya firma adını girin.");
+
+  if (actionType !== "onlyCari" && amount <= 0) {
+    return alert("Lütfen geçerli bir alacak/borç tutarı girin.");
+  }
+
+  mutate(() => {
+    const cariObj = ensureCariExists(name, type);
+    if (cariObj) {
+      cariObj.type = type;
+      if (phone) cariObj.phone = phone;
+    }
+
+    if (actionType === "alacak") {
+      S.e.unshift({
+        id: Date.now(),
+        d: today(),
+        c: type.includes("Kasap") ? "Kasaplık koyun / koç satışı" : "Diğer gelir",
+        an: 0,
+        cariName: name,
+        ds: desc || `${name} - Vadeli cari alacak kaydı`,
+        q: 1, kg: 0, p: amount, a: amount,
+        payMode: "vadeli",
+        dueDate,
+        paidAmount: paidAmt,
+        isSettled: paidAmt >= amount
+      });
+    } else if (actionType === "borc") {
+      S.e.unshift({
+        id: Date.now(),
+        d: today(),
+        c: type.includes("Yem") ? "Yem - Kesif / Fabrika yemi" : (type.includes("Veteriner") ? "Aşı / İlaç / Serum / Parazit" : "Diğer gider"),
+        an: 0,
+        cariName: name,
+        ds: desc || `${name} - Vadeli cari borç (veresiye) kaydı`,
+        q: 1, kg: 0, p: amount, a: amount,
+        payMode: "vadeli",
+        dueDate,
+        paidAmount: paidAmt,
+        isSettled: paidAmt >= amount
+      });
+    }
+  });
+
+  if ($("mcName")) $("mcName").value = "";
+  if ($("mcAmount")) $("mcAmount").value = "";
+  if ($("mcDesc")) $("mcDesc").value = "";
+  alert(`${name} cari kaydı başarıyla işlendi!`);
+}
+
+function openCariStatementModal(cariName) {
+  const clean = String(cariName || "").trim().toLowerCase();
+  const txs = S.e.filter(x => (x.cariName || "").trim().toLowerCase() === clean);
+  const modal = $("modalContent");
+  modal.innerHTML = `
+    <div class="modal-header">
+      <div class="modal-title">📄 Cari Hesap Ekstresi: ${E(cariName)}</div>
+      <button class="close-modal" onclick="closeModal()">✕</button>
+    </div>
+    <div class="table-wrap" style="max-height:360px; overflow-y:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Tarih</th>
+            <th>İşlem / Açıklama</th>
+            <th>Vade Günü</th>
+            <th class="text-right">Toplam</th>
+            <th class="text-right">Kalan Bakiye</th>
+            <th>Durum</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${txs.map(x => {
+            const k = kind(x.c);
+            const rem = getEntryRemaining(x);
+            return `
+              <tr>
+                <td>${x.d}</td>
+                <td><b>${E(x.c)}</b><div style="font-size:11px; color:var(--mut)">${E(x.ds || '')}</div></td>
+                <td>${x.dueDate || 'Peşin'}</td>
+                <td class="text-right ${kc(k)}">${k === 'gelir' ? '+' : '−'}${F(x.a)}</td>
+                <td class="text-right"><b>${rem > 0 ? F(rem) : '0 ₺'}</b></td>
+                <td>
+                  ${rem > 0
+                    ? `<button class="btn btn-primary btn-sm" onclick="settleVadeliEntry(${x.id}); closeModal();">${k === 'gelir' ? 'Tahsil Et' : 'Öde'}</button>`
+                    : `<span class="badge badge-g">Kapandı</span>`}
+                </td>
+              </tr>
+            `;
+          }).join("") || '<tr><td colspan="6" class="text-center" style="padding:14px">Bu cariye ait hareket bulunamadı.</td></tr>'}
+        </tbody>
+      </table>
+    </div>
+  `;
+  openModal();
+}
+
+function deleteCariPerson(cariName) {
+  if (!confirm(`${cariName} cari kartını silmek istediğinize emin misiniz?`)) return;
+  mutate(() => {
+    const clean = String(cariName || "").trim().toLowerCase();
+    S.cariler = (S.cariler || []).filter(c => c.name.trim().toLowerCase() !== clean);
+  });
+}
+
+// TEKİL VE TOPLU YAŞ / DOĞUM TARİHİ SENKRONİZASYON FONKSİYONLARI
+function onSingleAnimalAgeInput(monthsVal) {
+  const bDate = ageMonthsToBirthDate(monthsVal);
+  if (bDate && $("animalBirthDate")) $("animalBirthDate").value = bDate;
+}
+
+function onSingleAnimalBirthChange(bDate) {
+  const m = birthDateToAgeMonths(bDate);
+  if (m !== "" && $("animalAgeMonths")) $("animalAgeMonths").value = m;
+}
+
+function onWizBuyAgeInput(monthsVal) {
+  const bDate = ageMonthsToBirthDate(monthsVal);
+  if (bDate && $("wizBuyBirthDate")) $("wizBuyBirthDate").value = bDate;
+}
+
+function onWizBuyBirthChange(bDate) {
+  const m = birthDateToAgeMonths(bDate);
+  if (m !== "" && $("wizBuyAgeMonths")) $("wizBuyAgeMonths").value = m;
+}
+
+function openBulkAgeModal() {
+  let targetList = [];
+  if (SELECTED_ANIMALS.size > 0) {
+    targetList = S.a.filter(a => SELECTED_ANIMALS.has(a.id));
+  } else {
+    targetList = S.a.filter(a => a.st === "sürüde");
+  }
+
+  if (targetList.length === 0) {
+    return alert("Yaş veya doğum tarihi girilecek hayvan bulunamadı.");
+  }
+
+  const modal = $("modalContent");
+  modal.innerHTML = `
+    <div class="modal-header">
+      <div class="modal-title">🎂 Toplu Yaş ve Doğum Tarihi Girişi (${targetList.length} Baş)</div>
+      <button class="close-modal" onclick="closeModal()">✕</button>
+    </div>
+    <div style="font-size:12px; color:var(--mut); margin-bottom:10px">
+      İster üstteki kutudan tüm hayvanlara tek tıkla ortak yaş (ay) / doğum tarihi atayın, ister aşağıdaki listeden her hayvanın yaşını hızlıca girin.
+    </div>
+
+    <!-- ORTAK TOPLU YAŞ / DOĞUM TARİHİ ATAMA KUTUSU -->
+    <div style="background:var(--card-sub); border:1px solid var(--primary); border-radius:8px; padding:10px; margin-bottom:12px">
+      <b style="font-size:12.5px; color:var(--primary)">⚡ Tek Tıkla Tümüne Ortak Yaş veya Doğum Tarihi Uygula:</b>
+      <div class="form-row" style="margin-top:6px; margin-bottom:6px">
+        ${inp("bulkCommonAgeMonths", "Ortak Yaş (Ay Olarak)", "number", "", 'inputmode="decimal" placeholder="Örn: 12 (1 yaş)" oninput="onCommonBulkAgeInput(this.value)"')}
+        ${inp("bulkCommonBirthDate", "Ortak Doğum Tarihi", "date", "", 'onchange="onCommonBulkBirthInput(this.value)"')}
+      </div>
+      <button class="btn btn-secondary btn-sm" style="width:100%" onclick="applyCommonBulkAgeToRows()">
+        ⬇️ Bu Yaşı / Doğum Tarihini Aşağıdaki Tüm Hayvanlara Doldur
+      </button>
+    </div>
+
+    <!-- BİREYSEL HIZLI TABLO -->
+    <div style="max-height:260px; overflow-y:auto; border:1px solid var(--ln); border-radius:6px; margin-bottom:12px">
+      <table style="width:100%; font-size:12px">
+        <thead style="position:sticky; top:0; background:var(--card-sub)">
+          <tr>
+            <th>Küpe No</th>
+            <th>Sınıf</th>
+            <th style="width:95px">Yaş (Ay)</th>
+            <th style="width:135px">Doğum Tarihi</th>
+          </tr>
+        </thead>
+        <tbody id="bulkAgeTableBody">
+          ${targetList.map(a => {
+            const curMonths = a.b ? birthDateToAgeMonths(a.b) : "";
+            return `
+              <tr data-anid="${a.id}">
+                <td><b>${E(a.k)}</b></td>
+                <td>${E(a.cat || 'Koyun')}</td>
+                <td>
+                  <input type="number" id="baMonth_${a.id}" value="${curMonths}" placeholder="Ay" inputmode="decimal" style="padding:5px 6px" oninput="onRowAgeMonthInput(${a.id}, this.value)">
+                </td>
+                <td>
+                  <input type="date" id="baDate_${a.id}" value="${E(a.b || '')}" style="padding:5px 6px" onchange="onRowBirthDateInput(${a.id}, this.value)">
+                </td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+
+    <button class="btn btn-primary" style="width:100%; padding:10px" onclick="executeBulkAgeSave()">
+      💾 Tüm Yaş ve Doğum Tarihlerini Kaydet
+    </button>
+  `;
+  openModal();
+}
+
+function onCommonBulkAgeInput(val) {
+  const d = ageMonthsToBirthDate(val);
+  if (d && $("bulkCommonBirthDate")) $("bulkCommonBirthDate").value = d;
+}
+
+function onCommonBulkBirthInput(d) {
+  const m = birthDateToAgeMonths(d);
+  if (m !== "" && $("bulkCommonAgeMonths")) $("bulkCommonAgeMonths").value = m;
+}
+
+function applyCommonBulkAgeToRows() {
+  const commonM = V("bulkCommonAgeMonths");
+  const commonD = V("bulkCommonBirthDate") || (commonM !== "" ? ageMonthsToBirthDate(commonM) : "");
+  if (!commonD) return alert("Lütfen önce ortak yaş (ay) veya doğum tarihi girin.");
+  const calcM = birthDateToAgeMonths(commonD);
+
+  document.querySelectorAll("#bulkAgeTableBody tr[data-anid]").forEach(row => {
+    const id = row.getAttribute("data-anid");
+    if ($(`baDate_${id}`)) $(`baDate_${id}`).value = commonD;
+    if ($(`baMonth_${id}`)) $(`baMonth_${id}`).value = calcM;
+  });
+}
+
+function onRowAgeMonthInput(id, val) {
+  const d = ageMonthsToBirthDate(val);
+  if (d && $(`baDate_${id}`)) $(`baDate_${id}`).value = d;
+}
+
+function onRowBirthDateInput(id, d) {
+  const m = birthDateToAgeMonths(d);
+  if (m !== "" && $(`baMonth_${id}`)) $(`baMonth_${id}`).value = m;
+}
+
+function executeBulkAgeSave() {
+  let updatedCount = 0;
+  mutate(() => {
+    document.querySelectorAll("#bulkAgeTableBody tr[data-anid]").forEach(row => {
+      const id = +row.getAttribute("data-anid");
+      const bVal = V(`baDate_${id}`);
+      const mVal = V(`baMonth_${id}`);
+      const finalB = bVal || (mVal !== "" ? ageMonthsToBirthDate(mVal) : "");
+      if (finalB) {
+        const a = S.a.find(x => x.id === id);
+        if (a) {
+          a.b = finalB;
+          updatedCount++;
+        }
+      }
+    });
+    SELECTED_ANIMALS.clear();
+  });
+
+  closeModal();
+  updateBulkBar();
+  setStatus(`${updatedCount} baş hayvanın yaş ve doğum tarihi topluca güncellendi.`);
 }
 
 function saveAnimal() {
@@ -4101,7 +5373,8 @@ function saveAnimal() {
   const origin = V("animalOrigin");
   const bp = +V("animalBuyPrice") || 0;
   const bd = V("animalBuyDate") || today();
-  const b = V("animalBirthDate");
+  const ageM = V("animalAgeMonths");
+  const b = V("animalBirthDate") || (ageM !== "" ? ageMonthsToBirthDate(ageM) : "");
   const m = V("animalMotherTag").trim();
   const f = V("animalFatherTag").trim();
   const gId = +V("animalGroupSelect") || 0;
@@ -4126,7 +5399,8 @@ function saveAnimal() {
         S.e.unshift({
           id: Date.now() + 1, d: bd, c: "Hayvan alımı", an: record.id,
           ds: `${record.k} (${record.breed || ''} ${record.cat}) alımı`,
-          q: 1, kg: 0, p: bp, a: bp
+          q: 1, kg: 0, p: bp, a: bp,
+          payMode: "pesin", isSettled: true
         });
       }
     }
@@ -4150,6 +5424,7 @@ function editAnimal(id) {
   if ($("animalBuyPrice")) $("animalBuyPrice").value = item.bp || "";
   if ($("animalBuyDate")) $("animalBuyDate").value = item.bd || today();
   if ($("animalBirthDate")) $("animalBirthDate").value = item.b || "";
+  if ($("animalAgeMonths")) $("animalAgeMonths").value = item.b ? birthDateToAgeMonths(item.b) : "";
   if ($("animalMotherTag")) $("animalMotherTag").value = item.m || "";
   if ($("animalFatherTag")) $("animalFatherTag").value = item.f || "";
   if ($("animalGroupSelect")) $("animalGroupSelect").value = (item.grp && item.grp[0]) || 0;
@@ -4166,6 +5441,8 @@ function cancelEditAnimal() {
   if ($("btnCancelEditAnimal")) $("btnCancelEditAnimal").style.display = "none";
   if ($("animalTag")) $("animalTag").value = "";
   if ($("animalBuyPrice")) $("animalBuyPrice").value = "";
+  if ($("animalBirthDate")) $("animalBirthDate").value = "";
+  if ($("animalAgeMonths")) $("animalAgeMonths").value = "";
   if ($("animalMotherTag")) $("animalMotherTag").value = "";
   if ($("animalFatherTag")) $("animalFatherTag").value = "";
   if ($("animalInsemDate")) $("animalInsemDate").value = "";
@@ -4204,9 +5481,14 @@ function executeBuyWizard() {
   const breed = V("wizBuyBreed");
   const vendor = V("wizBuyVendor").trim();
   const gId = +V("wizBuyGroup") || 0;
+  const ageM = V("wizBuyAgeMonths");
+  const bDate = V("wizBuyBirthDate") || (ageM !== "" ? ageMonthsToBirthDate(ageM) : "");
   const q = Math.max(1, +V("wizBuyQty") || 1);
   const p = +V("wizBuyPrice") || 0;
   const total = q * p;
+  const payMode = V("wizBuyPayMode") || "pesin";
+  const dueDate = V("wizBuyDueDate") || addDays(d, 30);
+  const paidAmt = payMode === "vadeli" ? (+V("wizBuyPaidAmt") || 0) : total;
   const recordExp = $("wizRecordExpense")?.checked;
 
   const modeEl = document.querySelector('input[name="wizTagMode"]:checked');
@@ -4221,7 +5503,7 @@ function executeBuyWizard() {
     for (let i = 0; i < q; i++) {
       createdAnimals.push({
         id: startId + i, k: `${prefix}${startNum + i}`, s: sex, cat, breed, origin: "Satın Alma",
-        vendor, bp: p, bd: d, st: "sürüde", n: 1, grp: gId ? [gId] : []
+        vendor, bp: p, bd: d, b: bDate, st: "sürüde", n: 1, grp: gId ? [gId] : []
       });
     }
   } else if (mode === "manual") {
@@ -4231,29 +5513,35 @@ function executeBuyWizard() {
     tags.forEach((tag, idx) => {
       createdAnimals.push({
         id: startId + idx, k: tag, s: sex, cat, breed, origin: "Satın Alma",
-        vendor, bp: p, bd: d, st: "sürüde", n: 1, grp: gId ? [gId] : []
+        vendor, bp: p, bd: d, b: bDate, st: "sürüde", n: 1, grp: gId ? [gId] : []
       });
     });
   } else {
     createdAnimals.push({
       id: startId, k: `${d} ${breed} ${cat} Grubu (${q} Baş)`, s: sex, cat, breed, origin: "Satın Alma",
-      vendor, bp: p, bd: d, st: "sürüde", n: q, grp: gId ? [gId] : []
+      vendor, bp: p, bd: d, b: bDate, st: "sürüde", n: q, grp: gId ? [gId] : []
     });
   }
 
   mutate(() => {
+    if (vendor) ensureCariExists(vendor, "Şahıs / Diğer");
     S.a = createdAnimals.concat(S.a);
     if (recordExp && total > 0) {
       S.e.unshift({
         id: startId + 999, d, c: "Hayvan alımı", an: createdAnimals.length === 1 ? createdAnimals[0].id : 0,
+        cariName: vendor,
         ds: `${q} adet ${breed} ${cat} alımı (${vendor ? vendor : 'Satın alma'})`,
-        q, kg: 0, p, a: total
+        q, kg: 0, p, a: total,
+        payMode,
+        dueDate: payMode === "vadeli" ? dueDate : "",
+        paidAmount: paidAmt,
+        isSettled: payMode === "pesin" || paidAmt >= total
       });
     }
   });
 
   alert(`${createdAnimals.length} baş hayvan başarıyla sürüye eklendi!`);
-  switchTab(3);
+  switchTab(payMode === "vadeli" ? 12 : 3);
 }
 
 // DOĞUM, TARTI, AŞI FORMLARI
@@ -4430,17 +5718,27 @@ function saveTask() {
   const t = V("taskTitle").trim();
   const r = +V("taskRepeat") || 0;
   const cost = +V("taskCost") || 0;
-  const withdrawal = +V("taskWithdrawalDays") || 0;
+  const cariName = V("taskCariName").trim();
+  const payMode = V("taskPayMode") || "pesin";
+  const dueDate = V("taskDueDate") || addDays(d, 30);
+  const paidAmt = payMode === "vadeli" ? (+V("taskPaidAmt") || 0) : cost;
   const addExp = $("taskAddExpense")?.checked;
 
-  if (!t) return alert("Lütfen iş / aşı adı girin.");
+  if (!t) return alert("Lütfen iş / aşı / ilaç adı girin.");
 
   mutate(() => {
-    S.t.push({ id: Date.now(), d, c, t, r, cost, withdrawal, x: 0 });
+    if (cariName) ensureCariExists(cariName, "Veteriner / İlaç");
+    S.t.push({ id: Date.now(), d, c, t, r, cost, x: 0 });
     if (addExp && cost > 0) {
       S.e.unshift({
         id: Date.now() + 1, d, c: "Aşı / İlaç / Serum / Parazit", an: 0,
-        ds: `${t} uygulaması masrafı`, q: 1, kg: 0, p: cost, a: cost
+        cariName,
+        ds: `${t} uygulaması masrafı${cariName ? ' (' + cariName + ')' : ''}`,
+        q: 1, kg: 0, p: cost, a: cost,
+        payMode,
+        dueDate: payMode === "vadeli" ? dueDate : "",
+        paidAmount: paidAmt,
+        isSettled: payMode === "pesin" || paidAmt >= cost
       });
     }
   });
@@ -4912,6 +6210,585 @@ function renderApp() {
 
 // ÇALIŞTIR
 init();
+
+/* ==========================================================================
+   FABRİKA OTOMASYONU: KAMERA HUD, KÜPE TANIMA, MERA/BESİ & METOT 4 MOTORLARI
+   ========================================================================== */
+
+let HUD_STREAM = null;
+let HUD_ACTIVE_ANIMAL_ID = 0;
+let HUD_VOICE_RECOGNITION = null;
+let HUD_IS_LISTENING = false;
+
+// 1. CANLI KAMERA HUD & KÜPE TANIMA VİZÖRÜ
+function openCameraHUDModal() {
+  const activeAnimals = S.a.filter(a => a.st === "sürüde");
+  if (activeAnimals.length > 0 && !HUD_ACTIVE_ANIMAL_ID) {
+    HUD_ACTIVE_ANIMAL_ID = activeAnimals[0].id;
+  }
+  const modal = $("modalContent");
+  if (!modal) return;
+  modal.style.maxWidth = "720px";
+  modal.style.padding = "12px";
+  
+  modal.innerHTML = `
+    <div class="modal-header" style="margin-bottom:8px">
+      <div class="modal-title" style="display:flex; align-items:center; gap:8px">
+        <span>📷 Canlı Ağıl Kamerası & Küpe Tanıma HUD</span>
+        <span class="badge badge-g" id="hudCameraStatus">Vizör Aktif</span>
+      </div>
+      <button class="close-modal" onclick="closeCameraHUD()">✕</button>
+    </div>
+
+    <div class="camera-hud-container">
+      <div class="camera-video-wrap">
+        <video id="hudVideo" autoplay playsinline muted></video>
+        <canvas id="hudCanvas"></canvas>
+        <div class="hud-reticle-overlay">
+          <div class="hud-reticle-box"></div>
+          <div style="color:#4ade80; font-size:11px; font-weight:700; margin-top:8px; text-shadow:0 1px 3px #000">
+            🎯 KÜPE / KOYUN ODAKLAMA ALANI
+          </div>
+        </div>
+      </div>
+
+      <!-- ÜST BİLGİ VE MOD SEÇİCİ BAR -->
+      <div class="hud-top-bar">
+        <div class="hud-pill">
+          <span style="color:#22c55e">●</span>
+          <span id="hudFPS">30 FPS</span> · Canlı Tarama
+        </div>
+        <div style="display:flex; gap:6px">
+          <button class="btn btn-sm hud-pill" onclick="toggleHUDVoiceRecognition()" id="hudVoiceBtn" style="cursor:pointer">
+            🎙️ Sesle Komut: <span id="hudVoiceState">Kapalı</span>
+          </button>
+          <button class="btn btn-sm hud-pill" onclick="switchHUDCameraFacing()" style="cursor:pointer" title="Kamera Değiştir">
+            🔄 Çevir
+          </button>
+        </div>
+      </div>
+
+      <!-- ALT CANLI HAYVAN BİLGİ KARTI & HIZLI AKSİYON DÜĞMELERİ -->
+      <div class="hud-animal-card" id="hudAnimalCard">
+        ${renderHUDAnimalCardContent()}
+      </div>
+    </div>
+
+    <!-- HIZLI KÜPE DEĞİŞTİRME & ÇAMURLU KÜPE LİSTESİ -->
+    <div style="margin-top:10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+      <label style="margin:0; font-size:12px; font-weight:700; color:var(--tx)">👆 Çamurlu / Okunamayan Küpe Seç:</label>
+      <select id="hudManualSelect" style="flex:1; min-width:180px; padding:6px 10px; font-size:12.5px" onchange="selectHUDAnimal(this.value)">
+        ${activeAnimals.map(a => `<option value="${a.id}" ${a.id === HUD_ACTIVE_ANIMAL_ID ? 'selected' : ''}>${a.k} (${a.cat || 'Koyun'}, ${a.location || 'Mera'})</option>`).join('')}
+      </select>
+      <button class="btn btn-secondary btn-sm" onclick="addNewVirtualTagFast()">+ Sanal Küpe Ekle</button>
+    </div>
+  `;
+  openModal();
+  startCameraStream();
+}
+
+function renderHUDAnimalCardContent() {
+  const a = S.a.find(x => x.id === HUD_ACTIVE_ANIMAL_ID);
+  if (!a) {
+    return `<div style="text-align:center; padding:10px; color:#94a3b8">Odaklanan hayvan bulunamadı. Lütfen listeden seçin.</div>`;
+  }
+
+  const costs = computeCosts();
+  const c = costs.costMap[a.id] || {};
+  const isVirtual = String(a.k).startsWith('SANAL-') || String(a.k).startsWith('GEÇİCİ-') || a.isVirtual;
+  const isMera = (a.location || 'Mera') === 'Mera';
+
+  return `
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px">
+      <div>
+        <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap">
+          <b style="font-size:17px; color:#4ade80">${E(a.k)}</b>
+          <span class="badge ${a.s === 'E' ? 'badge-b' : 'badge-purple'}">${a.s === 'E' ? '♂ Erkek' : '♀ Dişi'}</span>
+          <span class="badge badge-mut">${E(a.cat || 'Koyun')}</span>
+          <span class="badge ${isMera ? 'badge-g' : 'badge-amber'}">${isMera ? '🏔️ Dağ Merası' : '🏡 Kapalı Besi'}</span>
+          ${isVirtual ? `<span class="badge badge-r">⚠️ SANAL KÜPE</span>` : ''}
+        </div>
+        <div style="font-size:11.5px; opacity:0.85; margin-top:2px">
+          ${a.breed || 'Akkaraman'} · ${a.b ? formatAgeReadable(a.b) : 'Yaş girilmedi'} · 
+          Son Tartı: <b>${c.latestWeight ? c.latestWeight + ' kg' : 'Tartı yok'}</b> · 
+          BCS: <b>${a.bcs ? a.bcs + '/5' : '—'}</b>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:11px; opacity:0.8">Birikmiş Maliyet</div>
+        <b style="font-size:14px; color:#f87171">${F(c.totalCost || 0)}</b>
+      </div>
+    </div>
+
+    <!-- HUD HIZLI TEK DOKUNUŞ DÜĞMELERİ -->
+    <div class="hud-actions-grid">
+      <button class="hud-action-btn" onclick="executeHUDAction('dogurdu')">
+        <span class="btn-icon">🍼</span>
+        <span>Doğurdu</span>
+      </button>
+      <button class="hud-action-btn" onclick="executeHUDAction('besiye_al')">
+        <span class="btn-icon">🌾</span>
+        <span>${isMera ? 'Besiye Al' : 'Meraya Sal'}</span>
+      </button>
+      <button class="hud-action-btn" onclick="executeHUDAction('asi_yap')">
+        <span class="btn-icon">🩺</span>
+        <span>Aşı/İlaç</span>
+      </button>
+      <button class="hud-action-btn" onclick="executeHUDAction('tarti')">
+        <span class="btn-icon">⚖️</span>
+        <span>Tartı Gir</span>
+      </button>
+      <button class="hud-action-btn" onclick="executeHUDAction('bcs')">
+        <span class="btn-icon">📊</span>
+        <span>BCS Puanla</span>
+      </button>
+      <button class="hud-action-btn" onclick="executeHUDAction('birlestir')">
+        <span class="btn-icon">✏️</span>
+        <span>${isVirtual ? 'TÜRKVET Birleştir' : 'Küpe Değiş'}</span>
+      </button>
+      <button class="hud-action-btn" onclick="executeHUDAction('kasap_qr')">
+        <span class="btn-icon">🥩</span>
+        <span>Kasap QR</span>
+      </button>
+      <button class="hud-action-btn" onclick="executeHUDAction('sonraki')">
+        <span class="btn-icon">⏭️</span>
+        <span>Sonraki</span>
+      </button>
+    </div>
+  `;
+}
+
+let HUD_FACING_MODE = 'environment';
+
+async function startCameraStream() {
+  const video = $('hudVideo');
+  if (!video) return;
+  try {
+    if (HUD_STREAM) {
+      HUD_STREAM.getTracks().forEach(t => t.stop());
+    }
+    HUD_STREAM = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: HUD_FACING_MODE, width: { ideal: 1280 }, height: { ideal: 720 } },
+      audio: false
+    });
+    video.srcObject = HUD_STREAM;
+    video.play();
+  } catch (err) {
+    console.log('Kamera akışı açılamadı (simülasyon modunda devam ediliyor):', err);
+    if ($('hudCameraStatus')) {
+      $('hudCameraStatus').textContent = 'Simülasyon / Test Modu';
+      $('hudCameraStatus').className = 'badge badge-amber';
+    }
+  }
+}
+
+function switchHUDCameraFacing() {
+  HUD_FACING_MODE = HUD_FACING_MODE === 'environment' ? 'user' : 'environment';
+  startCameraStream();
+}
+
+function closeCameraHUD() {
+  if (HUD_STREAM) {
+    HUD_STREAM.getTracks().forEach(t => t.stop());
+    HUD_STREAM = null;
+  }
+  if (HUD_VOICE_RECOGNITION && HUD_IS_LISTENING) {
+    HUD_VOICE_RECOGNITION.stop();
+    HUD_IS_LISTENING = false;
+  }
+  closeModal();
+}
+
+function selectHUDAnimal(id) {
+  HUD_ACTIVE_ANIMAL_ID = +id;
+  const card = $('hudAnimalCard');
+  if (card) card.innerHTML = renderHUDAnimalCardContent();
+}
+
+function executeHUDAction(action) {
+  const a = S.a.find(x => x.id === HUD_ACTIVE_ANIMAL_ID);
+  if (!a) return;
+
+  if (action === 'dogurdu') {
+    closeCameraHUD();
+    openBirthModal(a.id);
+  } else if (action === 'besiye_al') {
+    const curLoc = a.location || 'Mera';
+    const nextLoc = curLoc === 'Mera' ? 'Besi' : 'Mera';
+    mutate(() => { a.location = nextLoc; });
+    alert(`${a.k} adlı hayvan ${nextLoc === 'Besi' ? '🏡 Kapalı Besi Bölmesine alındı (Yem rasyonu başladı)' : '🏔️ Dağ Merasına çıkarıldı (Yem masrafı durduruldu)'}!`);
+    const card = $('hudAnimalCard');
+    if (card) card.innerHTML = renderHUDAnimalCardContent();
+  } else if (action === 'asi_yap') {
+    const medName = prompt(`${a.k} için uygulanan aşı veya ilaç adı:`, 'Enterotoksemi (Çelerme) Aşısı');
+    if (!medName) return;
+    const medCost = +prompt('Masraf tutarı (TL, yoksa 0):', '150') || 0;
+    const withdrawal = +prompt('Et/Süt yasal arınma süresi (gün):', '14') || 0;
+    mutate(() => {
+      S.t.push({ id: Date.now(), d: today(), c: 'aşı', t: `${medName} (${a.k})`, cost: medCost, withdrawal, x: 1 });
+      if (medCost > 0) {
+        S.e.unshift({
+          id: Date.now() + 1, d: today(), c: 'Aşı / İlaç / Serum / Parazit', an: a.id,
+          ds: `${a.k} - ${medName} tedavisi`, q: 1, kg: 0, p: medCost, a: medCost, payMode: 'pesin', isSettled: true
+        });
+      }
+    });
+    alert(`${a.k} için ${medName} işlendi. ${withdrawal > 0 ? withdrawal + ' gün kesim arınma yasağı başlatıldı.' : ''}`);
+    const card = $('hudAnimalCard');
+    if (card) card.innerHTML = renderHUDAnimalCardContent();
+  } else if (action === 'tarti') {
+    const kg = prompt(`${a.k} için canlı ağırlık (kg):`, '46.5');
+    if (kg && +kg > 0) {
+      mutate(() => { S.w.push({ id: Date.now(), an: a.id, d: today(), kg: +kg }); });
+      alert(`${a.k} tartısı ${kg} kg olarak işlendi.`);
+      const card = $('hudAnimalCard');
+      if (card) card.innerHTML = renderHUDAnimalCardContent();
+    }
+  } else if (action === 'bcs') {
+    const bcs = prompt(`${a.k} Vücut Kondisyon Skoru (1=Aşırı Zayıf, 3=İdeal Damızlık, 5=Aşırı Yağlı):`, a.bcs || '3');
+    if (bcs && +bcs >= 1 && +bcs <= 5) {
+      mutate(() => { a.bcs = +bcs; });
+      alert(`${a.k} BCS skoru ${bcs}/5 olarak güncellendi.`);
+      const card = $('hudAnimalCard');
+      if (card) card.innerHTML = renderHUDAnimalCardContent();
+    }
+  } else if (action === 'birlestir') {
+    closeCameraHUD();
+    openMergeVirtualTagModal(a.id);
+  } else if (action === 'kasap_qr') {
+    closeCameraHUD();
+    openSecureButcherPortalModal(a.id);
+  } else if (action === 'sonraki') {
+    const active = S.a.filter(x => x.st === 'sürüde');
+    const idx = active.findIndex(x => x.id === HUD_ACTIVE_ANIMAL_ID);
+    const nextIdx = (idx + 1) % active.length;
+    HUD_ACTIVE_ANIMAL_ID = active[nextIdx].id;
+    const sel = $('hudManualSelect');
+    if (sel) sel.value = String(HUD_ACTIVE_ANIMAL_ID);
+    const card = $('hudAnimalCard');
+    if (card) card.innerHTML = renderHUDAnimalCardContent();
+  }
+}
+
+function addNewVirtualTagFast() {
+  const nextNum = (S.a.filter(x => String(x.k).startsWith('SANAL-')).length) + 1;
+  const tag = `SANAL-${String(nextNum).padStart(3, '0')}`;
+  mutate(() => {
+    const newAn = {
+      id: Date.now(), k: tag, s: 'D', cat: 'Kuzu', breed: 'Akkaraman', origin: 'Doğum',
+      bp: 0, bd: today(), b: today(), st: 'sürüde', location: 'Mera', isVirtual: true, n: 1
+    };
+    S.a.unshift(newAn);
+    HUD_ACTIVE_ANIMAL_ID = newAn.id;
+  });
+  alert(`Yeni geçici hayvan oluşturuldu: ${tag}`);
+  openCameraHUDModal();
+}
+
+// 2. SESLİ KOMUT MOTORU (WEB SPEECH API)
+function toggleHUDVoiceRecognition() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    return alert('Tarayıcınız ses tanıma özelliğini desteklemiyor. Chrome veya Edge kullanabilirsiniz.');
+  }
+
+  if (HUD_IS_LISTENING) {
+    if (HUD_VOICE_RECOGNITION) HUD_VOICE_RECOGNITION.stop();
+    HUD_IS_LISTENING = false;
+    if ($('hudVoiceState')) $('hudVoiceState').textContent = 'Kapalı';
+    return;
+  }
+
+  HUD_VOICE_RECOGNITION = new SpeechRecognition();
+  HUD_VOICE_RECOGNITION.lang = 'tr-TR';
+  HUD_VOICE_RECOGNITION.continuous = true;
+  HUD_VOICE_RECOGNITION.interimResults = false;
+
+  HUD_VOICE_RECOGNITION.onstart = () => {
+    HUD_IS_LISTENING = true;
+    if ($('hudVoiceState')) $('hudVoiceState').textContent = '🟢 Dinliyor...';
+    setStatus('Ses tanıma devrede. "Tartı 45", "Aşı yapıldı", "Besiye al" diyebilirsiniz.');
+  };
+
+  HUD_VOICE_RECOGNITION.onresult = (ev) => {
+    const transcript = ev.results[ev.results.length - 1][0].transcript.trim().toLowerCase();
+    console.log('Ses algılandı:', transcript);
+    handleVoiceCommand(transcript);
+  };
+
+  HUD_VOICE_RECOGNITION.onerror = () => {
+    HUD_IS_LISTENING = false;
+    if ($('hudVoiceState')) $('hudVoiceState').textContent = 'Hata';
+  };
+
+  HUD_VOICE_RECOGNITION.onend = () => {
+    HUD_IS_LISTENING = false;
+    if ($('hudVoiceState')) $('hudVoiceState').textContent = 'Kapalı';
+  };
+
+  HUD_VOICE_RECOGNITION.start();
+}
+
+function handleVoiceCommand(cmd) {
+  const a = S.a.find(x => x.id === HUD_ACTIVE_ANIMAL_ID);
+  if (!a) return;
+
+  if (cmd.includes('doğur') || cmd.includes('kuzu')) {
+    executeHUDAction('dogurdu');
+  } else if (cmd.includes('besi') || cmd.includes('padok')) {
+    executeHUDAction('besiye_al');
+  } else if (cmd.includes('mera') || cmd.includes('dağ')) {
+    mutate(() => { a.location = 'Mera'; });
+    alert(`${a.k} Meraya alındı.`);
+    const card = $('hudAnimalCard'); if (card) card.innerHTML = renderHUDAnimalCardContent();
+  } else if (cmd.includes('tartı') || cmd.includes('kilo')) {
+    const num = cmd.replace(/[^0-9.]/g, '');
+    if (num && +num > 0) {
+      mutate(() => { S.w.push({ id: Date.now(), an: a.id, d: today(), kg: +num }); });
+      alert(`${a.k} tartısı sesle ${num} kg işlendi.`);
+      const card = $('hudAnimalCard'); if (card) card.innerHTML = renderHUDAnimalCardContent();
+    } else {
+      executeHUDAction('tarti');
+    }
+  } else if (cmd.includes('aşı') || cmd.includes('ilaç')) {
+    executeHUDAction('asi_yap');
+  } else if (cmd.includes('sonraki') || cmd.includes('geç')) {
+    executeHUDAction('sonraki');
+  }
+}
+
+// 3. SANAL KÜPEYİ (SANAL-XXX) TÜRKVET RESMİ KÜPESİNE BİRLEŞTİRME
+function openMergeVirtualTagModal(animalId) {
+  const a = S.a.find(x => x.id === animalId);
+  if (!a) return;
+  const modal = $("modalContent");
+  modal.innerHTML = `
+    <div class="modal-header">
+      <div class="modal-title">✏️ Sanal Küpeyi TÜRKVET Resmi Küpesine Birleştir</div>
+      <button class="close-modal" onclick="closeModal()">✕</button>
+    </div>
+    <div style="font-size:12.5px; color:var(--tx-sec); margin-bottom:10px">
+      Geçici sanal küpe: <b>${E(a.k)}</b> (${a.breed || 'Küçükbaş'}, ${a.cat})<br>
+      Tarım Bakanlığı küpesi takıldığında numarayı girin. Bugüne kadarki tüm aşılar, tartılar, soy kütüğü ve maliyet kayıtları tek tıkla resmi küpeye aktarılır.
+    </div>
+    <div class="form-row">
+      ${inp('mrgOfficialTag', 'TÜRKVET Resmi Küpe Numarası *', 'text', '', 'placeholder="Örn: TR-51-987654"')}
+    </div>
+    <div style="margin-top:14px">
+      <button class="btn btn-primary" style="width:100%; padding:10px" onclick="executeMergeVirtualTag(${a.id})">
+        🔗 Küpeleri Birleştir ve Resmi Kayda Dönüştür
+      </button>
+    </div>
+  `;
+  openModal();
+}
+
+function executeMergeVirtualTag(animalId) {
+  const a = S.a.find(x => x.id === animalId);
+  if (!a) return;
+  const newTag = V('mrgOfficialTag').trim();
+  if (!newTag) return alert('Lütfen geçerli bir resmi küpe numarası girin.');
+  if (S.a.some(x => x.id !== a.id && x.k.toLowerCase() === newTag.toLowerCase())) {
+    return alert('Bu küpe numarası zaten başka bir hayvanda kayıtlı!');
+  }
+
+  const oldTag = a.k;
+  mutate(() => {
+    a.k = newTag;
+    a.isVirtual = false;
+    S.a.forEach(lamb => {
+      if (lamb.m === oldTag) lamb.m = newTag;
+      if (lamb.f === oldTag) lamb.f = newTag;
+    });
+  });
+
+  closeModal();
+  alert(`Harika! ${oldTag} sanal küpesi başarıyla ${newTag} TÜRKVET resmi küpesine birleştirildi.`);
+  renderApp();
+}
+
+// 4. GÜVENLİ KASAP QR PORTALI (ALIŞ FİYATI VE KÂR KESİNLİKLE GİZLİ)
+function openSecureButcherPortalModal(animalId) {
+  const activeAnimals = S.a.filter(a => a.st === 'sürüde');
+  const targetId = animalId || (SELECTED_ANIMALS.size > 0 ? Array.from(SELECTED_ANIMALS)[0] : activeAnimals[0]?.id);
+  const a = S.a.find(x => x.id === targetId);
+  if (!a) return alert('Lütfen kasap portalı için bir hayvan seçin.');
+
+  const costs = computeCosts();
+  const c = costs.costMap[a.id] || {};
+  const liveKg = c.latestWeight || 52;
+  const yieldPct = S.carcassYield || 50;
+  const carcassKg = Math.round(liveKg * (yieldPct / 100) * 10) / 10;
+  const bonelessKg = Math.round(carcassKg * 0.77 * 10) / 10;
+
+  const animalTasks = S.t.filter(t => t.withdrawal > 0 && daysBetween(t.d, today()) < t.withdrawal);
+  const isWithdrawalClear = animalTasks.length === 0;
+
+  const modal = $("modalContent");
+  modal.innerHTML = `
+    <div class="modal-header">
+      <div class="modal-title">🥩 Güvenli Kasap & Alıcı Kartı (Fiyat / Kâr Gizli)</div>
+      <button class="close-modal" onclick="closeModal()">✕</button>
+    </div>
+    <div style="font-size:12px; color:var(--mut); margin-bottom:12px">
+      Bu ekran kasaba veya müşteriye gösterilmek üzere tasarlanmıştır. <b>Alış fiyatınız ve kâr marjınız kesinlikle gizlenmiştir.</b>
+    </div>
+
+    <!-- KASAP GÜVENLİK KARTI -->
+    <div style="background:var(--card-sub); border:2px solid var(--primary); border-radius:14px; padding:16px; margin-bottom:12px">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start">
+        <div>
+          <span style="font-size:12px; color:var(--mut)">ÇİFTLİK KÜÇÜKBAŞ ET RAPORU</span>
+          <div style="font-size:20px; font-weight:800; color:var(--tx); margin-top:2px">🐑 ${E(a.k)}</div>
+          <div style="font-size:13px; color:var(--tx-sec)">${E(a.breed || 'Akkaraman')} · ${E(a.cat || 'Koyun')} · ${a.s === 'E' ? '♂ Erkek' : '♀ Dişi'}</div>
+        </div>
+        <div style="text-align:right">
+          <span class="badge ${isWithdrawalClear ? 'badge-g' : 'badge-r'}" style="font-size:12px; padding:4px 8px">
+            ${isWithdrawalClear ? '✅ KESİME UYGUN (İlaç Kalıntısı Yok)' : '⚠️ KESİM YASAĞI (İlaç Arınma Süresi Dolmadı)'}
+          </span>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin-top:14px; padding-top:10px; border-top:1px dashed var(--ln)">
+        <div style="background:var(--card); padding:10px; border-radius:8px; border:1px solid var(--ln)">
+          <div style="font-size:11px; color:var(--mut)">Canlı Baskül Ağırlığı</div>
+          <div style="font-size:16px; font-weight:800; color:var(--primary)">${liveKg} kg</div>
+        </div>
+        <div style="background:var(--card); padding:10px; border-radius:8px; border:1px solid var(--ln)">
+          <div style="font-size:11px; color:var(--mut)">Beklenen Karkas (%${yieldPct})</div>
+          <div style="font-size:16px; font-weight:800; color:var(--b)">${carcassKg} kg</div>
+        </div>
+        <div style="background:var(--card); padding:10px; border-radius:8px; border:1px solid var(--ln)">
+          <div style="font-size:11px; color:var(--mut)">Net Kemiksiz Lop Et</div>
+          <div style="font-size:16px; font-weight:800; color:var(--g)">${bonelessKg} kg</div>
+        </div>
+        <div style="background:var(--card); padding:10px; border-radius:8px; border:1px solid var(--ln)">
+          <div style="font-size:11px; color:var(--mut)">Karkas Yağ & Kalite</div>
+          <div style="font-size:15px; font-weight:700">1. Sınıf Yağsız Besi</div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px; font-size:11.5px; color:var(--tx-sec); display:flex; justify-content:space-between; align-items:center">
+        <span>İşletme: <b>${S.farmName || 'Deniz & Hasan Besi'}</b></span>
+        <span>Rapor Tarihi: <b>${today()}</b></span>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:8px">
+      <button class="btn btn-primary" style="flex:1" onclick="window.print()">🖨️ Kasap Makbuzu Yazdır / PDF</button>
+      <button class="btn btn-secondary" style="flex:1" onclick="closeModal()">Kapat</button>
+    </div>
+  `;
+  openModal();
+}
+
+// 5. BOYASIZ DAĞ KOÇ KATIMI VE 3 DALGALI DOĞUM KOHORT MOTORU (METOT 4)
+function renderUnpaintedMatingCohortHtml() {
+  const ewesCount = S.a.filter(a => a.s === 'D' && a.st === 'sürüde').length || 200;
+  return `
+    <div class="card" style="border-top:4px solid var(--amber)">
+      <div class="card-title">
+        <span>🏔️ Boyasız Dağ Koç Katımı & 3 Dalgalı Doğum Kohort Motoru</span>
+        <span class="badge badge-amber">Metot 4: 17 Günlük Sikluslar</span>
+      </div>
+      <div style="font-size:12.5px; color:var(--tx-sec); margin-bottom:12px">
+        Dağ merasında koçlar boyanmadan sürüye salındığında aşım tarihi tek tek bilinemez. Küçükbaş koyunların 17 günlük östrus siklusuna ve 150 günlük gebelik süresine göre 3 dalgalı doğum tahmini yapılır:
+      </div>
+
+      <div class="form-row">
+        ${inp('cohortRamDate', 'Koç Salınım Tarihi *', 'date', addDays(today(), -120), 'onchange="calcUnpaintedCohorts()"')}
+        ${inp('cohortEwesCount', 'Koça Katılan Anaç Koyun Sayısı', 'number', ewesCount, 'inputmode="decimal" oninput="calcUnpaintedCohorts()"')}
+        ${inp('cohortTwinningEst', 'Tahmini İkizlik Oranı (%)', 'number', '35', 'inputmode="decimal" oninput="calcUnpaintedCohorts()"')}
+      </div>
+
+      <div id="cohortResultBox" style="margin-top:10px"></div>
+
+      <!-- 45-60 GÜN TARTI VE 70+ GÜN SAĞ KARIN ASİMETRİ KONTROL REHBERİ -->
+      <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:8px; padding:12px; margin-top:12px">
+        <b style="font-size:13px; color:var(--primary)">🔍 Kısır / Boş Kalan Koyunları Ayıklama Kılavuzu:</b>
+        <div style="font-size:12px; color:var(--tx-sec); margin-top:4px; line-height:1.6">
+          • <b>45-60. Gün Tartı Filtresi:</b> Koç salımından 45-60 gün sonra canlı ağırlığında en az %6-8 artış olmayan anaçlar gebe kalmamış olabilir.<br>
+          • <b>70+ Gün Sağ Karın Asimetrisi:</b> Gebe koyunun karnı arkadan bakıldığında sağ tarafa doğru belirgin şekilde genişler (işkembe soldadır, rahim sağa yatar).<br>
+          • <b>Iskarta / Kasap Sevki:</b> 3. dalgadan sonra hala boş kalan koyunlar gereksiz kışlık yem tüketmemesi için damızlıktan çıkarılıp kasaba sevk edilmelidir.
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function calcUnpaintedCohorts() {
+  const ramDateStr = V('cohortRamDate') || addDays(today(), -120);
+  const totalEwes = +V('cohortEwesCount') || 200;
+  const twinPct = (+V('cohortTwinningEst') || 35) / 100;
+
+  const wave1Ewes = Math.round(totalEwes * 0.70);
+  const wave1Lambs = Math.round(wave1Ewes * (1 + twinPct));
+  const wave1Date = addDays(ramDateStr, 150);
+
+  const wave2Ewes = Math.round(totalEwes * 0.20);
+  const wave2Lambs = Math.round(wave2Ewes * (1 + twinPct));
+  const wave2Date = addDays(ramDateStr, 167);
+
+  const wave3Ewes = Math.max(0, totalEwes - wave1Ewes - wave2Ewes);
+  const wave3Lambs = Math.round(wave3Ewes * (1 + twinPct));
+  const wave3Date = addDays(ramDateStr, 184);
+
+  const totalExpectedLambs = wave1Lambs + wave2Lambs + wave3Lambs;
+
+  const res = $('cohortResultBox');
+  if (res) {
+    res.innerHTML = `
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Doğum Dalgası</th>
+              <th>Östrus Siklusu</th>
+              <th>Tahmini Doğum Başlangıcı</th>
+              <th class="text-right">Doğuracak Koyun</th>
+              <th class="text-right">Beklenen Kuzu</th>
+              <th>Ağıl Hazırlığı</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:var(--primary-light); font-weight:700">
+              <td><b>🌊 1. Ana Dalga (%70)</b></td>
+              <td>1. Siklus (1-17 gün)</td>
+              <td><b>${wave1Date}</b></td>
+              <td class="text-right tx-green"><b>${wave1Ewes} Baş</b></td>
+              <td class="text-right tx-green"><b>~${wave1Lambs} Kuzu</b></td>
+              <td>Doğum bölmelerini hazırla, kolostrum hazırla</td>
+            </tr>
+            <tr>
+              <td><b>🌊 2. Dalga (%20)</b></td>
+              <td>2. Siklus (18-35 gün)</td>
+              <td><b>${wave2Date}</b></td>
+              <td class="text-right tx-blue"><b>${wave2Ewes} Baş</b></td>
+              <td class="text-right tx-blue"><b>~${wave2Lambs} Kuzu</b></td>
+              <td>İkinci parti doğum padokları</td>
+            </tr>
+            <tr>
+              <td><b>🌊 3. Geç Dalga (%10)</b></td>
+              <td>3. Siklus (36-52 gün)</td>
+              <td><b>${wave3Date}</b></td>
+              <td class="text-right tx-amber"><b>${wave3Ewes} Baş</b></td>
+              <td class="text-right tx-amber"><b>~${wave3Lambs} Kuzu</b></td>
+              <td>Geç doğuranlar (Kısır kontrolü yap)</td>
+            </tr>
+            <tr style="border-top:2px solid var(--ln); background:var(--card-sub)">
+              <td colspan="3"><b>TOPLAM SEZON BEKLENTİSİ</b></td>
+              <td class="text-right"><b>${totalEwes} Koyun</b></td>
+              <td class="text-right tx-green"><b style="font-size:15px">~${totalExpectedLambs} Kuzu</b></td>
+              <td>İkizlik: %${Math.round(twinPct * 100)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+}
+
 </script>
 </body>
 </html>
+```
