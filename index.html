@@ -15,60 +15,60 @@
   --bg: #f8fafc;
   --card: #ffffff;
   --card-sub: #f1f5f9;
-  --card-glow: rgba(21, 128, 61, 0.08);
+  --card-glow: rgba(16, 185, 129, 0.12);
   --tx: #0f172a;
   --tx-sec: #475569;
   --mut: #64748b;
   --ln: #e2e8f0;
-  --primary: #15803d;
-  --primary-hover: #166534;
-  --primary-light: #dcfce7;
-  --primary-tx: #14532d;
-  --g: #16a34a;
-  --g-light: #dcfce7;
-  --r: #dc2626;
+  --primary: #10b981;
+  --primary-hover: #059669;
+  --primary-light: #d1fae5;
+  --primary-tx: #065f46;
+  --g: #10b981;
+  --g-light: #d1fae5;
+  --r: #ef4444;
   --r-light: #fee2e2;
-  --b: #2563eb;
+  --b: #3b82f6;
   --b-light: #dbeafe;
-  --amber: #d97706;
+  --amber: #f59e0b;
   --amber-light: #fef3c7;
-  --purple: #7c3aed;
-  --purple-light: #f3e8ff;
+  --purple: #8b5cf6;
+  --purple-light: #ede9fe;
   --radius: 16px;
   --radius-sm: 10px;
-  --radius-pill: 30px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
-  --shadow-md: 0 4px 10px -2px rgba(0,0,0,0.07);
-  --shadow-lg: 0 12px 24px -4px rgba(0,0,0,0.1);
-  --island-hover: translateY(-2px) scale(1.008);
+  --radius-pill: 32px;
+  --shadow: 0 2px 8px -2px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-md: 0 8px 20px -4px rgba(0,0,0,0.08);
+  --shadow-lg: 0 16px 32px -6px rgba(0,0,0,0.12);
+  --island-hover: translateY(-2px) scale(1.01);
 }
 
 [data-theme="dark"] {
-  --bg: #000000;
-  --card: #000000;
-  --card-sub: #09090b;
-  --card-glow: rgba(34, 197, 94, 0.18);
-  --tx: #ffffff;
-  --tx-sec: #e4e4e7;
-  --mut: #a1a1aa;
-  --ln: #27272a;
-  --primary: #22c55e;
-  --primary-hover: #16a34a;
-  --primary-light: #052e16;
-  --primary-tx: #86efac;
-  --g: #4ade80;
-  --g-light: #052e16;
-  --r: #ef4444;
-  --r-light: #450a0a;
-  --b: #3b82f6;
-  --b-light: #172554;
-  --amber: #f59e0b;
-  --amber-light: #451a03;
-  --purple: #a855f7;
-  --purple-light: #3b0764;
-  --shadow: 0 2px 8px rgba(0,0,0,0.9);
-  --shadow-md: 0 6px 16px rgba(0,0,0,0.95);
-  --shadow-lg: 0 16px 32px rgba(0,0,0,1);
+  --bg: #090e17;
+  --card: #111827;
+  --card-sub: #0b111e;
+  --card-glow: rgba(16, 185, 129, 0.18);
+  --tx: #f9fafb;
+  --tx-sec: #e5e7eb;
+  --mut: #9ca3af;
+  --ln: #1f293d;
+  --primary: #10b981;
+  --primary-hover: #059669;
+  --primary-light: rgba(16, 185, 129, 0.18);
+  --primary-tx: #6ee7b7;
+  --g: #34d399;
+  --g-light: rgba(16, 185, 129, 0.16);
+  --r: #f87171;
+  --r-light: rgba(239, 68, 68, 0.16);
+  --b: #60a5fa;
+  --b-light: rgba(59, 130, 246, 0.16);
+  --amber: #fbbf24;
+  --amber-light: rgba(245, 158, 11, 0.16);
+  --purple: #a78bfa;
+  --purple-light: rgba(139, 92, 246, 0.16);
+  --shadow: 0 4px 12px rgba(0,0,0,0.45);
+  --shadow-md: 0 10px 24px rgba(0,0,0,0.55);
+  --shadow-lg: 0 20px 40px rgba(0,0,0,0.65);
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -133,7 +133,7 @@ html, body { margin: 0; padding: 0; min-height: 100vh; background: var(--bg); co
 /* MAIN CONTENT */
 .main-content {
   flex: 1; max-width: 1020px; width: 100%; margin: 0 auto;
-  padding: 16px 14px 165px;
+  padding: 16px 14px 85px;
 }
 
 /* BUTTONS */
@@ -255,14 +255,25 @@ input:focus, select:focus, textarea:focus {
 @media (min-width: 800px) { .bulk-bar { bottom: 24px; } }
 .bulk-bar.visible { display: flex; }
 
-/* MOBILE BOTTOM NAV */
+/* DOCKED BOTTOM NAV */
 .bottom-nav {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 35;
   background: var(--card); border-top: 1px solid var(--ln);
   height: 58px; display: flex; align-items: center; justify-content: space-around;
-  box-shadow: 0 -1px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+  padding: 0 4px;
 }
-@media (min-width: 800px) { .bottom-nav { display: none; } }
+@media (min-width: 800px) {
+  .bottom-nav {
+    max-width: 600px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    border-radius: 18px 18px 0 0;
+    border-left: 1px solid var(--ln);
+    border-right: 1px solid var(--ln);
+  }
+}
 .bnav-item {
   flex: 1; height: 100%; display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 2px;
@@ -317,7 +328,7 @@ tr:hover td { background: var(--card-sub); }
 .fab-btn {
   position: fixed;
   right: 16px;
-  bottom: 74px;
+  bottom: 70px;
   z-index: 95;
   width: 60px;
   height: 60px;
@@ -354,7 +365,7 @@ tr:hover td { background: var(--card-sub); }
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  padding: 16px 16px 142px;
+  padding: 16px 16px 76px;
   overflow-y: auto;
 }
 .fab-overlay.open {
@@ -469,35 +480,9 @@ tr:hover td { background: var(--card-sub); }
   font-weight: 800;
 }
 
-/* Adjust Bottom Nav to leave room for the right-side FAB button */
-.bottom-nav {
-  position: fixed;
-  bottom: 72px;
-  left: 12px;
-  right: 84px;
-  z-index: 30;
-  background: var(--card);
-  border: 1px solid var(--ln);
-  border-radius: 30px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  box-shadow: var(--shadow-lg);
-  padding: 0 6px;
-}
-@media (min-width: 900px) {
-  .bottom-nav {
-    max-width: 500px;
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    width: 100%;
-  }
-}
-
+/* Sticky Bars Docked Positioning */
 .bulk-bar {
-  bottom: 138px !important;
+  bottom: 66px !important;
 }
 
 /* PRINT */
@@ -958,18 +943,21 @@ if ('serviceWorker' in navigator) {
   <!-- TOP APP BAR -->
   <header class="app-header">
     <div class="header-top">
-      <div style="display:flex; align-items:center; gap:6px; overflow:hidden">
+      <div style="display:flex; align-items:center; gap:6px; overflow:hidden; flex:1">
         <div class="brand-pill" onclick="switchTab(0)" title="Ana Ekrana Dön">
           <span>🐑</span>
-          <span id="farmNameDisplay" style="max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">Deniz & Hasan Besi</span>
+          <span id="farmNameDisplay" style="max-width:280px; font-weight:800; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">HASAN BİLİCAN </span>
           <span class="status-dot" title="Sistem Aktif"></span>
         </div>
         <span class="badge badge-g" id="activeScreenBadge" onclick="toggleFabMenu()" style="cursor:pointer; font-size:11.5px; padding:4px 9px">📊 Genel Bakış</span>
       </div>
       <div class="header-actions">
         <button class="btn btn-primary btn-sm no-print" onclick="openCameraHUDModal()" title="Canlı Kamera & Küpe Tanıma HUD">📷 Kamera HUD</button>
-        <button class="btn btn-secondary btn-sm no-print" onclick="switchTab(12)" title="Cari & Veresiye Defteri">📒 Cari</button>
-        <button class="btn-icon no-print" id="btnTheme" title="Tema Değiştir">🌓</button>
+        <button class="btn-icon no-print" id="btnWhatsAppHeader" onclick="shareWhatsAppSummary()" title="Sürü Özetini WhatsApp ile Paylaş" style="background:#25D366; border-color:#20bd5a; color:#ffffff">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" style="display:block">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.41a8.17 8.17 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.75-.67-1.25-1.49-1.39-1.74-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.12.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.3z"/>
+          </svg>
+        </button>
         <button class="btn-icon no-print" id="btnUndo" title="Son İşlemi Geri Al">↶</button>
       </div>
     </div>
@@ -1088,7 +1076,7 @@ const LAMB_GROWTH_BENCHMARK = [
 ];
 
 let S = {
-  farmName: "Deniz & Hasan Besi",
+  farmName: "HASAN BİLİCAN ",
   fp: 290,
   carcassYield: 50,
   groups: [
@@ -2155,12 +2143,7 @@ function viewDashboard() {
       </div>
     </div>
 
-    <!-- WHATSAPP RAPORU -->
-    <div style="margin-top:14px">
-      <button class="btn btn-primary" style="width:100%; padding:12px; font-size:14px" onclick="shareWhatsAppSummary()">
-        📲 Sürü Durumunu ve Maliyetleri WhatsApp'ta Paylaş
-      </button>
-    </div>
+
   `;
 }
 
@@ -3690,7 +3673,7 @@ function printQurbanReceipt(id) {
   const animal = S.a.find(a => a.id == q.animalId);
   const bal = (+q.totalAmount || 0) - (+q.deposit || 0);
 
-  const receipt = `🐑 ${S.farmName || 'Koyun & Küçükbaş'} - KURBANLIK REZERVASYON MAKBUZU
+  const receipt = `🐑 ${S.farmName || 'HASAN BİLİCAN '} - KURBANLIK REZERVASYON MAKBUZU
 ===========================================
 Tarih: ${today()}
 Kesim Sıra No: #${q.slaughterOrder || '1'}
@@ -4263,6 +4246,7 @@ function viewCloudSync() {
 function viewSettings() {
   const K = [["gider", "Gider"], ["gelir", "Gelir"], ["kredi+", "Kredi Çekildi"], ["kredi-", "Kredi Taksiti"]];
   const cData = computeCosts();
+  const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
 
   // Devlet Destekleme Primi Hesabı (Anaç Koyun & Sürü Büyütme)
   const anacCount = S.a.filter(a => (a.cat === "Anaç Koyun" || a.s === "D") && a.st === "sürüde").length;
@@ -4272,10 +4256,29 @@ function viewSettings() {
   const tahminiDestek = (anacCount * anacDestekBirim) + (kuzuCount * suruBuyutmeBirim);
 
   return `
+    <!-- GÖRÜNÜM & TEMA SEÇİMİ (AYARLAR MENÜSÜNDE) -->
+    <div class="card" style="border-top:4px solid var(--purple)">
+      <div class="card-title">
+        <span>🌓 Görünüm & Tema Seçimi</span>
+        <span class="badge ${currentTheme === 'dark' ? 'badge-b' : 'badge-amber'}">${currentTheme === 'dark' ? '🌙 Koyu Tema Aktif' : '☀️ Açık Tema Aktif'}</span>
+      </div>
+      <div style="font-size:12.5px; color:var(--tx-sec); margin-bottom:12px">
+        Uygulamanın görsel temasını gündüz (açık) veya gece (koyu) moduna ayarlayabilirsiniz:
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
+        <button class="btn ${currentTheme === 'light' ? 'btn-primary' : 'btn-secondary'}" style="padding:12px; font-weight:700" onclick="setAppTheme('light')">
+          ☀️ Açık Tema
+        </button>
+        <button class="btn ${currentTheme === 'dark' ? 'btn-primary' : 'btn-secondary'}" style="padding:12px; font-weight:700" onclick="setAppTheme('dark')">
+          🌙 Koyu Tema
+        </button>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">🏠 Çiftlik Ayarları & Canlı Kg Fiyatı</div>
       <div class="form-row">
-        ${inp("setFarmName", "Çiftlik / İşletme Adı", "text", S.farmName || "Deniz & Hasan Besi")}
+        ${inp("setFarmName", "Çiftlik / İşletme Adı", "text", S.farmName || "HASAN BİLİCAN ")}
         ${inp("setLiveKgPrice", "Canlı Kg Piyasa Fiyatı (TL/kg)", "number", S.fp || "290", 'inputmode="decimal"')}
         ${inp("setCarcassYield", "Karkas Randımanı (%)", "number", S.carcassYield || "50", 'inputmode="decimal"')}
       </div>
@@ -6350,12 +6353,19 @@ function addPresetVaccine(idx) {
 }
 
 // AYARLAR VE YEDEKLEME
+function setAppTheme(mode) {
+  document.documentElement.setAttribute("data-theme", mode);
+  try { localStorage.setItem("koyun-theme", mode); } catch (e) {}
+  renderApp();
+  setStatus(mode === "dark" ? "Koyu tema aktif edildi." : "Açık tema aktif edildi.");
+}
+
 function saveFarmSettings() {
   const farmName = V("setFarmName").trim();
   const fp = +V("setLiveKgPrice") || 290;
   const carcassYield = +V("setCarcassYield") || 50;
   mutate(() => {
-    S.farmName = farmName || "Deniz & Hasan Besi";
+    S.farmName = farmName || "HASAN BİLİCAN ";
     S.fp = fp;
     S.carcassYield = carcassYield;
   });
@@ -6505,7 +6515,7 @@ function importJSONBackup(e) {
 function loadSampleDemoData() {
   if (!confirm("Örnek demo verileri yüklensin mi?")) return;
   mutate(() => {
-    S.farmName = "Deniz & Hasan Besi";
+    S.farmName = "HASAN BİLİCAN ";
     S.fp = 290;
     S.groups = [
       { id: 1, name: "2026 Bahar Besi Kuzuları", desc: "Yoğun besi rasyonu alan erkek kuzular", color: "#16a34a" },
@@ -6547,7 +6557,7 @@ function wipeAllData() {
   if (confirm("DİKKAT: Tüm veriler silinecektir! Emin misiniz?") && confirm("Gerçekten sıfırlamak istiyor musunuz?")) {
     mutate(() => {
       S = {
-        farmName: "Deniz & Hasan Besi",
+        farmName: "HASAN BİLİCAN ",
         e: [], c: DEF_CATS.map(x => ({ n: x[0], k: x[1] })),
         a: [], w: [], t: [], feeds: [], loans: [], groups: [], feedLogs: [], qurbans: [], milkLogs: [], woolLogs: [],
         fp: 290, carcassYield: 50,
@@ -6583,7 +6593,7 @@ function shareWhatsAppSummary() {
   const sc = computeFarmScorecard();
   const loan = getLoanBalance();
 
-  const msg = `🐑 *${S.farmName || 'Koyun & Küçükbaş Muhasebe Raporu'}*
+  const msg = `🐑 *${S.farmName || 'HASAN BİLİCAN '}*
 📅 Tarih: ${today()}
 
 ⚖️ *ÇİFTLİK PUANI: ${sc.overallScore} / 100*
@@ -6604,7 +6614,7 @@ function shareWhatsAppSummary() {
 • Sürü Piyasa Değeri: ${F(costs.flockEstimatedValue)}
 • Net Varlık Kârı: ${costs.flockPotentialProfit >= 0 ? '+' : ''}${F(costs.flockPotentialProfit)}
 
-_Koyun & Küçükbaş Çiftlik Yönetim Sistemi Pro v3.0_`;
+_HASAN BİLİCAN _`;
 
   window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
 }
@@ -6631,7 +6641,7 @@ async function init() {
       if (!S.loans) S.loans = [];
       if (!S.feedLogs) S.feedLogs = [];
       if (!S.qurbans) S.qurbans = [];
-      if (!S.farmName) S.farmName = "Deniz & Hasan Besi";
+      if (!S.farmName || S.farmName === "Deniz & Hasan Besi") S.farmName = "HASAN BİLİCAN ";
     }
   } catch (e) {}
 
@@ -6701,7 +6711,7 @@ function mutate(actionFn) {
 }
 
 function updateHeaderStatus() {
-  if ($("farmNameDisplay")) $("farmNameDisplay").textContent = S.farmName || "Deniz & Hasan Besi";
+  if ($("farmNameDisplay")) $("farmNameDisplay").textContent = S.farmName || "HASAN BİLİCAN ";
   const td = today();
   const urgentTasks = S.t.filter(t => !t.x && t.d <= addDays(td, 7));
   const urgentBirths = S.a.filter(a => a.ins && a.st === "sürüde" && Math.abs(daysBetween(td, addDays(a.ins, 150))) <= 7);
@@ -8715,7 +8725,7 @@ function openSecureButcherPortalModal(animalId) {
       </div>
 
       <div style="margin-top:12px; font-size:11.5px; color:var(--tx-sec); display:flex; justify-content:space-between; align-items:center">
-        <span>İşletme: <b>${S.farmName || 'Deniz & Hasan Besi'}</b></span>
+        <span>İşletme: <b>${S.farmName || 'HASAN BİLİCAN '}</b></span>
         <span>Rapor Tarihi: <b>${today()}</b></span>
       </div>
     </div>
