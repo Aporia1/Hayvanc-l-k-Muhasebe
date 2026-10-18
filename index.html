@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="tr" data-theme="light">
 <head>
@@ -501,10 +502,92 @@ tr:hover td { background: var(--card-sub); }
 
 /* PRINT */
 @media print {
-  .app-header, .bottom-nav, .bulk-bar, .no-print, button, .btn { display: none !important; }
-  body { background: #fff !important; color: #000 !important; font-size: 12px; }
-  .card { box-shadow: none !important; border: 1px solid #ccc !important; page-break-inside: avoid; }
-  .main-content { max-width: 100% !important; padding: 0 !important; }
+  @page {
+    size: A4 portrait;
+    margin: 8mm 10mm;
+  }
+  .app-header, .bottom-nav, .bulk-bar, .no-print, button, .btn, .fab-btn, .fab-overlay, .close-modal {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 12px;
+  }
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .main-content {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  /* KASAP MAKBUZU VE MODAL YAZDIRMA İZOLASYONU (TEK SAYFA PDF FIX) */
+  body.printing-modal #app > *:not(#modalBackdrop),
+  body.printing-modal .app-header,
+  body.printing-modal .main-content,
+  body.printing-modal #st,
+  body.printing-modal #main,
+  body.printing-modal .bottom-nav,
+  body.printing-modal .bulk-bar,
+  body.printing-modal .fab-btn,
+  body.printing-modal .fab-overlay {
+    display: none !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.printing-modal #modalBackdrop,
+  #modalBackdrop.printing-active {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body.printing-modal .modal,
+  #modalBackdrop.printing-active .modal {
+    position: static !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    height: auto !important;
+    background: transparent !important;
+    color: #000000 !important;
+    overflow: visible !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .butcher-report-card {
+    border: 2px solid #15803d !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: avoid !important;
+  }
 }
 
 /* CAMERA HUD & FACTORY AUTOMATION STYLES */
@@ -1656,7 +1739,7 @@ function buildFabMenuContent() {
   container.innerHTML = `
     <div style="display:flex; justify-content:space-between; align-items:center; padding:0 4px 6px;">
       <span style="font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; color:#cbd5e1;">📂 TÜM EKRANLAR</span>
-      <span style="font-size:11px; color:var(--mut);">Kapatmak için dışarı dokunun</span>
+      
     </div>
     <div class="fab-modules-grid">
       ${NAV_TABS.map(tab => {
@@ -1790,9 +1873,7 @@ function openIslandDetail(type) {
         <div class="modal-title">📦 Kümülatif Maliyet Dağılımı</div>
         <button class="close-modal" onclick="closeModal()">✕</button>
       </div>
-      <div style="font-size:12px; color:var(--mut); margin-bottom:8px">
-        Bir hayvanın kümülatif maliyeti = Alış Bedeli + Bireysel İlaç/Tedavi + Sürüde Geçirdiği Gün Sayısı × Günlük Yem/İşçilik Payı.
-      </div>
+      
       <div class="table-wrap">
         <table>
           <tr><td>Sürü Başı Ortalama Toplam Maliyet</td><td class="text-right tx-red"><b>${F(cData.avgTotalCost)}</b></td></tr>
@@ -1913,7 +1994,7 @@ function viewDashboard() {
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px">
         <div style="font-weight:700; font-size:14px; display:flex; align-items:center; gap:6px">
           <span>📅 Muhasebe Dönemi:</span>
-          <span style="font-size:12px; color:var(--mut)">Gelir ve gider filtreleri</span>
+          
         </div>
         <div style="display:flex; gap:6px; flex-wrap:wrap">
           <select id="dashFM" style="width:130px; padding:6px 8px; font-size:12.5px">${optList(months.map((m, i) => [i, m]), FM)}</select>
@@ -2145,9 +2226,7 @@ function viewScorecard() {
           Puan: ${sc.overallScore} / 100
         </span>
       </div>
-      <div style="font-size:12.5px; color:var(--tx-sec); margin-bottom:14px">
-        Bu karne, çiftliğinizdeki mevcut tartı, rasyon, döl verimi ve muhasebe kayıtlarınızı küçükbaş hayvancılık sektörel altın standartlarıyla kıyaslayarak güçlü ve zayıf yönlerinizi raporlar.
-      </div>
+      
 
       <!-- GENEL SKOR DEĞERLENDİRME KUTUSU -->
       <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:var(--radius-sm); padding:12px; margin-bottom:14px">
@@ -2156,9 +2235,7 @@ function viewScorecard() {
             <b style="font-size:14px">
               ${sc.overallScore >= 85 ? '🌟 Mükemmel Düzeyde Çiftlik Yönetimi' : (sc.overallScore >= 70 ? '👍 İyi Düzeyde (Geliştirilmeye Açık Alanlar Var)' : '⚠️ Kritik Düzeyde (Rasyon ve Maliyet Optimizasyonu Gerekli)')}
             </b>
-            <div style="font-size:12px; color:var(--mut); margin-top:2px">
-              10 temel hayvancılık ve kârlılık parametresinin ağırlıklı değerlendirmesi.
-            </div>
+            
           </div>
           <button class="btn btn-primary btn-sm" onclick="switchTab(2)">🌾 Rasyon Ayarlarına Git</button>
         </div>
@@ -2207,9 +2284,7 @@ function viewRation() {
         <span>🌾 Rasyon Besin Değeri & Kilo Alma Tahmini</span>
         <button class="btn btn-primary btn-sm" onclick="switchTab(7)">+ Depodan Yem Ekle / Düzenle</button>
       </div>
-      <div style="font-size:12.5px; color:var(--tx-sec); margin-bottom:12px">
-        Yemlerinize girdiğiniz <b>Ham Protein, Mermer Tozu / Kalsiyum, Fosfor ve Enerji</b> etiket değerleri ile sürünüzün günlük canlı ağırlık artışı (ADG) ve idrar yolu sağlığı simüle edilir.
-      </div>
+      
 
       <!-- KİLO ALMA VE MALİYET TAHMİN KARTI -->
       <div class="kpi-grid">
@@ -2398,9 +2473,7 @@ function viewFlock() {
           </button>
           <span style="font-size:12px; color:var(--mut)">Listelenen: <b>${list.length} baş</b></span>
         </div>
-        <div style="font-size:12px; color:var(--mut)">
-          💡 Hayvan detaylarını görmek ve değiştirmek için adasına tıklayın.
-        </div>
+        
       </div>
     </div>
 
@@ -2843,9 +2916,7 @@ function viewBuySell() {
         <span>🛒 Hayvan Satın Alım Sihirbazı</span>
         <span class="badge badge-g">Toplu Küpe, Yaş & Veresiye Alım</span>
       </div>
-      <div style="font-size:12px; color:var(--mut); margin-bottom:12px">
-        Aldığınız hayvanların küpe numaralarını, yaşlarını ve peşin/vadeli (veresiye) ödeme bilgisini tek seferde girin.
-      </div>
+      
 
       <div class="form-row">
         ${inp("wizBuyDate", "Alım Tarihi", "date", today())}
@@ -2917,9 +2988,7 @@ function viewBuySell() {
         </div>
 
         <div id="tagModeGroup" style="display:none">
-          <div style="font-size:12px; color:var(--mut)">
-            Tüm bu hayvanlar sürüde tek bir grup kaydı olarak tutulur.
-          </div>
+          
         </div>
       </div>
 
@@ -2943,9 +3012,7 @@ function viewBuySell() {
         <span>💰 Toplu Hayvan Satış & Kasap Cari Sihirbazı</span>
         <span class="badge badge-b">Peşin veya Vadeli (Gelecek Para)</span>
       </div>
-      <div style="font-size:12px; color:var(--mut); margin-bottom:12px">
-        Satılan veya kesime verilen hayvanları seçin. Sattığınız kişiyi veya kasabı Cari olarak girin; peşin veya vadeli (veresiye) satış yapın. Vadeli satışlar ödeme tarihiyle birlikte <b>Nakit & Cari Raporlar</b> ekranında <b>"Gelecek Para"</b> olarak görünür.
-      </div>
+      
 
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px">
         <div style="display:flex; gap:6px; flex-wrap:wrap">
@@ -3089,9 +3156,7 @@ function viewGroups() {
         <span>🏷️ Küpe Grupları & Padok Yönetimi</span>
         <button class="btn btn-primary btn-sm" onclick="openNewGroupModal()">+ Yeni Grup Oluştur</button>
       </div>
-      <div style="font-size:12px; color:var(--mut); margin-bottom:12px">
-        Koyunlarınızı "2026 Bahar Besi Grubu", "Damızlık Dişiler", "Kurbanlık Koçlar" veya padok isimleriyle gruplandırın. Her grubun toplam ağırlığını ve kümülatif maliyetini takip edin.
-      </div>
+      
 
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:10px">
         ${groups.map(g => {
@@ -3177,10 +3242,7 @@ function viewFeeds() {
         </div>
       </div>
 
-      <!-- OTOMATİK DÜŞÜM BİLGİLENDİRMESİ -->
-      <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:var(--radius-sm); padding:10px 12px; margin-bottom:12px; font-size:12px">
-        💡 <b>Otomatik Günlük Düşüm Aktiftir:</b> Uygulama her gün açıldığında, dünden bugüne geçen gün sayısı kadar yem stoğu otomatik olarak depodan düşülür.
-      </div>
+      
 
       <!-- Depodaki Yemler Tablosu -->
       <div class="table-wrap">
@@ -3683,9 +3745,7 @@ function viewWeights() {
         <span>🥩 Canlı / Karkas Et Kesimi & Kasap Cari Satış Kaydı</span>
         <span class="badge badge-r">Kasap Carisi & Nakit Rapor Entegreli</span>
       </div>
-      <div style="font-size:12px; color:var(--tx-sec); margin-bottom:10px">
-        Hayvanlarınızı kasapta kestirdiğinizde veya karkas et olarak verdiğinizde kasabı <b>Cari</b> olarak seçin. Peşin veya vadeli (veresiye) kesim bedeli doğrudan <b>Nakit & Cari Raporlar</b> ekranına yansır.
-      </div>
+      
 
       <div class="form-row">
         ${inp("simLiveKg", "Toplam Canlı Baskül Ağırlığı (kg)", "number", "55", 'inputmode="decimal" oninput="calcCarcassSim()"')}
@@ -3922,9 +3982,7 @@ function viewReports() {
         <span>🤝 Manuel Cari Kişi / Firma & Alacak - Verecek (Veresiye) Girişi</span>
         <span class="badge badge-purple">Kasap · Yemci · Şahıs</span>
       </div>
-      <div style="font-size:12px; color:var(--mut); margin-bottom:10px">
-        Alacaklı veya verecekli (borçlu) olduğunuz kişi ve firmaları, kasapları veya yemcileri vade tarihleriyle birlikte buradan doğrudan ekleyebilirsiniz.
-      </div>
+      
 
       <div class="form-row">
         ${inp("mcName", "👤 Cari Kişi veya Firma Adı *", "text", "", 'list="cariDatalist" placeholder="Örn: Ahmet Kasap, Öztürk Yem, Mehmet Ağa"')}
@@ -4133,9 +4191,7 @@ function viewCloudSync() {
             ${S.cloudSync?.endpointUrl ? '🟢 CANLI BULUT AKTİF' : '🟡 URL GİRİLMEDİ (YEREL MOD)'}
           </span>
         </div>
-        <div style="font-size:12.5px; color:var(--tx-sec); margin-bottom:10px">
-          Bilgisayar ve telefon arasında tam otomatik arka plan eşitlemesi için Google Apps Script adresinizi buraya girin:
-        </div>
+        
 
         <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:8px; padding:12px; margin-bottom:12px">
           <label style="font-weight:700; font-size:13px; color:var(--tx); margin-bottom:6px">
@@ -4179,9 +4235,7 @@ function viewCloudSync() {
       <!-- MANUEL YEDEKLEME -->
       <div class="card" style="margin-bottom:0">
         <div class="card-title">💾 Manuel Dosya & Metin Yedekleme</div>
-        <div style="font-size:12px; color:var(--tx-sec); margin-bottom:10px">
-          Dosya indirmede veya telefonda aktarmada hata yaşıyorsanız <b>"Metin Olarak Yedek Al"</b> butonuna basıp kodu doğrudan kopyalayabilirsiniz.
-        </div>
+        
         <div class="form-row">
           <button class="btn btn-primary" onclick="openTextExportModal()">📋 Metin Olarak Yedek Al (Kutuda Göster)</button>
           <button class="btn btn-secondary" onclick="openPasteSyncModal()">📥 Metin Yapıştırarak Yükle</button>
@@ -4242,7 +4296,7 @@ function viewSettings() {
             <td colspan="2" class="text-right tx-green"><b style="font-size:16px">${F(tahminiDestek)}</b></td>
           </tr>
         </table>
-      </div>
+      </div>n
     </div>
 
     <!-- Kategori Yönetimi -->
@@ -4455,9 +4509,7 @@ function editFeedItem(id) {
       <div class="modal-title">✏️ Yem İçeriğini & Besin Değerlerini Düzenle</div>
       <button class="close-modal" onclick="closeModal()">✕</button>
     </div>
-    <div style="font-size:12px; color:var(--mut); margin-bottom:8px">
-      Yemi silmeden adını, stok miktarını, günlük tüketimini ve protein/enerji/mermer tozu (kalsiyum) içeriklerini buradan doğrudan güncelleyebilirsiniz.
-    </div>
+    
     <div class="form-row">
       ${inp("efName", "Yem Adı *", "text", f.name || "")}
       ${inp("efStock", "Mevcut Depo Stoğu (kg) *", "number", f.stockKg ?? 0, 'inputmode="decimal"')}
@@ -5626,9 +5678,7 @@ function openBulkAgeModal() {
       <div class="modal-title">🎂 Toplu Yaş ve Doğum Tarihi Girişi (${targetList.length} Baş)</div>
       <button class="close-modal" onclick="closeModal()">✕</button>
     </div>
-    <div style="font-size:12px; color:var(--mut); margin-bottom:10px">
-      İster üstteki kutudan tüm hayvanlara tek tıkla ortak yaş (ay) / doğum tarihi atayın, ister aşağıdaki listeden her hayvanın yaşını hızlıca girin.
-    </div>
+    
 
     <!-- ORTAK TOPLU YAŞ / DOĞUM TARİHİ ATAMA KUTUSU -->
     <div style="background:var(--card-sub); border:1px solid var(--primary); border-radius:8px; padding:10px; margin-bottom:12px">
@@ -6677,9 +6727,7 @@ function openMilkLogModal() {
       <div class="modal-title">🥛 Günlük Süt Sağımı & Mandıra Satış Kaydı</div>
       <button class="close-modal" onclick="closeModal()">✕</button>
     </div>
-    <div style="font-size:12px; color:var(--mut); margin-bottom:10px">
-      Günlük sağılan süt miktarını, sağılan koyun sayısını ve mandıra satış fiyatını girin. İsterseniz hasılat doğrudan kasaya gelir olarak işlenir.
-    </div>
+    
 
     <div class="form-row">
       ${inp("milkDate", "Sağım / Satış Tarihi", "date", today())}
@@ -6777,9 +6825,7 @@ function openWoolLogModal() {
       <div class="modal-title">✂️ Yün Kırkım Sezonu & Gelir Kaydı</div>
       <button class="close-modal" onclick="closeModal()">✕</button>
     </div>
-    <div style="font-size:12px; color:var(--mut); margin-bottom:10px">
-      Bahar/yaz kırkımında elde edilen yapağı/yün miktarını ve satış bedelini girin. Kırkılan hayvanların son kırkım tarihi otomatik güncellenir.
-    </div>
+    
 
     <div class="form-row">
       ${inp("woolDate", "Kırkım Tarihi", "date", today())}
@@ -6887,9 +6933,7 @@ function openHoofCareModal() {
       <div class="modal-title">🦶 Sürü Tırnak Kesimi & Piyetin Göztaşı Ayak Banyosu</div>
       <button class="close-modal" onclick="closeModal()">✕</button>
     </div>
-    <div style="font-size:12px; color:var(--mut); margin-bottom:10px">
-      Topallık ve piyetin bakterisini önlemek için %5-10'luk göztaşı (bakır sülfat) veya çinko sülfat banyosu uygulayın.
-    </div>
+    
 
     <div class="form-row">
       ${inp("hoofDate", "Uygulama Tarihi", "date", today())}
@@ -7716,7 +7760,7 @@ function openAnimalDetailHubModal(animalId) {
     <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:12px; padding:12px; margin-bottom:12px">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px">
         <b style="font-size:12.5px; color:var(--primary)">📸 Çoklu Açı & Yüz Tanıma Galerisi (${(a.photos && a.photos.length) || (a.photo ? 1 : 0)} Açı Kayıtlı)</b>
-        <span style="font-size:11px; color:var(--mut)">Farklı açılardan tanıma için açı ekleyin</span>
+        
       </div>
       <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px">
         <button class="btn btn-secondary btn-sm" onclick="triggerAnimalPhotoCapture(${a.id}, 'Ön Cephe')">📷 + Ön Cephe</button>
@@ -7770,7 +7814,7 @@ function openAnimalDetailHubModal(animalId) {
     <div class="card" style="border:2px solid var(--b); padding:14px; margin-bottom:12px">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
         <b style="font-size:13.5px; color:var(--b)">✏️ Bu Hayvanın Bilgilerini ve Maliyetini Düzenle</b>
-        <span style="font-size:11px; color:var(--mut)">Değiştirip "Kaydet"e basın</span>
+        
       </div>
 
       <div class="form-row">
@@ -8313,7 +8357,7 @@ function openMergeVirtualTagModal(animalId) {
     </div>
     <div style="font-size:12.5px; color:var(--tx-sec); margin-bottom:10px">
       Geçici sanal küpe: <b>${E(a.k)}</b> (${a.breed || 'Küçükbaş'}, ${a.cat})<br>
-      Tarım Bakanlığı küpesi takıldığında numarayı girin. Bugüne kadarki tüm aşılar, tartılar, soy kütüğü ve maliyet kayıtları tek tıkla resmi küpeye aktarılır.
+      
     </div>
     <div class="form-row">
       ${inp('mrgOfficialTag', 'TÜRKVET Resmi Küpe Numarası *', 'text', '', 'placeholder="Örn: TR-51-987654"')}
@@ -8351,6 +8395,37 @@ function executeMergeVirtualTag(animalId) {
   renderApp();
 }
 
+
+function printButcherReceipt() {
+  document.body.classList.add("printing-modal");
+  const mb = document.getElementById("modalBackdrop");
+  if (mb) mb.classList.add("printing-active");
+  const cleanup = () => {
+    document.body.classList.remove("printing-modal");
+    if (mb) mb.classList.remove("printing-active");
+    window.removeEventListener("afterprint", cleanup);
+  };
+  window.addEventListener("afterprint", cleanup);
+  setTimeout(() => {
+    window.print();
+    setTimeout(cleanup, 2000);
+  }, 100);
+}
+
+window.addEventListener("beforeprint", () => {
+  const mb = document.getElementById("modalBackdrop");
+  if (mb && mb.classList.contains("open")) {
+    document.body.classList.add("printing-modal");
+    mb.classList.add("printing-active");
+  }
+});
+
+window.addEventListener("afterprint", () => {
+  document.body.classList.remove("printing-modal");
+  const mb = document.getElementById("modalBackdrop");
+  if (mb) mb.classList.remove("printing-active");
+});
+
 function openSecureButcherPortalModal(animalId) {
   const activeAnimals = S.a.filter(a => a.st === 'sürüde');
   const targetId = animalId || (SELECTED_ANIMALS.size > 0 ? Array.from(SELECTED_ANIMALS)[0] : activeAnimals[0]?.id);
@@ -8370,15 +8445,13 @@ function openSecureButcherPortalModal(animalId) {
   const modal = $("modalContent");
   modal.innerHTML = `
     <div class="modal-header">
-      <div class="modal-title">🥩 Güvenli Kasap & Alıcı Kartı (Fiyat / Kâr Gizli)</div>
+      <div class="modal-title">🥩 Kasap & Alıcı Et Raporu</div>
       <button class="close-modal" onclick="closeModal()">✕</button>
     </div>
-    <div style="font-size:12px; color:var(--mut); margin-bottom:12px">
-      Bu ekran kasaba veya müşteriye gösterilmek üzere tasarlanmıştır. <b>Alış fiyatınız ve kâr marjınız kesinlikle gizlenmiştir.</b>
-    </div>
+    
 
-    <!-- KASAP GÜVENLİK KARTI -->
-    <div style="background:var(--card-sub); border:2px solid var(--primary); border-radius:14px; padding:16px; margin-bottom:12px">
+    <!-- KASAP ET RAPORU KARTI -->
+    <div class="butcher-report-card" style="background:var(--card-sub); border:2px solid var(--primary); border-radius:14px; padding:16px; margin-bottom:12px">
       <div style="display:flex; justify-content:space-between; align-items:flex-start">
         <div>
           <span style="font-size:12px; color:var(--mut)">ÇİFTLİK KÜÇÜKBAŞ ET RAPORU</span>
@@ -8418,7 +8491,7 @@ function openSecureButcherPortalModal(animalId) {
     </div>
 
     <div style="display:flex; gap:8px">
-      <button class="btn btn-primary" style="flex:1" onclick="window.print()">🖨️ Kasap Makbuzu Yazdır / PDF</button>
+      <button class="btn btn-primary" style="flex:1" onclick="printButcherReceipt()">🖨️ Raporu Yazdır / PDF</button>
       <button class="btn btn-secondary" style="flex:1" onclick="closeModal()">Kapat</button>
     </div>
   `;
@@ -8432,9 +8505,7 @@ function renderUnpaintedMatingCohortHtml() {
         <span>🏔️ Boyasız Dağ Koç Katımı & 3 Dalgalı Doğum Kohort Motoru</span>
         <span class="badge badge-amber">Metot 4: 17 Günlük Sikluslar</span>
       </div>
-      <div style="font-size:12.5px; color:var(--tx-sec); margin-bottom:12px">
-        Dağ merasında koçlar boyanmadan sürüye salındığında aşım tarihi tek tek bilinemez. Küçükbaş koyunların 17 günlük östrus siklusuna ve 150 günlük gebelik süresine göre 3 dalgalı doğum tahmini yapılır:
-      </div>
+      
 
       <div class="form-row">
         ${inp('cohortRamDate', 'Koç Salınım Tarihi *', 'date', addDays(today(), -120), 'onchange="calcUnpaintedCohorts()"')}
@@ -8531,4 +8602,4 @@ function calcUnpaintedCohorts() {
 
 </script>
 </body>
-</html>
+</html>```
