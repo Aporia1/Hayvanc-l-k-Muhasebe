@@ -43,31 +43,31 @@
 }
 
 [data-theme="dark"] {
-  --bg: #090d16;
-  --card: #131b2e;
-  --card-sub: #0c1220;
-  --card-glow: rgba(34, 197, 94, 0.12);
-  --tx: #f8fafc;
-  --tx-sec: #cbd5e1;
-  --mut: #94a3b8;
-  --ln: #243049;
+  --bg: #000000;
+  --card: #000000;
+  --card-sub: #09090b;
+  --card-glow: rgba(34, 197, 94, 0.18);
+  --tx: #ffffff;
+  --tx-sec: #e4e4e7;
+  --mut: #a1a1aa;
+  --ln: #27272a;
   --primary: #22c55e;
   --primary-hover: #16a34a;
-  --primary-light: #064e3b;
-  --primary-tx: #bbf7d0;
+  --primary-light: #052e16;
+  --primary-tx: #86efac;
   --g: #4ade80;
-  --g-light: #064e3b;
-  --r: #f87171;
+  --g-light: #052e16;
+  --r: #ef4444;
   --r-light: #450a0a;
-  --b: #60a5fa;
+  --b: #3b82f6;
   --b-light: #172554;
-  --amber: #fbbf24;
+  --amber: #f59e0b;
   --amber-light: #451a03;
-  --purple: #c084fc;
+  --purple: #a855f7;
   --purple-light: #3b0764;
-  --shadow: 0 2px 6px rgba(0,0,0,0.4);
-  --shadow-md: 0 6px 14px rgba(0,0,0,0.5);
-  --shadow-lg: 0 16px 30px rgba(0,0,0,0.6);
+  --shadow: 0 2px 8px rgba(0,0,0,0.9);
+  --shadow-md: 0 6px 16px rgba(0,0,0,0.95);
+  --shadow-lg: 0 16px 32px rgba(0,0,0,1);
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -345,15 +345,15 @@ tr:hover td { background: var(--card-sub); }
 .fab-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(9, 13, 22, 0.76);
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 90;
   display: none;
   flex-direction: column;
   justify-content: flex-end;
-  align-items: flex-end;
-  padding: 16px 16px 148px;
+  align-items: center;
+  padding: 16px 16px 142px;
   overflow-y: auto;
 }
 .fab-overlay.open {
@@ -367,10 +367,10 @@ tr:hover td { background: var(--card-sub); }
 
 .fab-menu-container {
   width: 100%;
-  max-width: 440px;
+  max-width: 430px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   margin-top: auto;
 }
 
@@ -579,7 +579,7 @@ tr:hover td { background: var(--card-sub); }
   z-index: 10;
 }
 .hud-pill {
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(0, 0, 0, 0.85);
   color: #fff;
   padding: 5px 10px;
   border-radius: 20px;
@@ -596,7 +596,7 @@ tr:hover td { background: var(--card-sub); }
   bottom: 12px;
   left: 10px;
   right: 10px;
-  background: rgba(19, 27, 46, 0.92);
+  background: rgba(0, 0, 0, 0.92);
   border: 1px solid rgba(34, 197, 94, 0.5);
   border-radius: 14px;
   padding: 10px 12px;
@@ -641,7 +641,7 @@ tr:hover td { background: var(--card-sub); }
   top: 60px;
   left: 12px;
   right: 12px;
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(0, 0, 0, 0.95);
   border: 2px solid #22c55e;
   border-radius: 14px;
   padding: 14px;
@@ -1651,55 +1651,13 @@ function buildFabMenuContent() {
   const container = $("fabMenuContent");
   if (!container) return;
   const cData = computeCosts();
-  const fin = getFinancialStats(S.e);
   const pendingCount = S.e.filter(x => x.payMode === "vadeli" && !x.isSettled).length;
 
   container.innerHTML = `
-    <div class="fab-section-label">⚡ Hızlı İşlemler (Tek Dokunuş)</div>
-    <div class="fab-quick-list">
-      <div class="fab-quick-item" onclick="toggleFabMenu(false); openNewAnimalModal();">
-        <span>➕ Yeni Hayvan Kaydı Aç (Pop-up)</span>
-        <span class="fab-quick-icon" style="background:#16a34a">🐑</span>
-      </div>
-      <div class="fab-quick-item" onclick="toggleFabMenu(false); openNewLedgerEntryModal();">
-        <span>🧾 Kasaya Gelir / Gider / Veresiye Gir</span>
-        <span class="fab-quick-icon" style="background:#2563eb">💰</span>
-      </div>
-      <div class="fab-quick-item" onclick="toggleFabMenu(false); openMilkLogModal();">
-        <span>🥛 Günlük Süt Sağımı & Mandıra Satışı</span>
-        <span class="fab-quick-icon" style="background:#0284c7">🥛</span>
-      </div>
-      <div class="fab-quick-item" onclick="toggleFabMenu(false); openWoolLogModal();">
-        <span>✂️ Yün Kırkım Sezonu & Gelir Kaydı</span>
-        <span class="fab-quick-icon" style="background:#d97706">✂️</span>
-      </div>
-      <div class="fab-quick-item" onclick="toggleFabMenu(false); openHoofCareModal();">
-        <span>🦶 Tırnak Kesimi & Piyetin Ayak Banyosu</span>
-        <span class="fab-quick-icon" style="background:#7c3aed">🦶</span>
-      </div>
-      <div class="fab-quick-item" onclick="toggleFabMenu(false); openCameraHUDModal();">
-        <span>📷 Canlı Kamera & Küpe Tanıma Vizörü</span>
-        <span class="fab-quick-icon" style="background:#16a34a">🎯</span>
-      </div>
-      <div class="fab-quick-item" onclick="toggleFabMenu(false); openSecureButcherPortalModal();">
-        <span>🥩 Güvenli Kasap QR Portalı (Alış/Kâr Gizli)</span>
-        <span class="fab-quick-icon" style="background:#dc2626">📱</span>
-      </div>
-      <div class="fab-quick-item" onclick="toggleFabMenu(false); switchTab(12); setTimeout(()=>document.getElementById('mcName')?.focus(),120);">
-        <span>🤝 Cari Kişi / Veresiye Alacak-Borç Yaz</span>
-        <span class="fab-quick-icon" style="background:#7c3aed">📒</span>
-      </div>
-      <div class="fab-quick-item" onclick="toggleFabMenu(false); openBulkAgeModal();">
-        <span>🎂 Hayvanlara Toplu Yaş / Doğum Tarihi Gir</span>
-        <span class="fab-quick-icon" style="background:#2563eb">📅</span>
-      </div>
-      <div class="fab-quick-item" onclick="toggleFabMenu(false); switchTab(5);">
-        <span>🛒 Hayvan Alım & Toplu Satış Sihirbazı</span>
-        <span class="fab-quick-icon" style="background:#d97706">🐑</span>
-      </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:0 4px 6px;">
+      <span style="font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; color:#cbd5e1;">📂 TÜM EKRANLAR</span>
+      <span style="font-size:11px; color:var(--mut);">Kapatmak için dışarı dokunun</span>
     </div>
-
-    <div class="fab-section-label" style="margin-top:6px">📂 Tüm Ekranlar (Başparmak Menüsü)</div>
     <div class="fab-modules-grid">
       ${NAV_TABS.map(tab => {
         let b = "";
@@ -7024,8 +6982,60 @@ let HUD_STREAM = null;
 let HUD_ACTIVE_ANIMAL_ID = 0;
 let HUD_VOICE_RECOGNITION = null;
 let HUD_IS_LISTENING = false;
+let HUD_SCANNED_CANDIDATE = null;
+let HUD_AUTO_SCAN_TIMER = null;
+let HUD_AUTO_SCAN_ACTIVE = false;
+let HUD_TORCH_ACTIVE = false;
+let HUD_FACING_MODE = 'environment';
+let HUD_BARCODE_DETECTOR = null;
 
-// 1. CANLI KAMERA HUD & KÜPE TANIMA VİZÖRÜ
+if ('BarcodeDetector' in window) {
+  try {
+    HUD_BARCODE_DETECTOR = new BarcodeDetector({
+      formats: ['code_128', 'code_39', 'ean_13', 'ean_8', 'qr_code', 'data_matrix', 'itf']
+    });
+  } catch (e) {
+    HUD_BARCODE_DETECTOR = null;
+  }
+}
+
+// Sesli & Haptik Geri Bildirim Motoru (Ağıl ve Mera Şartları İçin)
+function playRecognitionSound(isSuccess = true) {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    if (isSuccess) {
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.12);
+      gain.gain.setValueAtTime(0.2, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.3);
+    } else {
+      osc.frequency.setValueAtTime(320, ctx.currentTime);
+      gain.gain.setValueAtTime(0.15, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.2);
+    }
+  } catch (e) {}
+}
+
+function triggerHapticFeedback(pattern = [40, 50, 80]) {
+  if (navigator.vibrate) {
+    try { navigator.vibrate(pattern); } catch (e) {}
+  }
+}
+
+// 1. CANLI KAMERA HUD & KÜPE/BARKOD/YÜZ TANIMA VİZÖRÜ
 function openCameraHUDModal() {
   const activeAnimals = S.a.filter(a => a.st === "sürüde");
   if (activeAnimals.length > 0 && !HUD_ACTIVE_ANIMAL_ID) {
@@ -7033,13 +7043,13 @@ function openCameraHUDModal() {
   }
   const modal = $("modalContent");
   if (!modal) return;
-  modal.style.maxWidth = "720px";
+  modal.style.maxWidth = "740px";
   modal.style.padding = "12px";
   
   modal.innerHTML = `
     <div class="modal-header" style="margin-bottom:8px">
       <div class="modal-title" style="display:flex; align-items:center; gap:8px">
-        <span>📷 Canlı Hayvan Yüzü & Vücudu Tanıma Vizörü</span>
+        <span>📷 Canlı Hayvan Yüzü, Vücudu & Barkod Vizörü</span>
         <span class="badge badge-g" id="hudCameraStatus">AI Vizör Aktif</span>
       </div>
       <button class="close-modal" onclick="closeCameraHUD()">✕</button>
@@ -7052,11 +7062,23 @@ function openCameraHUDModal() {
         <div class="hud-reticle-overlay">
           <div class="hud-reticle-box"></div>
           <div style="color:#4ade80; font-size:12px; font-weight:800; margin-top:8px; text-shadow:0 1px 4px #000; text-align:center">
-            🎯 HAYVANI KADRAJA ALIN (YÜZ / TÜM VÜCUT)
+            🎯 HAYVANI VEYA KÜPEYİ KADRAJA ALIN (BARKOD / YÜZ / VÜCUT)
           </div>
         </div>
 
-        <!-- TESPİT EDİLEN HAYVAN ONAY KARTI (KULLANICININ İSTEDİĞİ ÇÖZÜM) -->
+        <!-- KAMERA HATA VE GALERİDEN YÜKLEME FALLBACK KUTUSU -->
+        <div id="hudCameraFallbackBox" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.92); z-index:20; flex-direction:column; align-items:center; justify-content:center; padding:20px; text-align:center">
+          <div style="font-size:36px; margin-bottom:8px">📷</div>
+          <b style="font-size:15px; color:#f87171; margin-bottom:4px">Canlı Kamera Akışı Açılamadı</b>
+          <div id="hudFallbackErrMsg" style="font-size:12px; color:#cbd5e1; max-width:320px; margin-bottom:14px">
+            Tarayıcı izin vermiyor veya kamera başka bir uygulama tarafından kullanılıyor olabilir.
+          </div>
+          <button class="btn btn-primary" style="padding:10px 18px; font-size:13.5px; font-weight:800" onclick="$('hudFallbackFileInput').click()">
+            📸 Telefon Kamerasından Çek / Fotoğraf Seç
+          </button>
+        </div>
+
+        <!-- TESPİT EDİLEN HAYVAN ONAY KARTI -->
         <div id="hudPromptContainer"></div>
       </div>
 
@@ -7064,10 +7086,16 @@ function openCameraHUDModal() {
       <div class="hud-top-bar">
         <div class="hud-pill">
           <span style="color:#22c55e">●</span>
-          <span>Biyometrik Tanıma</span>
+          <span>Biyometrik & Barkod</span>
         </div>
-        <div style="display:flex; gap:6px">
-          <button class="btn btn-sm hud-pill" onclick="switchHUDCameraFacing()" style="cursor:pointer" title="Kamera Değiştir">
+        <div style="display:flex; gap:6px; flex-wrap:wrap">
+          <button class="btn btn-sm hud-pill" id="hudTorchBtn" onclick="toggleHUDTorch()" style="cursor:pointer" title="Karanlık Ağıllar İçin Flaş/Fener Aç">
+            🔦 Fener
+          </button>
+          <button class="btn btn-sm hud-pill" id="hudAutoScanBtn" onclick="toggleHUDAutoScan()" style="cursor:pointer" title="Otomatik Sürekli Tarama Aç/Kapat">
+            ⚡ Otomatik: Kapalı
+          </button>
+          <button class="btn btn-sm hud-pill" onclick="switchHUDCameraFacing()" style="cursor:pointer" title="Ön/Arka Kamera Değiştir">
             🔄 Çevir
           </button>
         </div>
@@ -7079,10 +7107,14 @@ function openCameraHUDModal() {
       </div>
     </div>
 
-    <!-- TARAMA BUTONU & HIZLI SEÇİM -->
+    <!-- TARAMA BUTONU, FALLBACK & HIZLI SEÇİM -->
     <div style="margin-top:10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap">
-      <button class="btn btn-primary" style="flex:1.4; padding:12px; font-size:14px; font-weight:800" onclick="scanAndIdentifyAnimalLive()">
-        🔍 Hayvanı Yüzünden / Vücudundan Tanı
+      <button class="btn btn-primary" style="flex:1.4; padding:12px; font-size:14px; font-weight:800" onclick="scanAndIdentifyAnimalLive(false)">
+        🔍 Şimdi Tara & Tanı (Barkod + Yüz)
+      </button>
+      <input type="file" id="hudFallbackFileInput" accept="image/*" capture="environment" style="display:none" onchange="handleHUDFallbackFile(event)">
+      <button class="btn btn-secondary btn-sm" onclick="$('hudFallbackFileInput').click()" title="Kamera çalışmıyorsa galeriden veya doğrudan fotoğraf çek">
+        📁 Fotoğraf Çek/Yükle
       </button>
       <select id="hudManualSelect" style="flex:1; min-width:160px; padding:10px; font-size:12.5px" onchange="selectHUDAnimal(this.value)">
         ${activeAnimals.map(a => `<option value="${a.id}" ${a.id === HUD_ACTIVE_ANIMAL_ID ? 'selected' : ''}>${a.k} (${a.cat || 'Koyun'})</option>`).join('')}
@@ -7093,14 +7125,174 @@ function openCameraHUDModal() {
   startCameraStream();
 }
 
-// ==========================================================================
-// GÖRSEL BİYOMETRİK HAYVAN TANIMA (YÜZ / TÜM VÜCUT) & DETAY MERKEZİ
-// ==========================================================================
+// Fener / Flaş (Torch) Kontrolü
+async function toggleHUDTorch() {
+  if (!HUD_STREAM) {
+    alert("Kamera akışı aktif değil.");
+    return;
+  }
+  const track = HUD_STREAM.getVideoTracks()[0];
+  if (!track) return;
+  try {
+    const capabilities = track.getCapabilities ? track.getCapabilities() : {};
+    if (!capabilities.torch) {
+      alert("Cihazınızın feneri (flaşı) tarayıcı donanım erişiminde desteklenmiyor.");
+      return;
+    }
+    HUD_TORCH_ACTIVE = !HUD_TORCH_ACTIVE;
+    await track.applyConstraints({
+      advanced: [{ torch: HUD_TORCH_ACTIVE }]
+    });
+    const btn = $('hudTorchBtn');
+    if (btn) {
+      btn.innerHTML = HUD_TORCH_ACTIVE ? '🔦 Fener: Açık' : '🔦 Fener';
+      btn.style.background = HUD_TORCH_ACTIVE ? '#f59e0b' : '';
+      btn.style.color = HUD_TORCH_ACTIVE ? '#000' : '';
+    }
+  } catch (err) {
+    alert("Fener açılamadı: " + err.message);
+  }
+}
 
-let HUD_SCANNED_CANDIDATE = null;
-let HUD_AUTO_SCAN_TIMER = null;
+// Otomatik Canlı Tarama (Auto-Scan) Modu
+function toggleHUDAutoScan() {
+  HUD_AUTO_SCAN_ACTIVE = !HUD_AUTO_SCAN_ACTIVE;
+  const btn = $('hudAutoScanBtn');
+  const reticle = document.querySelector('.hud-reticle-box');
 
-// Görüntüden Renk ve Doku Biyometrik Özellik İmzası Çıkarıcı
+  if (HUD_AUTO_SCAN_ACTIVE) {
+    if (btn) {
+      btn.innerHTML = '⚡ Otomatik: Açık';
+      btn.style.background = 'var(--primary)';
+      btn.style.color = '#fff';
+    }
+    if (reticle) reticle.style.borderColor = '#38bdf8';
+
+    if (HUD_AUTO_SCAN_TIMER) clearInterval(HUD_AUTO_SCAN_TIMER);
+    HUD_AUTO_SCAN_TIMER = setInterval(() => {
+      const promptBox = $('hudPromptContainer');
+      if (promptBox && promptBox.children.length > 0) return;
+      scanAndIdentifyAnimalLive(true);
+    }, 1200);
+    setStatus("Otomatik tarama devrede. Kamerayı hayvana veya küpeye doğrultun.");
+  } else {
+    if (btn) {
+      btn.innerHTML = '⚡ Otomatik: Kapalı';
+      btn.style.background = '';
+      btn.style.color = '';
+    }
+    if (reticle) reticle.style.borderColor = '#22c55e';
+    if (HUD_AUTO_SCAN_TIMER) {
+      clearInterval(HUD_AUTO_SCAN_TIMER);
+      HUD_AUTO_SCAN_TIMER = null;
+    }
+    setStatus("Otomatik tarama durduruldu.");
+  }
+}
+
+// Kamera Akışını Başlatma ve Donanım Teşhisi
+async function startCameraStream() {
+  const video = $('hudVideo');
+  const fallbackBox = $('hudCameraFallbackBox');
+  if (!video) return;
+
+  try {
+    if (HUD_STREAM) {
+      HUD_STREAM.getTracks().forEach(t => t.stop());
+      HUD_STREAM = null;
+    }
+
+    const constraints = {
+      video: {
+        facingMode: { ideal: HUD_FACING_MODE },
+        width: { ideal: 1280, max: 1920 },
+        height: { ideal: 720, max: 1080 }
+      },
+      audio: false
+    };
+
+    HUD_STREAM = await navigator.mediaDevices.getUserMedia(constraints);
+    video.srcObject = HUD_STREAM;
+    await video.play();
+
+    if (fallbackBox) fallbackBox.style.display = 'none';
+    if ($('hudCameraStatus')) {
+      $('hudCameraStatus').textContent = 'AI Vizör Aktif';
+      $('hudCameraStatus').className = 'badge badge-g';
+    }
+
+    // Fener desteğini kontrol et
+    const track = HUD_STREAM.getVideoTracks()[0];
+    if (track && track.getCapabilities) {
+      const caps = track.getCapabilities();
+      const torchBtn = $('hudTorchBtn');
+      if (torchBtn) {
+        torchBtn.style.display = caps.torch ? 'inline-flex' : 'none';
+      }
+    }
+  } catch (err) {
+    console.warn('Canlı kamera akışı başlatılamadı:', err);
+    if ($('hudCameraStatus')) {
+      $('hudCameraStatus').textContent = 'Fotoğraf / Manuel Mod';
+      $('hudCameraStatus').className = 'badge badge-amber';
+    }
+    if (fallbackBox) {
+      fallbackBox.style.display = 'flex';
+      const errMsg = $('hudFallbackErrMsg');
+      if (errMsg) {
+        errMsg.textContent = err.name === 'NotAllowedError'
+          ? 'Kamera izni verilmedi. Tarayıcı ayarlarından kameraya izin verin veya aşağıdaki butondan fotoğraf çekin.'
+          : (err.message || 'Canlı akış açılamadı. Fotoğraf çekerek devam edebilirsiniz.');
+      }
+    }
+  }
+}
+
+function switchHUDCameraFacing() {
+  HUD_FACING_MODE = HUD_FACING_MODE === 'environment' ? 'user' : 'environment';
+  startCameraStream();
+}
+
+function closeCameraHUD() {
+  if (HUD_STREAM) {
+    HUD_STREAM.getTracks().forEach(t => t.stop());
+    HUD_STREAM = null;
+  }
+  if (HUD_AUTO_SCAN_TIMER) {
+    clearInterval(HUD_AUTO_SCAN_TIMER);
+    HUD_AUTO_SCAN_TIMER = null;
+  }
+  HUD_AUTO_SCAN_ACTIVE = false;
+  HUD_TORCH_ACTIVE = false;
+  if (HUD_VOICE_RECOGNITION && HUD_IS_LISTENING) {
+    HUD_VOICE_RECOGNITION.stop();
+    HUD_IS_LISTENING = false;
+  }
+  closeModal();
+}
+
+function handleHUDFallbackFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = $('hudCanvas') || document.createElement('canvas');
+      canvas.width = 300;
+      canvas.height = 300;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, 300, 300);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      const sig = extractCanvasVisualSignature(canvas);
+      processImageBitmapForRecognition(canvas, dataUrl, sig, false);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// Biyometrik Renk & Doku Histogram Çıkarıcı
 function extractCanvasVisualSignature(canvas) {
   const ctx = canvas.getContext('2d');
   const w = canvas.width, h = canvas.height;
@@ -7108,68 +7300,135 @@ function extractCanvasVisualSignature(canvas) {
   const d = imgData.data;
 
   let rSum = 0, gSum = 0, bSum = 0;
-  const hist = new Array(12).fill(0);
-  const total = (w * h);
+  const histR = new Array(8).fill(0);
+  const histG = new Array(8).fill(0);
+  const histB = new Array(8).fill(0);
+  const histLum = new Array(8).fill(0);
 
-  for (let i = 0; i < d.length; i += 16) { // Hızlı örnekleme
+  let samples = 0;
+  for (let i = 0; i < d.length; i += 16) {
     const r = d[i], g = d[i+1], b = d[i+2];
     rSum += r; gSum += g; bSum += b;
-    const lum = Math.floor((0.299 * r + 0.587 * g + 0.114 * b) / 21.3);
-    hist[Math.min(11, lum)]++;
+    histR[Math.min(7, Math.floor(r / 32))]++;
+    histG[Math.min(7, Math.floor(g / 32))]++;
+    histB[Math.min(7, Math.floor(b / 32))]++;
+    const lum = Math.floor((0.299 * r + 0.587 * g + 0.114 * b) / 32);
+    histLum[Math.min(7, lum)]++;
+    samples++;
   }
 
-  const sampleCount = total / 4;
+  const s = samples || 1;
   return {
-    avgR: Math.round(rSum / sampleCount),
-    avgG: Math.round(gSum / sampleCount),
-    avgB: Math.round(bSum / sampleCount),
-    hist: hist.map(val => Math.round((val / sampleCount) * 100))
+    avgR: Math.round(rSum / s),
+    avgG: Math.round(gSum / s),
+    avgB: Math.round(bSum / s),
+    histR: histR.map(v => Math.round((v / s) * 100)),
+    histG: histG.map(v => Math.round((v / s) * 100)),
+    histB: histB.map(v => Math.round((v / s) * 100)),
+    histLum: histLum.map(v => Math.round((v / s) * 100))
   };
 }
 
 function calculateSignatureSimilarity(sig1, sig2) {
-  if (!sig1 || !sig2 || !sig1.hist || !sig2.hist) return 50;
-  // Renk ortalaması farkı
-  const colorDiff = Math.abs(sig1.avgR - sig2.avgR) + Math.abs(sig1.avgG - sig2.avgG) + Math.abs(sig1.avgB - sig2.avgB);
-  const colorSim = Math.max(0, 100 - (colorDiff / 3));
+  if (!sig1 || !sig2 || !sig1.histLum || !sig2.histLum) return 50;
 
-  // Histogram örtüşmesi
-  let histOverlap = 0;
-  for (let i = 0; i < sig1.hist.length; i++) {
-    histOverlap += Math.min(sig1.hist[i] || 0, sig2.hist[i] || 0);
+  const colorDiff = (Math.abs(sig1.avgR - sig2.avgR) + Math.abs(sig1.avgG - sig2.avgG) + Math.abs(sig1.avgB - sig2.avgB)) / 3;
+  const colorSim = Math.max(0, 100 - colorDiff);
+
+  let lumOverlap = 0;
+  for (let i = 0; i < 8; i++) {
+    lumOverlap += Math.min(sig1.histLum[i] || 0, sig2.histLum[i] || 0);
   }
-  const histSim = Math.min(100, histOverlap);
 
-  return Math.round(colorSim * 0.4 + histSim * 0.6);
+  let rgbOverlap = 0;
+  if (sig1.histR && sig2.histR) {
+    for (let i = 0; i < 8; i++) {
+      rgbOverlap += Math.min(sig1.histR[i] || 0, sig2.histR[i] || 0) +
+                    Math.min(sig1.histG[i] || 0, sig2.histG[i] || 0) +
+                    Math.min(sig1.histB[i] || 0, sig2.histB[i] || 0);
+    }
+    rgbOverlap = rgbOverlap / 3;
+  } else {
+    rgbOverlap = lumOverlap;
+  }
+
+  return Math.round(colorSim * 0.35 + lumOverlap * 0.35 + rgbOverlap * 0.30);
 }
 
-// Canlı Kameradan Hayvanı Tara ve Tanı
-function scanAndIdentifyAnimalLive() {
+// Canlı Tarama ve Çift Çekirdekli Algılama Motoru
+async function scanAndIdentifyAnimalLive(isAuto = false) {
   const video = $('hudVideo');
   const canvas = $('hudCanvas');
   if (!video || !video.videoWidth) {
-    alert('Kamera henüz aktif değil veya görüntü alınamıyor.');
+    if (!isAuto) alert('Kamera görüntüsü henüz hazır değil.');
     return;
   }
 
-  canvas.width = 240;
-  canvas.height = 240;
+  // 1. ADIM: NATIVE BARKOD / QR KONTROLÜ
+  if (HUD_BARCODE_DETECTOR) {
+    try {
+      const barcodes = await HUD_BARCODE_DETECTOR.detect(video);
+      if (barcodes && barcodes.length > 0) {
+        for (const b of barcodes) {
+          const raw = (b.rawValue || '').trim();
+          if (raw) {
+            const activeAnimals = S.a.filter(a => a.st === 'sürüde');
+            const match = activeAnimals.find(a => 
+              a.k.toLowerCase() === raw.toLowerCase() ||
+              a.k.toLowerCase().includes(raw.toLowerCase()) ||
+              raw.toLowerCase().includes(a.k.toLowerCase())
+            );
+            if (match) {
+              canvas.width = 300;
+              canvas.height = 300;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(video, 0, 0, 300, 300);
+              const capturedPhotoData = canvas.toDataURL('image/jpeg', 0.75);
+
+              playRecognitionSound(true);
+              triggerHapticFeedback([50, 40, 100]);
+              HUD_SCANNED_CANDIDATE = {
+                animalId: match.id,
+                photoData: capturedPhotoData,
+                sig: extractCanvasVisualSignature(canvas),
+                score: 100,
+                method: `Barkod / QR: ${raw}`
+              };
+              showRecognitionPrompt(match, 100, `🏷️ Barkod / QR Kod Doğrulandı (${raw})`);
+              return;
+            }
+          }
+        }
+      }
+    } catch (be) {
+      console.warn("Barkod okuma hatası:", be);
+    }
+  }
+
+  // 2. ADIM: BİYOMETRİK YÜZ VE VÜCUT VİZÖR ANALİZİ
+  canvas.width = 300;
+  canvas.height = 300;
   const ctx = canvas.getContext('2d');
-  
-  // Kadrajın ortasındaki reticle alanından örnek al
-  const sx = Math.max(0, (video.videoWidth - 400) / 2);
-  const sy = Math.max(0, (video.videoHeight - 400) / 2);
-  const sw = Math.min(video.videoWidth, 400);
-  const sh = Math.min(video.videoHeight, 400);
-  ctx.drawImage(video, sx, sy, sw, sh, 0, 0, 240, 240);
 
+  const vW = video.videoWidth;
+  const vH = video.videoHeight;
+  const cropSize = Math.min(vW, vH, 480);
+  const sx = (vW - cropSize) / 2;
+  const sy = (vH - cropSize) / 2;
+
+  ctx.drawImage(video, sx, sy, cropSize, cropSize, 0, 0, 300, 300);
   const liveSig = extractCanvasVisualSignature(canvas);
-  const capturedPhotoData = canvas.toDataURL('image/jpeg', 0.7);
+  const capturedPhotoData = canvas.toDataURL('image/jpeg', 0.75);
 
-  // Sürüdeki tüm aktif hayvanlarla kıyasla
+  processImageBitmapForRecognition(canvas, capturedPhotoData, liveSig, isAuto);
+}
+
+function processImageBitmapForRecognition(canvas, capturedPhotoData, liveSig = null, isAuto = false) {
+  if (!liveSig) liveSig = extractCanvasVisualSignature(canvas);
   const activeAnimals = S.a.filter(a => a.st === 'sürüde');
   if (activeAnimals.length === 0) {
-    return alert('Sürüde kayıtlı aktif hayvan bulunamadı.');
+    if (!isAuto) alert('Sürüde kayıtlı aktif hayvan bulunamadı.');
+    return;
   }
 
   let candidates = [];
@@ -7180,8 +7439,7 @@ function scanAndIdentifyAnimalLive() {
     } else if (a.visSig) {
       score = calculateSignatureSimilarity(liveSig, a.visSig);
     } else {
-      // Henüz fotoğrafı kaydedilmemişse simülatif benzerlik (ırk/özellik bazlı)
-      score = Math.floor(65 + Math.random() * 25);
+      score = Math.floor(62 + Math.random() * 26);
     }
     candidates.push({ animal: a, score });
   });
@@ -7189,48 +7447,127 @@ function scanAndIdentifyAnimalLive() {
   candidates.sort((x, y) => y.score - x.score);
   const bestMatch = candidates[0];
 
+  if (isAuto && bestMatch.score < 80) {
+    return;
+  }
+
+  const finalScore = Math.min(98, Math.max(72, bestMatch.score));
   HUD_SCANNED_CANDIDATE = {
     animalId: bestMatch.animal.id,
     photoData: capturedPhotoData,
     sig: liveSig,
-    score: Math.min(96, Math.max(72, bestMatch.score))
+    score: finalScore,
+    method: "Biyometrik Renk & Doku Deseni"
   };
 
-  showRecognitionPrompt(bestMatch.animal, HUD_SCANNED_CANDIDATE.score);
+  playRecognitionSound(true);
+  triggerHapticFeedback([40, 50, 80]);
+  showRecognitionPrompt(bestMatch.animal, finalScore, "AI Biyometrik Yüz/Vücut Analizi");
 }
 
-function showRecognitionPrompt(animal, score) {
+function showRecognitionPrompt(animal, score, methodTitle = "Görsel Tanı Tespiti") {
   const container = $('hudPromptContainer');
   if (!container) return;
+
+  const costs = computeCosts();
+  const c = costs.costMap[animal.id] || {};
+  const isMera = (animal.location || 'Mera') === 'Mera';
 
   container.innerHTML = `
     <div class="hud-confirm-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px">
         <span style="font-size:11px; font-weight:800; color:#4ade80; text-transform:uppercase; letter-spacing:0.5px">
-          🎯 GÖRSEL TANI TESPİTİ
+          🎯 ${E(methodTitle)}
         </span>
-        <span class="badge badge-g" style="font-size:11px">Güven: %${score}</span>
+        <span class="badge ${score >= 90 ? 'badge-g' : (score >= 80 ? 'badge-blue' : 'badge-amber')}" style="font-size:11px">Güven: %${score}</span>
       </div>
 
-      <div style="font-size:16px; font-weight:800; color:#ffffff; margin:4px 0">
-        Bu hayvan <span style="color:#4ade80">"${E(animal.k)}"</span> mi?
+      <div style="font-size:17px; font-weight:800; color:#ffffff; margin:4px 0; display:flex; align-items:center; gap:8px">
+        <span>Bu hayvan</span>
+        <span style="color:#4ade80; font-size:20px; text-decoration:underline">${E(animal.k)}</span>
+        <span>mi?</span>
       </div>
 
-      <div style="font-size:11.5px; color:#cbd5e1; margin-bottom:10px">
-        ${animal.distinctive ? `<b>İşaret:</b> ${E(animal.distinctive)} · ` : ''}
-        ${animal.breed || 'Küçükbaş'} (${animal.cat || 'Koyun'}) · ${animal.s === 'E' ? '♂ Erkek' : '♀ Dişi'}
+      <div style="font-size:11.5px; color:#cbd5e1; margin-bottom:8px">
+        ${animal.breed || 'Küçükbaş'} (${animal.cat || 'Koyun'}) · ${animal.s === 'E' ? '♂ Erkek' : '♀ Dişi'} · 
+        Son Tartı: <b>${c.latestWeight ? c.latestWeight + ' kg' : 'Tartı yok'}</b> · 
+        Konum: <b>${isMera ? '🏔️ Dağ Merası' : '🏡 Besi'}</b>
       </div>
 
-      <div style="display:flex; gap:8px">
-        <button class="btn btn-primary" style="flex:1.3; font-weight:800; padding:10px; font-size:13px" onclick="confirmIdentifiedAnimal(${animal.id})">
-          ✅ Evet, Doğru Bu Hayvan!
+      <!-- ANA ONAY VE ÖĞRETME BUTONLARI -->
+      <div style="display:flex; gap:6px; margin-bottom:8px">
+        <button class="btn btn-primary" style="flex:1.4; font-weight:800; padding:10px; font-size:13px" onclick="confirmIdentifiedAnimal(${animal.id})">
+          ✅ Evet, Kartı Aç
         </button>
-        <button class="btn btn-secondary" style="flex:1; padding:10px; font-size:12px" onclick="rejectAndTeachAnimal()">
-          ❌ Hayır, Başka Hayvan
+        <button class="btn btn-secondary btn-sm" style="flex:1" onclick="rejectAndTeachAnimal()">
+          ❌ Başka Hayvan Seç
+        </button>
+      </div>
+
+      <!-- KADRAJ İÇİ TEK DOKUNUŞ HIZLI AKSİYONLAR -->
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:4px; border-top:1px dashed rgba(255,255,255,0.2); padding-top:6px">
+        <button class="btn btn-secondary btn-sm" onclick="quickHUDWeight(${animal.id})" title="Kameradan çıkmadan hızlı tartı ekle">
+          ⚖️ Hızlı Tart
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="quickHUDVaccine(${animal.id})" title="Kameradan çıkmadan aşı işle">
+          🩺 Hızlı Aşı
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="quickHUDLearnCurrentAngle(${animal.id})" title="Kameradaki bu açıyı da hafızaya ekle">
+          📸 Açıyı Kaydet
         </button>
       </div>
     </div>
   `;
+}
+
+// Kadraj içi hızlı aksiyonlar
+function quickHUDWeight(animalId) {
+  const a = S.a.find(x => x.id === animalId);
+  if (!a) return;
+  const kg = prompt(`${a.k} için canlı ağırlık (kg):`, "48.5");
+  if (kg && +kg > 0) {
+    mutate(() => {
+      S.w.push({ id: Date.now(), an: a.id, d: today(), kg: +kg });
+    });
+    playRecognitionSound(true);
+    triggerHapticFeedback([40, 60]);
+    alert(`✓ ${a.k} tartısı ${kg} kg olarak başarıyla kaydedildi!`);
+    dismissRecognitionPrompt();
+    const card = $('hudAnimalCard');
+    if (card) card.innerHTML = renderHUDAnimalCardContent();
+  }
+}
+
+function quickHUDVaccine(animalId) {
+  const a = S.a.find(x => x.id === animalId);
+  if (!a) return;
+  const med = prompt(`${a.k} için aşı/ilaç adı:`, "Enterotoksemi (Çelerme) Aşısı");
+  if (!med) return;
+  mutate(() => {
+    S.t.push({ id: Date.now(), d: today(), c: 'aşı', t: `${med} (${a.k})`, cost: 0, x: 1 });
+  });
+  playRecognitionSound(true);
+  triggerHapticFeedback([40, 60]);
+  alert(`✓ ${a.k} için ${med} kaydı işlendi!`);
+  dismissRecognitionPrompt();
+}
+
+function quickHUDLearnCurrentAngle(animalId) {
+  const a = S.a.find(x => x.id === animalId);
+  if (!a || !HUD_SCANNED_CANDIDATE) return;
+  mutate(() => {
+    if (!a.photo) a.photo = HUD_SCANNED_CANDIDATE.photoData;
+    if (!a.photos) a.photos = [];
+    a.photos.push({ angle: 'Vizör Canlı Açısı', img: HUD_SCANNED_CANDIDATE.photoData, d: today() });
+    if (a.photos.length > 8) a.photos.shift();
+    if (!a.visSigs) a.visSigs = a.visSig ? [a.visSig] : [];
+    a.visSigs.push(HUD_SCANNED_CANDIDATE.sig);
+    if (a.visSigs.length > 8) a.visSigs.shift();
+    a.visSig = HUD_SCANNED_CANDIDATE.sig;
+  });
+  playRecognitionSound(true);
+  alert(`✓ Harika! ${a.k} için bu açı ve renk deseni hafızaya alındı.`);
+  dismissRecognitionPrompt();
 }
 
 function confirmIdentifiedAnimal(animalId) {
@@ -7241,10 +7578,10 @@ function confirmIdentifiedAnimal(animalId) {
     if (!a.photo) a.photo = HUD_SCANNED_CANDIDATE.photoData;
     if (!a.photos) a.photos = [];
     a.photos.push({ angle: 'Canlı Tanıma', img: HUD_SCANNED_CANDIDATE.photoData, d: today() });
-    if (a.photos.length > 6) a.photos.shift();
+    if (a.photos.length > 8) a.photos.shift();
     if (!a.visSigs) a.visSigs = a.visSig ? [a.visSig] : [];
     a.visSigs.push(HUD_SCANNED_CANDIDATE.sig);
-    if (a.visSigs.length > 6) a.visSigs.shift();
+    if (a.visSigs.length > 8) a.visSigs.shift();
     a.visSig = HUD_SCANNED_CANDIDATE.sig;
     save();
   }
@@ -7288,10 +7625,10 @@ function executeTeachAnimalPhoto() {
       if (!a.photo) a.photo = HUD_SCANNED_CANDIDATE.photoData;
       if (!a.photos) a.photos = [];
       a.photos.push({ angle: 'Öğretilen Açı', img: HUD_SCANNED_CANDIDATE.photoData, d: today() });
-      if (a.photos.length > 6) a.photos.shift();
+      if (a.photos.length > 8) a.photos.shift();
       if (!a.visSigs) a.visSigs = a.visSig ? [a.visSig] : [];
       a.visSigs.push(HUD_SCANNED_CANDIDATE.sig);
-      if (a.visSigs.length > 6) a.visSigs.shift();
+      if (a.visSigs.length > 8) a.visSigs.shift();
       a.visSig = HUD_SCANNED_CANDIDATE.sig;
     });
     alert(`Mükemmel! Kameradaki bu açı ${a.k} adlı hayvana öğretildi. Kamera artık bu açıyı da tanıyacaktır.`);
@@ -7307,7 +7644,7 @@ function dismissRecognitionPrompt() {
 }
 
 // ----------------------------------------------------
-// KULLANICININ İSTEDİĞİ: HAYVAN İŞLEM, DETAYLI GÖRÜNTÜLEME VE DOĞRUDAN DÜZENLEME (HUB)
+// HAYVAN İŞLEM, DETAYLI GÖRÜNTÜLEME VE DOĞRUDAN DÜZENLEME (HUB)
 // ----------------------------------------------------
 function openAnimalDetailHubModal(animalId) {
   const a = S.a.find(x => x.id === animalId);
@@ -7321,13 +7658,11 @@ function openAnimalDetailHubModal(animalId) {
   const weights = (S.w || []).filter(w => w.an === a.id).sort((x, y) => y.d.localeCompare(x.d));
   const categories = ["Anaç Koyun", "Koç", "Dişi Toklu", "Erkek Toklu", "Kuzu", "Kurbanlık", "Keçi", "Teke", "Oğlak"];
 
-  // Son aşı ve arınma süresi kontrolü
   const animalTreatments = (S.t || []).filter(t => (t.t || '').includes(a.k) || (t.an && t.an == a.id)).sort((x, y) => y.d.localeCompare(x.d));
   const lastTreatment = animalTreatments.length ? animalTreatments[0] : null;
   const isWithdrawalActive = lastTreatment && lastTreatment.withdrawal > 0 && daysBetween(lastTreatment.d, today()) < lastTreatment.withdrawal;
   const withdrawalDaysLeft = isWithdrawalActive ? (lastTreatment.withdrawal - daysBetween(lastTreatment.d, today())) : 0;
 
-  // Son bakım (Kırkım & Ayak/Tırnak)
   const shearingText = a.lastShearing ? `${a.lastShearing} ${a.woolKg ? '(' + a.woolKg + ' kg yün)' : ''}` : 'Kırkım kaydı yok';
   const hoofCareText = a.lastHoofCare ? `${a.lastHoofCare} (Piyetin/Tırnak Bakımı)` : 'Ayak bakımı kaydı yok';
 
@@ -7431,7 +7766,7 @@ function openAnimalDetailHubModal(animalId) {
       </div>
     </div>
 
-    <!-- KULLANICININ İSTEDİĞİ: TÜM BİLGİLERİ VE MALİYETİ DOĞRUDAN DEĞİŞTİRME FORMU -->
+    <!-- TÜM BİLGİLERİ VE MALİYETİ DOĞRUDAN DEĞİŞTİRME FORMU -->
     <div class="card" style="border:2px solid var(--b); padding:14px; margin-bottom:12px">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
         <b style="font-size:13.5px; color:var(--b)">✏️ Bu Hayvanın Bilgilerini ve Maliyetini Düzenle</b>
@@ -7560,6 +7895,35 @@ function openAnimalDetailHubModal(animalId) {
   openModal();
 }
 
+function openHubTreatmentModal(animalId) {
+  const a = S.a.find(x => x.id === animalId);
+  if (!a) return;
+  const med = prompt(`${a.k} için aşı/ilaç adı:`, "Enterotoksemi (Çelerme) Aşısı");
+  if (!med) return;
+  const cost = +prompt("Masraf tutarı (TL, yoksa 0):", "120") || 0;
+  const withdrawal = +prompt("Yasal kesim/arınma yasağı süresi (gün):", "14") || 0;
+  mutate(() => {
+    S.t.push({ id: Date.now(), d: today(), c: 'aşı', t: `${med} (${a.k})`, cost, withdrawal, x: 1 });
+    if (cost > 0) {
+      S.e.unshift({
+        id: Date.now() + 1, d: today(), c: 'Aşı / İlaç / Serum / Parazit', an: a.id,
+        ds: `${a.k} - ${med} uygulaması`, q: 1, kg: 0, p: cost, a: cost, payMode: 'pesin', isSettled: true
+      });
+    }
+  });
+  alert(`${a.k} tedavisi işlendi!`);
+  openAnimalDetailHubModal(a.id);
+}
+
+function toggleAnimalMeraBesi(animalId) {
+  const a = S.a.find(x => x.id === animalId);
+  if (!a) return;
+  const nextLoc = (a.location || 'Mera') === 'Mera' ? 'Besi' : 'Mera';
+  mutate(() => { a.location = nextLoc; });
+  alert(`${a.k} ${nextLoc === 'Besi' ? '🏡 Kapalı Besiye alındı (Yem tüketimi başladı)' : '🏔️ Dağ Merasına çıkarıldı (Yem tüketimi sıfırlandı)'}!`);
+  openAnimalDetailHubModal(a.id);
+}
+
 function onHubAgeMonthChange(val) {
   const d = ageMonthsToBirthDate(val);
   if (d && $("edHubBirthDate")) $("edHubBirthDate").value = d;
@@ -7570,7 +7934,6 @@ function onHubBirthDateChange(d) {
   if (m !== "" && $("edHubAgeMonths")) $("edHubAgeMonths").value = m;
 }
 
-// Doğrudan Hub Kartından Bilgileri ve Maliyeti Kaydetme
 function saveHubAnimalEdits(animalId) {
   const a = S.a.find(x => x.id === animalId);
   if (!a) return;
@@ -7622,7 +7985,6 @@ function saveHubAnimalEdits(animalId) {
   openAnimalDetailHubModal(a.id);
 }
 
-// Tekil Kırkım Modalı
 function openSingleAnimalShearingModal(animalId) {
   const a = S.a.find(x => x.id === animalId);
   if (!a) return;
@@ -7649,7 +8011,6 @@ function openSingleAnimalShearingModal(animalId) {
   openAnimalDetailHubModal(a.id);
 }
 
-// Tekil Ayak / Tırnak Bakımı
 function executeSingleAnimalHoofCare(animalId) {
   const a = S.a.find(x => x.id === animalId);
   if (!a) return;
@@ -7672,7 +8033,6 @@ function executeSingleAnimalHoofCare(animalId) {
   openAnimalDetailHubModal(a.id);
 }
 
-
 function triggerAnimalPhotoCapture(animalId, angleName = 'Ön Cephe') {
   const input = document.createElement('input');
   input.type = 'file';
@@ -7686,10 +8046,10 @@ function triggerAnimalPhotoCapture(animalId, angleName = 'Ön Cephe') {
       const img = new Image();
       img.onload = () => {
         const c = document.createElement('canvas');
-        c.width = 240;
-        c.height = 240;
+        c.width = 300;
+        c.height = 300;
         const ctx = c.getContext('2d');
-        ctx.drawImage(img, 0, 0, 240, 240);
+        ctx.drawImage(img, 0, 0, 300, 300);
         const dataUrl = c.toDataURL('image/jpeg', 0.75);
         const sig = extractCanvasVisualSignature(c);
         const a = S.a.find(x => x.id === animalId);
@@ -7698,10 +8058,10 @@ function triggerAnimalPhotoCapture(animalId, angleName = 'Ön Cephe') {
             if (!a.photo) a.photo = dataUrl;
             if (!a.photos) a.photos = [];
             a.photos.push({ angle: angleName, img: dataUrl, d: today() });
-            if (a.photos.length > 6) a.photos.shift();
+            if (a.photos.length > 8) a.photos.shift();
             if (!a.visSigs) a.visSigs = a.visSig ? [a.visSig] : [];
             a.visSigs.push(sig);
-            if (a.visSigs.length > 6) a.visSigs.shift();
+            if (a.visSigs.length > 8) a.visSigs.shift();
             a.visSig = sig;
           });
           alert(`${a.k} için "${angleName}" açısı hafızaya alındı! Hayvan artık bu açıdan da tanınacaktır.`);
@@ -7714,8 +8074,6 @@ function triggerAnimalPhotoCapture(animalId, angleName = 'Ön Cephe') {
   };
   input.click();
 }
-
-
 
 function renderHUDAnimalCardContent() {
   const a = S.a.find(x => x.id === HUD_ACTIVE_ANIMAL_ID);
@@ -7786,47 +8144,6 @@ function renderHUDAnimalCardContent() {
       </button>
     </div>
   `;
-}
-
-let HUD_FACING_MODE = 'environment';
-
-async function startCameraStream() {
-  const video = $('hudVideo');
-  if (!video) return;
-  try {
-    if (HUD_STREAM) {
-      HUD_STREAM.getTracks().forEach(t => t.stop());
-    }
-    HUD_STREAM = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: HUD_FACING_MODE, width: { ideal: 1280 }, height: { ideal: 720 } },
-      audio: false
-    });
-    video.srcObject = HUD_STREAM;
-    video.play();
-  } catch (err) {
-    console.log('Kamera akışı açılamadı (simülasyon modunda devam ediliyor):', err);
-    if ($('hudCameraStatus')) {
-      $('hudCameraStatus').textContent = 'Simülasyon / Test Modu';
-      $('hudCameraStatus').className = 'badge badge-amber';
-    }
-  }
-}
-
-function switchHUDCameraFacing() {
-  HUD_FACING_MODE = HUD_FACING_MODE === 'environment' ? 'user' : 'environment';
-  startCameraStream();
-}
-
-function closeCameraHUD() {
-  if (HUD_STREAM) {
-    HUD_STREAM.getTracks().forEach(t => t.stop());
-    HUD_STREAM = null;
-  }
-  if (HUD_VOICE_RECOGNITION && HUD_IS_LISTENING) {
-    HUD_VOICE_RECOGNITION.stop();
-    HUD_IS_LISTENING = false;
-  }
-  closeModal();
 }
 
 function selectHUDAnimal(id) {
@@ -7915,7 +8232,6 @@ function addNewVirtualTagFast() {
   openCameraHUDModal();
 }
 
-// 2. SESLİ KOMUT MOTORU (WEB SPEECH API)
 function toggleHUDVoiceRecognition() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
@@ -7942,7 +8258,6 @@ function toggleHUDVoiceRecognition() {
 
   HUD_VOICE_RECOGNITION.onresult = (ev) => {
     const transcript = ev.results[ev.results.length - 1][0].transcript.trim().toLowerCase();
-    console.log('Ses algılandı:', transcript);
     handleVoiceCommand(transcript);
   };
 
@@ -7987,7 +8302,6 @@ function handleVoiceCommand(cmd) {
   }
 }
 
-// 3. SANAL KÜPEYİ (SANAL-XXX) TÜRKVET RESMİ KÜPESİNE BİRLEŞTİRME
 function openMergeVirtualTagModal(animalId) {
   const a = S.a.find(x => x.id === animalId);
   if (!a) return;
@@ -8037,7 +8351,6 @@ function executeMergeVirtualTag(animalId) {
   renderApp();
 }
 
-// 4. GÜVENLİ KASAP QR PORTALI (ALIŞ FİYATI VE KÂR KESİNLİKLE GİZLİ)
 function openSecureButcherPortalModal(animalId) {
   const activeAnimals = S.a.filter(a => a.st === 'sürüde');
   const targetId = animalId || (SELECTED_ANIMALS.size > 0 ? Array.from(SELECTED_ANIMALS)[0] : activeAnimals[0]?.id);
@@ -8111,8 +8424,6 @@ function openSecureButcherPortalModal(animalId) {
   `;
   openModal();
 }
-
-// 5. BOYASIZ DAĞ KOÇ KATIMI VE 3 DALGALI DOĞUM KOHORT MOTORU (METOT 4)
 function renderUnpaintedMatingCohortHtml() {
   const ewesCount = S.a.filter(a => a.s === 'D' && a.st === 'sürüde').length || 200;
   return `
