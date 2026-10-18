@@ -2688,6 +2688,9 @@ function onModalAnimalBirthChange(bDate) {
 function saveNewAnimalFromModal() {
   const k = V("mAnimalTag").trim();
   if (!k) return alert("Lütfen hayvan küpe numarası girin.");
+  if (S.a.some(x => x.k.toLowerCase() === k.toLowerCase())) {
+    return alert(`Bu küpe numarası ("${k}") zaten sürüde kayıtlı! Lütfen farklı bir küpe numarası girin.`);
+  }
 
   const s = V("mAnimalSex");
   const cat = V("mAnimalCat");
@@ -4797,6 +4800,7 @@ function executeBulkSale() {
 
     SELECTED_ANIMALS.clear();
   });
+  updateBulkBar();
 
   alert(`Tebrikler! ${count} baş hayvan satıldı. ${payMode === 'vadeli' ? 'Gelecek para (' + dueDate + ') Nakit & Cari Raporlara işlendi.' : 'Kasaya peşin gelir işlendi.'}`);
   switchTab(payMode === "vadeli" ? 12 : 3);
@@ -4909,6 +4913,16 @@ function deleteGroup(id) {
   }
 }
 
+function onHealthPresetChange(idx) {
+  if (idx === "" || idx === null) return;
+  const v = SHEEP_VACCINES[+idx];
+  if (!v) return;
+  if ($("mHealthTitle")) $("mHealthTitle").value = v.t;
+  if ($("mHealthType")) $("mHealthType").value = v.c || "aşı";
+  if ($("mHealthRepeat")) $("mHealthRepeat").value = v.r || "";
+  if ($("mHealthWithdrawal")) $("mHealthWithdrawal").value = (v.c === "ilaç" ? 14 : 0);
+}
+
 function openBulkHealthModal() {
   const count = SELECTED_ANIMALS.size;
   if (count === 0) return alert("Lütfen önce hayvan seçin.");
@@ -4918,22 +4932,41 @@ function openBulkHealthModal() {
       <div class="modal-title">🩺 Toplu Aşı / İlaç Uygula (${count} Baş)</div>
       <button class="close-modal" onclick="closeModal()">✕</button>
     </div>
-    <div class="form-row">
-      ${inp("mHealthDate", "Tarih", "date", today())}
-      ${sel("mHealthType", "Tür", optList([["aşı", "Aşı"], ["ilaç", "İç/Dış Parazit"], ["vitamin", "Vitamin"], ["bakım", "Tırnak / Kırkım"]], "aşı"))}
+
+    <div>
+      <label>📋 Standart Aşı / İlaç Listesinden Seçin (Opsiyonel)</label>
+      <select id="mHealthPreset" onchange="onHealthPresetChange(this.value)" style="margin-bottom:8px">
+        <option value="">— Standart Aşı / İlaç Protokolü Seçin (veya aşağıya yazın) —</option>
+        ${SHEEP_VACCINES.map((v, i) => `<option value="${i}">${v.t} (${v.c})</option>`).join("")}
+      </select>
     </div>
-    ${inp("mHealthTitle", "Uygulama Adı *", "text", "", 'placeholder="Örn: Enterotoksemi (Çelerme) Aşısı"')}
+
     <div class="form-row">
-      ${inp("mHealthCost", "Toplam Masraf (TL)", "number", "", 'inputmode="decimal" placeholder="0 ₺"')}
+      ${inp("mHealthDate", "Uygulama Tarihi *", "date", today())}
+      ${sel("mHealthType", "Tür", optList([["aşı", "Aşı"], ["ilaç", "İç/Dış Parazit / Tedavi"], ["vitamin", "Vitamin / Mineral"], ["bakım", "Tırnak / Bakım"]], "aşı"))}
     </div>
+
+    <div class="form-row">
+      ${inp("mHealthTitle", "Uygulama / İlaç Adı *", "text", "", 'placeholder="Örn: Enterotoksemi (Çelerme) Aşısı"')}
+    </div>
+
+    <div class="form-row">
+      ${inp("mHealthWithdrawal", "Yasal Kesim Arınma Yasağı (Gün)", "number", "0", 'inputmode="decimal" placeholder="0 gün" title="İlaç kalıntısı için kesim yasağı süresi"')}
+      ${inp("mHealthRepeat", "Tekrar Sıklığı (Gün)", "number", "180", 'inputmode="decimal" placeholder="180" title="Gelecek periyodik takip görevi için"')}
+      ${inp("mHealthCost", "Toplam Masraf Tutarı (TL)", "number", "", 'inputmode="decimal" placeholder="0 ₺"')}
+    </div>
+
     <div style="margin-top:6px; background:var(--card-sub); border:1px solid var(--ln); border-radius:6px; padding:8px 10px">
       <label style="display:inline-flex; align-items:center; gap:6px; font-weight:normal; margin:0; cursor:pointer">
         <input type="checkbox" id="mHealthAddExp" checked>
-        <span>Masrafı kasaya <b>"Aşı / İlaç / Serum / Parazit"</b> gideri olarak kaydet</span>
+        <span>Masraf kasaya <b>"Aşı / İlaç / Serum / Parazit"</b> gideri olarak otomatik kaydedilsin</span>
       </label>
     </div>
+
     <div style="margin-top:14px">
-      <button class="btn btn-primary" style="width:100%" onclick="executeBulkHealth()">Uygula ve Kaydet</button>
+      <button class="btn btn-primary" style="width:100%; padding:10px; font-weight:800" onclick="executeBulkHealth()">
+        💉 Aşıyı Uygula ve Seçili ${count} Hayvanın Kartına İşle
+      </button>
     </div>
   `;
   openModal();
@@ -4941,28 +4974,92 @@ function openBulkHealthModal() {
 
 function executeBulkHealth() {
   const d = V("mHealthDate") || today();
-  const type = V("mHealthType");
+  const type = V("mHealthType") || "aşı";
   const title = V("mHealthTitle").trim();
   const cost = +V("mHealthCost") || 0;
+  const withdrawal = +V("mHealthWithdrawal") || 0;
+  const repeat = +V("mHealthRepeat") || 0;
   const addExp = $("mHealthAddExp")?.checked;
   const count = SELECTED_ANIMALS.size;
 
-  if (!title) return alert("Uygulama adı girin.");
+  if (!title) return alert("Lütfen aşı veya uygulama adı girin.");
+  if (count === 0) return alert("Lütfen önce hayvan seçin.");
+
+  const startId = Date.now();
+  const selectedIds = Array.from(SELECTED_ANIMALS);
 
   mutate(() => {
-    S.t.push({ id: Date.now(), d, c: type, t: `${title} (${count} Baş)`, cost, x: 1 });
-    if (addExp && cost > 0) {
-      S.e.unshift({
-        id: Date.now() + 1, d, c: "Aşı / İlaç / Serum / Parazit", an: 0,
-        ds: `${title} uygulaması (${count} baş)`, q: count, kg: 0, p: Math.round(cost / count), a: cost
+    // 1. Seçili her hayvanın profil nesnesine aşıyı ve geçmiş kaydını doğrudan işle
+    selectedIds.forEach((id, idx) => {
+      const a = S.a.find(x => x.id === id);
+      if (a) {
+        a.lastVaccine = title;
+        a.lastVaccineDate = d;
+        a.lastVaccineType = type;
+        if (!a.vaccines) a.vaccines = [];
+        a.vaccines.unshift({
+          id: startId + idx,
+          d,
+          t: title,
+          c: type,
+          cost: count > 0 ? Math.round(cost / count) : 0,
+          withdrawal,
+          repeat
+        });
+      }
+    });
+
+    // 2. Takvime toplu aşı kaydını ve hayvan ID'lerini ekle
+    S.t.push({
+      id: startId,
+      d,
+      c: type,
+      t: `${title} (${count} Baş)`,
+      cost,
+      withdrawal,
+      r: repeat,
+      x: 1,
+      animalIds: selectedIds
+    });
+
+    // 3. Tekrar periyodu varsa gelecek görevi otomatik planla
+    if (repeat > 0) {
+      S.t.push({
+        id: startId + 1,
+        d: addDays(d, repeat),
+        c: type,
+        t: `${title} Tekrarı (${count} Baş)`,
+        cost: 0,
+        r: repeat,
+        withdrawal,
+        x: 0,
+        animalIds: selectedIds
       });
     }
+
+    // 4. Kasaya masraf kaydı
+    if (addExp && cost > 0) {
+      S.e.unshift({
+        id: startId + 2,
+        d,
+        c: "Aşı / İlaç / Serum / Parazit",
+        an: 0,
+        ds: `${title} uygulaması (${count} baş)`,
+        q: count,
+        kg: 0,
+        p: Math.round(cost / count),
+        a: cost,
+        payMode: "pesin",
+        isSettled: true
+      });
+    }
+
     SELECTED_ANIMALS.clear();
   });
 
   closeModal();
   updateBulkBar();
-  setStatus(`${count} baş hayvana ${title} uygulandı.`);
+  setStatus(`${count} baş hayvana "${title}" uygulandı ve profil kartlarına işlendi.`);
 }
 
 function openBulkWeightModal() {
@@ -5048,16 +5145,26 @@ function openBulkInseminationModal() {
 
 function executeBulkInsemination() {
   const d = V("mInsemDate") || today();
+  const selectedIds = Array.from(SELECTED_ANIMALS);
+  const femaleCount = selectedIds.filter(id => {
+    const a = S.a.find(x => x.id === id);
+    return a && a.s === 'D';
+  }).length;
+
+  if (femaleCount === 0) {
+    return alert("Seçilen hayvanlar arasında dişi anaç koyun bulunamadı. Koç katımı sadece dişi koyunlara uygulanabilir.");
+  }
+
   mutate(() => {
-    SELECTED_ANIMALS.forEach(id => {
+    selectedIds.forEach(id => {
       const a = S.a.find(x => x.id === id);
-      if (a) a.ins = d;
+      if (a && a.s === 'D') a.ins = d;
     });
     SELECTED_ANIMALS.clear();
   });
   closeModal();
   updateBulkBar();
-  setStatus("Toplu koç katımı kaydedildi, gebelik takvimi güncellendi.");
+  setStatus(`${femaleCount} baş dişi koyuna koç katımı kaydedildi, gebelik takvimi güncellendi.`);
 }
 
 function openBulkStatusModal() {
@@ -5792,6 +5899,9 @@ function saveAnimal() {
   const editId = idEl ? +idEl.value : 0;
   const k = V("animalTag").trim();
   if (!k) return alert("Lütfen hayvan küpe numarası girin.");
+  if (S.a.some(x => x.id !== editId && x.k.toLowerCase() === k.toLowerCase())) {
+    return alert(`Bu küpe numarası ("${k}") zaten sürüde kayıtlı! Lütfen farklı bir küpe numarası girin.`);
+  }
 
   const s = V("animalSex");
   const cat = V("animalCat");
@@ -6055,12 +6165,16 @@ function executeBirthRecord() {
       origin: "Doğum", bp: 0, bd: d, b: d,
       m: motherTag, f: fTag, st: "sürüde", n: 1
     };
-    createdLambs.push(lambObj);
-    if (kg > 0) S.w.push({ id: startId + 100 + i, an: lambObj.id, d, kg });
+    createdLambs.push({ lamb: lambObj, kg });
   }
 
   mutate(() => {
-    S.a = createdLambs.concat(S.a);
+    createdLambs.forEach((item, idx) => {
+      S.a.unshift(item.lamb);
+      if (item.kg > 0) {
+        S.w.push({ id: startId + 100 + idx, an: item.lamb.id, d, kg: item.kg });
+      }
+    });
     if (mother) mother.ins = "";
     if (addExp && expAmt > 0) {
       S.e.unshift({
@@ -6180,8 +6294,17 @@ function markTaskDone(taskId) {
     t.x = 1;
     if (t.r > 0) {
       S.t.push({
-        id: Date.now() + 1, d: addDays(today(), t.r),
-        c: t.c, t: t.t, r: t.r, cost: t.cost, x: 0
+        id: Date.now() + 1,
+        d: addDays(today(), t.r),
+        c: t.c,
+        t: t.t,
+        r: t.r,
+        cost: t.cost,
+        x: 0,
+        an: t.an || 0,
+        tag: t.tag || "",
+        animalIds: t.animalIds ? [...t.animalIds] : [],
+        withdrawal: t.withdrawal || 0
       });
     }
   });
@@ -6915,7 +7038,9 @@ function saveWoolLog() {
     }
   });
 
+  SELECTED_ANIMALS.clear();
   closeModal();
+  updateBulkBar();
   setStatus(`${headCount} baş hayvan kırkımı kaydedildi (${kg} kg yün, ${F(total)}).`);
 }
 
@@ -7010,7 +7135,9 @@ function saveHoofCareLog() {
     }
   });
 
+  SELECTED_ANIMALS.clear();
   closeModal();
+  updateBulkBar();
   setStatus(`${headCount} baş hayvana tırnak & piyetin ayak bakımı uygulandı.`);
 }
 
@@ -7585,14 +7712,20 @@ function quickHUDWeight(animalId) {
 function quickHUDVaccine(animalId) {
   const a = S.a.find(x => x.id === animalId);
   if (!a) return;
-  const med = prompt(`${a.k} için aşı/ilaç adı:`, "Enterotoksemi (Çelerme) Aşısı");
+  const med = prompt(`${a.k} için aşı/ilaç adı:`, a.lastVaccine || "Enterotoksemi (Çelerme) Aşısı");
   if (!med) return;
+  const d = today();
   mutate(() => {
-    S.t.push({ id: Date.now(), d: today(), c: 'aşı', t: `${med} (${a.k})`, cost: 0, x: 1 });
+    a.lastVaccine = med;
+    a.lastVaccineDate = d;
+    a.lastVaccineType = "aşı";
+    if (!a.vaccines) a.vaccines = [];
+    a.vaccines.unshift({ id: Date.now(), d, t: med, c: "aşı", cost: 0, withdrawal: 14 });
+    S.t.push({ id: Date.now() + 1, d, c: 'aşı', t: `${med} (${a.k})`, an: a.id, tag: a.k, cost: 0, withdrawal: 14, x: 1, animalIds: [a.id] });
   });
   playRecognitionSound(true);
   triggerHapticFeedback([40, 60]);
-  alert(`✓ ${a.k} için ${med} kaydı işlendi!`);
+  alert(`✓ ${a.k} için ${med} profil kartına kaydedildi!`);
   dismissRecognitionPrompt();
 }
 
@@ -7702,10 +7835,23 @@ function openAnimalDetailHubModal(animalId) {
   const weights = (S.w || []).filter(w => w.an === a.id).sort((x, y) => y.d.localeCompare(x.d));
   const categories = ["Anaç Koyun", "Koç", "Dişi Toklu", "Erkek Toklu", "Kuzu", "Kurbanlık", "Keçi", "Teke", "Oğlak"];
 
-  const animalTreatments = (S.t || []).filter(t => (t.t || '').includes(a.k) || (t.an && t.an == a.id)).sort((x, y) => y.d.localeCompare(x.d));
-  const lastTreatment = animalTreatments.length ? animalTreatments[0] : null;
-  const isWithdrawalActive = lastTreatment && lastTreatment.withdrawal > 0 && daysBetween(lastTreatment.d, today()) < lastTreatment.withdrawal;
-  const withdrawalDaysLeft = isWithdrawalActive ? (lastTreatment.withdrawal - daysBetween(lastTreatment.d, today())) : 0;
+  const taskTreatments = (S.t || []).filter(t => 
+    (t.an && t.an == a.id) || 
+    (t.tag && t.tag == a.k) || 
+    (Array.isArray(t.animalIds) && t.animalIds.includes(a.id)) || 
+    ((t.t || '').includes(a.k))
+  );
+
+  const allTreatmentsMap = new Map();
+  (a.vaccines || []).forEach(v => allTreatmentsMap.set('v_' + (v.id || v.d + v.t), { ...v, isDone: true }));
+  taskTreatments.forEach(t => allTreatmentsMap.set('t_' + t.id, { id: t.id, d: t.d, t: t.t, c: t.c, cost: t.cost, withdrawal: t.withdrawal, isDone: !!t.x }));
+
+  const animalTreatments = Array.from(allTreatmentsMap.values()).sort((x, y) => (y.d || '').localeCompare(x.d || ''));
+  const lastTreatment = animalTreatments.length ? animalTreatments[0] : (a.lastVaccine ? { t: a.lastVaccine, d: a.lastVaccineDate, c: a.lastVaccineType || 'aşı' } : null);
+
+  const isWithdrawalActive = animalTreatments.some(tr => tr.withdrawal > 0 && daysBetween(tr.d, today()) < tr.withdrawal);
+  const activeWithdrawalTr = animalTreatments.find(tr => tr.withdrawal > 0 && daysBetween(tr.d, today()) < tr.withdrawal);
+  const withdrawalDaysLeft = activeWithdrawalTr ? (activeWithdrawalTr.withdrawal - daysBetween(activeWithdrawalTr.d, today())) : 0;
 
   const shearingText = a.lastShearing ? `${a.lastShearing} ${a.woolKg ? '(' + a.woolKg + ' kg yün)' : ''}` : 'Kırkım kaydı yok';
   const hoofCareText = a.lastHoofCare ? `${a.lastHoofCare} (Piyetin/Tırnak Bakımı)` : 'Ayak bakımı kaydı yok';
@@ -7920,6 +8066,29 @@ function openAnimalDetailHubModal(animalId) {
       </div>
     </div>
 
+    <!-- AŞI, İLAÇ & SAĞLIK GEÇMİŞİ KARTI -->
+    <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:10px; padding:10px; margin-top:8px">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px">
+        <b style="font-size:12.5px; color:var(--primary)">💉 Aşı, İlaç & Sağlık Geçmişi (${animalTreatments.length} Kayıt)</b>
+        <button class="btn btn-secondary btn-sm" onclick="openHubTreatmentModal(${a.id})">+ Aşı/İlaç Ekle</button>
+      </div>
+      <div style="max-height:120px; overflow-y:auto; font-size:12px">
+        ${animalTreatments.map(tr => `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 0; border-bottom:1px dashed var(--ln)">
+            <div>
+              <b>${E(tr.t)}</b>
+              <span class="badge badge-mut" style="font-size:10px; margin-left:4px">${E(tr.c || 'aşı')}</span>
+              ${tr.withdrawal > 0 ? `<span class="badge badge-amber" style="font-size:10px">${tr.withdrawal} gün arınma</span>` : ''}
+            </div>
+            <div style="text-align:right">
+              <span style="color:var(--tx-sec); font-size:11px">📅 ${tr.d}</span>
+              ${tr.cost > 0 ? `<span style="font-weight:700; color:var(--r); margin-left:6px">${F(tr.cost)}</span>` : ''}
+            </div>
+          </div>
+        `).join('') || '<div style="color:var(--mut); padding:4px 0">Henüz aşı veya sağlık kaydı bulunmuyor.</div>'}
+      </div>
+    </div>
+
     <!-- TARTI GEÇMİŞİ -->
     <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:10px; padding:10px; margin-top:8px">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
@@ -7942,20 +8111,76 @@ function openAnimalDetailHubModal(animalId) {
 function openHubTreatmentModal(animalId) {
   const a = S.a.find(x => x.id === animalId);
   if (!a) return;
-  const med = prompt(`${a.k} için aşı/ilaç adı:`, "Enterotoksemi (Çelerme) Aşısı");
+  const med = prompt(`${a.k} için aşı/ilaç adı:`, a.lastVaccine || "Enterotoksemi (Çelerme) Aşısı");
   if (!med) return;
   const cost = +prompt("Masraf tutarı (TL, yoksa 0):", "120") || 0;
   const withdrawal = +prompt("Yasal kesim/arınma yasağı süresi (gün):", "14") || 0;
+  const repeat = +prompt("Tekrar sıklığı (gün, yoksa 0):", "180") || 0;
+  const d = today();
+
   mutate(() => {
-    S.t.push({ id: Date.now(), d: today(), c: 'aşı', t: `${med} (${a.k})`, cost, withdrawal, x: 1 });
+    a.lastVaccine = med;
+    a.lastVaccineDate = d;
+    a.lastVaccineType = "aşı";
+    if (!a.vaccines) a.vaccines = [];
+    a.vaccines.unshift({
+      id: Date.now(),
+      d,
+      t: med,
+      c: "aşı",
+      cost,
+      withdrawal,
+      repeat
+    });
+
+    S.t.push({
+      id: Date.now() + 1,
+      d,
+      c: 'aşı',
+      t: `${med} (${a.k})`,
+      an: a.id,
+      tag: a.k,
+      cost,
+      withdrawal,
+      r: repeat,
+      x: 1,
+      animalIds: [a.id]
+    });
+
+    if (repeat > 0) {
+      S.t.push({
+        id: Date.now() + 2,
+        d: addDays(d, repeat),
+        c: 'aşı',
+        t: `${med} Tekrarı (${a.k})`,
+        an: a.id,
+        tag: a.k,
+        cost: 0,
+        withdrawal,
+        r: repeat,
+        x: 0,
+        animalIds: [a.id]
+      });
+    }
+
     if (cost > 0) {
       S.e.unshift({
-        id: Date.now() + 1, d: today(), c: 'Aşı / İlaç / Serum / Parazit', an: a.id,
-        ds: `${a.k} - ${med} uygulaması`, q: 1, kg: 0, p: cost, a: cost, payMode: 'pesin', isSettled: true
+        id: Date.now() + 3,
+        d,
+        c: 'Aşı / İlaç / Serum / Parazit',
+        an: a.id,
+        ds: `${a.k} - ${med} uygulaması`,
+        q: 1,
+        kg: 0,
+        p: cost,
+        a: cost,
+        payMode: 'pesin',
+        isSettled: true
       });
     }
   });
-  alert(`${a.k} tedavisi işlendi!`);
+
+  alert(`${a.k} için ${med} kaydı profil kartına ve sağlık geçmişine işlendi!`);
   openAnimalDetailHubModal(a.id);
 }
 
@@ -8439,8 +8664,13 @@ function openSecureButcherPortalModal(animalId) {
   const carcassKg = Math.round(liveKg * (yieldPct / 100) * 10) / 10;
   const bonelessKg = Math.round(carcassKg * 0.77 * 10) / 10;
 
-  const animalTasks = S.t.filter(t => t.withdrawal > 0 && daysBetween(t.d, today()) < t.withdrawal);
-  const isWithdrawalClear = animalTasks.length === 0;
+  const animalTasks = (S.t || []).filter(t => {
+    if (!t.withdrawal || t.withdrawal <= 0) return false;
+    if (daysBetween(t.d, today()) >= t.withdrawal) return false;
+    return (t.an && t.an == a.id) || (t.tag && t.tag == a.k) || (Array.isArray(t.animalIds) && t.animalIds.includes(a.id)) || ((t.t || '').includes(a.k));
+  });
+  const hasAnimalVaccineWithdrawal = (a.vaccines || []).some(v => v.withdrawal > 0 && daysBetween(v.d, today()) < v.withdrawal);
+  const isWithdrawalClear = animalTasks.length === 0 && !hasAnimalVaccineWithdrawal;
 
   const modal = $("modalContent");
   modal.innerHTML = `
@@ -8602,4 +8832,5 @@ function calcUnpaintedCohorts() {
 
 </script>
 </body>
-</html>```
+</html>
+```
