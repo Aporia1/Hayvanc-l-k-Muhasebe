@@ -4220,14 +4220,21 @@ function viewCloudSync() {
 
       <!-- MANUEL YEDEKLEME -->
       <div class="card" style="margin-bottom:0">
-        <div class="card-title">💾 Manuel Dosya Yedekleme</div>
+        <div class="card-title">💾 Manuel Dosya & Metin Yedekleme</div>
+        <div style="font-size:12px; color:var(--tx-sec); margin-bottom:10px">
+          Dosya indirmede veya telefonda aktarmada hata yaşıyorsanız <b>"Metin Olarak Yedek Al"</b> butonuna basıp kodu doğrudan kopyalayabilirsiniz.
+        </div>
         <div class="form-row">
-          <button class="btn btn-secondary" onclick="exportJSONBackup()">📥 JSON Yedeği İndir</button>
-          <button class="btn btn-secondary" onclick="exportExcelCSV()">📊 Excel CSV İndir</button>
+          <button class="btn btn-primary" onclick="openTextExportModal()">📋 Metin Olarak Yedek Al (Kutuda Göster)</button>
+          <button class="btn btn-secondary" onclick="openPasteSyncModal()">📥 Metin Yapıştırarak Yükle</button>
+        </div>
+        <div class="form-row" style="margin-top:8px">
+          <button class="btn btn-secondary btn-sm" onclick="exportJSONBackup()">📥 JSON Dosyası İndir</button>
+          <button class="btn btn-secondary btn-sm" onclick="exportExcelCSV()">📊 Excel CSV İndir</button>
         </div>
         <div style="margin-top:10px">
           <label>Yedek Dosyası Geri Yükle (.json)</label>
-          <input type="file" accept=".json" onchange="importJSONBackup(event)">
+          <input type="file" accept=".json,application/json,text/plain" onchange="importJSONBackup(event)">
         </div>
       </div>
     </div>
@@ -5302,16 +5309,7 @@ function executePasteSyncData() {
     return;
   }
   try {
-    let clean = raw;
-    const startIdx = clean.indexOf("{");
-    const endIdx = clean.lastIndexOf("}");
-    if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
-      clean = clean.substring(startIdx, endIdx + 1);
-    }
-    const parsed = JSON.parse(clean);
-    if (!parsed || (!Array.isArray(parsed.a) && !Array.isArray(parsed.e))) {
-      throw new Error("Geçerli bir sürü veya muhasebe verisi bulunamadı.");
-    }
+    const parsed = parseBackupDataSafely(raw);
     mutate(() => {
       S = Object.assign({}, S, parsed);
     });
@@ -5321,7 +5319,7 @@ function executePasteSyncData() {
   } catch(err) {
     if (errBox) {
       errBox.style.display = "block";
-      errBox.innerHTML = `<b>❌ Hata:</b> Kod okunamadı. Detay: ${err.message}<br>İpucu: Eğer kod kopyalarken eksik kaldıysa, eski uygulamada "Buluta Gönder" deyip bu uygulamada "Buluttan Çek" diyebilirsiniz.`;
+      errBox.innerHTML = `<b>❌ Hata:</b> Kod okunamadı. Detay: ${err.message}<br>İpucu: Metnin tamamını kopyaladığınızdan emin olun veya eski uygulamada "Metin Olarak Yedek Al" butonuna basın.`;
     } else {
       alert("Geçersiz veri kodu: " + err.message);
     }
@@ -6264,6 +6262,82 @@ function deleteCategory(idx) {
   }
 }
 
+
+function parseBackupDataSafely(rawContent) {
+  if (!rawContent) throw new Error("Veri içeriği boş.");
+  let clean = String(rawContent).trim();
+  if (clean.charCodeAt(0) === 0xFEFF) {
+    clean = clean.slice(1).trim();
+  }
+  const startIdx = clean.indexOf("{");
+  const endIdx = clean.lastIndexOf("}");
+  if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+    clean = clean.substring(startIdx, endIdx + 1);
+  }
+  const parsed = JSON.parse(clean);
+  let target = parsed;
+  if (target.data && typeof target.data === 'object' && (Array.isArray(target.data.a) || Array.isArray(target.data.e))) {
+    target = target.data;
+  } else if (target.S && typeof target.S === 'object' && (Array.isArray(target.S.a) || Array.isArray(target.S.e))) {
+    target = target.S;
+  }
+  if (!Array.isArray(target.a) && Array.isArray(target.animals)) target.a = target.animals;
+  if (!Array.isArray(target.e) && Array.isArray(target.entries)) target.e = target.entries;
+  if (!Array.isArray(target.w) && Array.isArray(target.weights)) target.w = target.weights;
+  if (!Array.isArray(target.t) && Array.isArray(target.tasks)) target.t = target.tasks;
+  if (!Array.isArray(target.a)) target.a = [];
+  if (!Array.isArray(target.e)) target.e = [];
+
+  if (target.a.length === 0 && target.e.length === 0 && (!target.feeds || target.feeds.length === 0)) {
+    throw new Error("Yedek verisinde kayıtlı hayvan veya muhasebe hareketi bulunamadı.");
+  }
+  return target;
+}
+
+function openTextExportModal() {
+  const modal = $("modalContent");
+  if (!modal) return;
+  const jsonStr = JSON.stringify(S, null, 2);
+  modal.innerHTML = `
+    <div class="modal-header">
+      <div class="modal-title">📋 Çiftlik Yedek Kodu (Metin Formatı)</div>
+      <button class="close-modal" onclick="closeModal()">✕</button>
+    </div>
+    <div style="font-size:12.5px; color:var(--tx-sec); margin-bottom:8px">
+      Aşağıdaki kutudaki kod tüm çiftlik verilerinizi (<b>${S.a?.length || 0} baş hayvan, ${S.e?.length || 0} kasa kaydı</b>) içerir. Dosya indirmeye gerek kalmadan <b>"Tüm Kodu Kopyala"</b> butonuna basıp WhatsApp veya Notlar ile diğer cihazınıza aktarabilirsiniz:
+    </div>
+    <div style="margin-bottom:10px">
+      <textarea id="txtExportArea" rows="8" readonly style="width:100%; font-family:monospace; font-size:11px; padding:8px" onclick="this.select()">${E(jsonStr)}</textarea>
+    </div>
+    <div style="display:flex; gap:8px">
+      <button class="btn btn-primary" style="flex:1.2; padding:10px; font-weight:700" onclick="copyTextExportArea()">
+        📋 Tüm Kodu Kopyala
+      </button>
+      <button class="btn btn-secondary" onclick="closeModal()">Kapat</button>
+    </div>
+  `;
+  openModal();
+}
+
+function copyTextExportArea() {
+  const area = $("txtExportArea");
+  if (!area) return;
+  area.select();
+  area.setSelectionRange(0, 999999);
+  try {
+    navigator.clipboard.writeText(area.value).then(() => {
+      alert("🎉 Tüm yedek kodu panoya kopyalandı! Şimdi diğer cihazınızda veya yeni sürümde 'Kodu Telefonda Yapıştır' kısmına yapıştırabilirsiniz.");
+    }).catch(() => {
+      document.execCommand("copy");
+      alert("Yedek kodu kopyalandı!");
+    });
+  } catch(e) {
+    document.execCommand("copy");
+    alert("Yedek kodu kopyalandı!");
+  }
+}
+
+
 function exportJSONBackup() {
   const data = JSON.stringify(S, null, 2);
   downloadFile(`koyun-muhasebe-yedek-${today()}.json`, data, "application/json");
@@ -6287,11 +6361,12 @@ function importJSONBackup(e) {
   const reader = new FileReader();
   reader.onload = () => {
     try {
-      const parsed = JSON.parse(reader.result);
-      if (!Array.isArray(parsed.e) || !Array.isArray(parsed.a)) throw 0;
+      const parsed = parseBackupDataSafely(reader.result);
       mutate(() => { S = Object.assign({}, S, parsed); });
-      alert("Yedek başarıyla yüklendi!");
-    } catch (err) { alert("Geçersiz yedek dosyası."); }
+      alert(`🎉 Yedek başarıyla yüklendi!\n✓ ${S.a?.length || 0} baş hayvan\n✓ ${S.e?.length || 0} kasa kaydı aktarıldı.`);
+    } catch (err) {
+      alert("Yedek dosyası okunamadı: " + err.message);
+    }
   };
   reader.readAsText(file);
 }
@@ -7100,7 +7175,9 @@ function scanAndIdentifyAnimalLive() {
   let candidates = [];
   activeAnimals.forEach(a => {
     let score = 0;
-    if (a.visSig) {
+    if (Array.isArray(a.visSigs) && a.visSigs.length > 0) {
+      score = Math.max(...a.visSigs.map(sig => calculateSignatureSimilarity(liveSig, sig)));
+    } else if (a.visSig) {
       score = calculateSignatureSimilarity(liveSig, a.visSig);
     } else {
       // Henüz fotoğrafı kaydedilmemişse simülatif benzerlik (ırk/özellik bazlı)
@@ -7160,13 +7237,16 @@ function confirmIdentifiedAnimal(animalId) {
   const a = S.a.find(x => x.id === animalId);
   if (!a) return;
 
-  // Eğer bu taramada fotoğraf yakalandıysa ve hayvanın henüz fotoğrafı yoksa referans olarak kaydet
   if (HUD_SCANNED_CANDIDATE && HUD_SCANNED_CANDIDATE.photoData) {
-    if (!a.photo) {
-      a.photo = HUD_SCANNED_CANDIDATE.photoData;
-      a.visSig = HUD_SCANNED_CANDIDATE.sig;
-      save();
-    }
+    if (!a.photo) a.photo = HUD_SCANNED_CANDIDATE.photoData;
+    if (!a.photos) a.photos = [];
+    a.photos.push({ angle: 'Canlı Tanıma', img: HUD_SCANNED_CANDIDATE.photoData, d: today() });
+    if (a.photos.length > 6) a.photos.shift();
+    if (!a.visSigs) a.visSigs = a.visSig ? [a.visSig] : [];
+    a.visSigs.push(HUD_SCANNED_CANDIDATE.sig);
+    if (a.visSigs.length > 6) a.visSigs.shift();
+    a.visSig = HUD_SCANNED_CANDIDATE.sig;
+    save();
   }
 
   closeCameraHUD();
@@ -7205,10 +7285,16 @@ function executeTeachAnimalPhoto() {
 
   if (HUD_SCANNED_CANDIDATE && HUD_SCANNED_CANDIDATE.photoData) {
     mutate(() => {
-      a.photo = HUD_SCANNED_CANDIDATE.photoData;
+      if (!a.photo) a.photo = HUD_SCANNED_CANDIDATE.photoData;
+      if (!a.photos) a.photos = [];
+      a.photos.push({ angle: 'Öğretilen Açı', img: HUD_SCANNED_CANDIDATE.photoData, d: today() });
+      if (a.photos.length > 6) a.photos.shift();
+      if (!a.visSigs) a.visSigs = a.visSig ? [a.visSig] : [];
+      a.visSigs.push(HUD_SCANNED_CANDIDATE.sig);
+      if (a.visSigs.length > 6) a.visSigs.shift();
       a.visSig = HUD_SCANNED_CANDIDATE.sig;
     });
-    alert(`Mükemmel! Kameradaki bu görüntü ${a.k} adlı hayvana öğretildi. Bir dahaki sefere kamera doğrudan tanıyacaktır.`);
+    alert(`Mükemmel! Kameradaki bu açı ${a.k} adlı hayvana öğretildi. Kamera artık bu açıyı da tanıyacaktır.`);
   }
 
   closeCameraHUD();
@@ -7289,6 +7375,30 @@ function openAnimalDetailHubModal(animalId) {
         <div style="font-size:11px; color:var(--mut); font-weight:700">TOPLAM BİRİKMİŞ MALİYET</div>
         <b style="font-size:19px; color:var(--r)">${F(c.totalCost || 0)}</b>
       </div>
+    </div>
+
+    <!-- ÇOKLU AÇI & YÜZ TANIMA GALERİSİ -->
+    <div style="background:var(--card-sub); border:1px solid var(--ln); border-radius:12px; padding:12px; margin-bottom:12px">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px">
+        <b style="font-size:12.5px; color:var(--primary)">📸 Çoklu Açı & Yüz Tanıma Galerisi (${(a.photos && a.photos.length) || (a.photo ? 1 : 0)} Açı Kayıtlı)</b>
+        <span style="font-size:11px; color:var(--mut)">Farklı açılardan tanıma için açı ekleyin</span>
+      </div>
+      <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px">
+        <button class="btn btn-secondary btn-sm" onclick="triggerAnimalPhotoCapture(${a.id}, 'Ön Cephe')">📷 + Ön Cephe</button>
+        <button class="btn btn-secondary btn-sm" onclick="triggerAnimalPhotoCapture(${a.id}, 'Sol Profil')">📷 + Sol Profil</button>
+        <button class="btn btn-secondary btn-sm" onclick="triggerAnimalPhotoCapture(${a.id}, 'Sağ Profil')">📷 + Sağ Profil</button>
+        <button class="btn btn-secondary btn-sm" onclick="triggerAnimalPhotoCapture(${a.id}, 'Çapraz Açı')">📷 + Çapraz Açı</button>
+      </div>
+      ${(a.photos && a.photos.length) ? `
+        <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:4px">
+          ${a.photos.map(p => `
+            <div style="text-align:center; flex-shrink:0">
+              <img src="${p.img}" style="width:54px; height:54px; border-radius:10px; object-fit:cover; border:1px solid var(--primary)">
+              <div style="font-size:10px; font-weight:700; color:var(--tx); margin-top:2px">${E(p.angle || 'Açı')}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : '<div style="font-size:11.5px; color:var(--mut)">Henüz farklı açı eklenmedi. Yukarıdaki butonlardan birine basarak hayvanın sol/sağ veya ön fotoğrafını ekleyebilirsiniz.</div>'}
     </div>
 
     <!-- TÜM DETAYLAR (GÖRÜNTÜLEME TABLOSU) -->
@@ -7563,7 +7673,7 @@ function executeSingleAnimalHoofCare(animalId) {
 }
 
 
-function triggerAnimalPhotoCapture(animalId) {
+function triggerAnimalPhotoCapture(animalId, angleName = 'Ön Cephe') {
   const input = document.createElement('input');
   input.type = 'file';
   input.accept = 'image/*';
@@ -7585,10 +7695,16 @@ function triggerAnimalPhotoCapture(animalId) {
         const a = S.a.find(x => x.id === animalId);
         if (a) {
           mutate(() => {
-            a.photo = dataUrl;
+            if (!a.photo) a.photo = dataUrl;
+            if (!a.photos) a.photos = [];
+            a.photos.push({ angle: angleName, img: dataUrl, d: today() });
+            if (a.photos.length > 6) a.photos.shift();
+            if (!a.visSigs) a.visSigs = a.visSig ? [a.visSig] : [];
+            a.visSigs.push(sig);
+            if (a.visSigs.length > 6) a.visSigs.shift();
             a.visSig = sig;
           });
-          alert(`${a.k} için yüz/vücut referans fotoğrafı kaydedildi! Artık kamera bu hayvanı tanıyacaktır.`);
+          alert(`${a.k} için "${angleName}" açısı hafızaya alındı! Hayvan artık bu açıdan da tanınacaktır.`);
           openAnimalDetailHubModal(a.id);
         }
       };
